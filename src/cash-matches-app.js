@@ -306,7 +306,13 @@ async function handleStartMatch(matchId) {
 }
 
 async function prefetchQuestions(matchId) {
-  prefetchedQuestions = await fetchQuestionsFromDatabase(matchId);
+  try {
+    prefetchedQuestions = await fetchQuestionsFromDatabase(matchId);
+  } catch (error) {
+    console.error('[PREFETCH] Failed to prefetch questions:', error);
+    prefetchedQuestions = null;
+    // Error will be caught again when startGame is called
+  }
 }
 
 async function startGame(matchId) {
@@ -315,29 +321,66 @@ async function startGame(matchId) {
   document.getElementById('lobbyView').classList.remove('active');
   document.getElementById('gameView').classList.add('active');
 
-  // Use prefetched questions if available, otherwise fetch now
-  let data;
-  if (prefetchedQuestions) {
-    console.log('[GAME] Using prefetched questions - instant start! ⚡');
-    data = prefetchedQuestions;
-    prefetchedQuestions = null; // Clear for next game
-  } else {
-    console.log('[GAME] Prefetch missed, fetching now...');
-    data = await fetchQuestionsFromDatabase(matchId);
+  try {
+    // Use prefetched questions if available, otherwise fetch now
+    let data;
+    if (prefetchedQuestions) {
+      console.log('[GAME] Using prefetched questions - instant start! ⚡');
+      data = prefetchedQuestions;
+      prefetchedQuestions = null; // Clear for next game
+    } else {
+      console.log('[GAME] Prefetch missed, fetching now...');
+      data = await fetchQuestionsFromDatabase(matchId);
+    }
+
+    currentQuestions = data.questions;
+    currentQuestionIndex = 0;
+    userAnswers = [];
+    currentUserScore = 0;
+    correctAnswersCount = 0;
+    startTime = Date.now();
+    isTransitioningBetweenQuestions = false;
+
+    // Get all players for leaderboard
+    allPlayers = await cashMatchesSDK.getMatchPlayers(matchId);
+
+    showQuestion(0, data.time_per_question_ms);
+  } catch (error) {
+    console.error('[GAME] Failed to start game:', error);
+
+    // Show error modal
+    document.getElementById('gameView').classList.remove('active');
+    document.getElementById('lobbyView').classList.add('active');
+
+    // Create error modal
+    const errorModal = document.createElement('div');
+    errorModal.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+    `;
+    errorModal.innerHTML = `
+      <div style="background: var(--card); padding: 32px; border-radius: 16px; max-width: 500px; text-align: center; border: 2px solid #ff6b6b;">
+        <div style="font-size: 3rem; margin-bottom: 16px;">⚠️</div>
+        <h2 style="color: #ff6b6b; margin-bottom: 16px;">Match Cannot Start</h2>
+        <p style="color: var(--txt); margin-bottom: 24px; line-height: 1.6;">
+          ${error.message}
+        </p>
+        <button onclick="this.closest('div[style*=fixed]').remove(); window.showBrowseView();"
+          style="background: var(--accent); color: var(--bg); padding: 14px 32px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 1rem;">
+          Return to Lobby
+        </button>
+      </div>
+    `;
+    document.body.appendChild(errorModal);
   }
-
-  currentQuestions = data.questions;
-  currentQuestionIndex = 0;
-  userAnswers = [];
-  currentUserScore = 0;
-  correctAnswersCount = 0;
-  startTime = Date.now();
-  isTransitioningBetweenQuestions = false;
-
-  // Get all players for leaderboard
-  allPlayers = await cashMatchesSDK.getMatchPlayers(matchId);
-
-  showQuestion(0, data.time_per_question_ms);
 }
 
 async function fetchQuestionsFromDatabase(matchId) {
@@ -398,25 +441,13 @@ async function fetchQuestionsFromDatabase(matchId) {
   } catch (error) {
     console.error('[QUESTIONS] ⚠️ Database fetch failed:', error.message);
 
-    // Fallback: use offline questions
-    try {
-      const { getOfflineFallbackQuestions } = await import('/src/questions-offline-fallback.js');
-      const questions = getOfflineFallbackQuestions(match.category || 'sports', match.question_count || 10);
-
-      return {
-        questions: questions.map((q, i) => ({
-          id: `offline-${i}`,
-          question: q.question,
-          answers: q.choices,
-          correct_index: q.correctIndex
-        })),
-        time_per_question_ms: 15000
-      };
-    } catch (fallbackError) {
-      console.error('[QUESTIONS] ⚠️ Offline fallback also failed:', fallbackError.message);
-      // Ultimate fallback: use SDK static questions
-      return await cashMatchesSDK.fetchMatchQuestions(matchId);
-    }
+    // CRITICAL: For cash matches, we MUST NOT use fallback questions
+    // Show error and prevent match from starting
+    throw new Error(
+      'Cannot start match: Question database unavailable. ' +
+      'Cash matches require live database questions to ensure fairness. ' +
+      'Please try again later or contact support.'
+    );
   }
 }
 

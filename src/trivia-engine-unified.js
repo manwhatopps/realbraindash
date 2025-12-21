@@ -94,9 +94,9 @@ async function getQuestionsForSession(categoryKey, count) {
 async function fetchQuestionsForCategory(categoryKey, count) {
   console.log("[QUESTIONS] fetchQuestionsForCategory", { categoryKey, count });
 
-  // Try to fetch from OpenAI via Supabase Edge Function first
+  // Try to fetch from database via get-questions endpoint
   try {
-    console.log("[QUESTIONS] 🤖 Attempting to fetch from OpenAI...");
+    console.log("[QUESTIONS] 🗄️ Attempting to fetch from database...");
     // Access env vars from window object (injected by HTML)
     const supabaseUrl = window.VITE_SUPABASE_URL;
     const supabaseKey = window.VITE_SUPABASE_ANON_KEY;
@@ -105,8 +105,8 @@ async function fetchQuestionsForCategory(categoryKey, count) {
     console.log("[QUESTIONS] Supabase Key:", supabaseKey ? 'FOUND' : 'MISSING');
 
     if (supabaseUrl && supabaseKey) {
-      const endpoint = `${supabaseUrl}/functions/v1/generate-trivia-questions`;
-      console.log("[QUESTIONS] Calling OpenAI endpoint:", endpoint);
+      const endpoint = `${supabaseUrl}/functions/v1/get-questions`;
+      console.log("[QUESTIONS] Calling database endpoint:", endpoint);
 
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -114,17 +114,22 @@ async function fetchQuestionsForCategory(categoryKey, count) {
           'Authorization': `Bearer ${supabaseKey}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ category: categoryKey, count })
+        body: JSON.stringify({
+          category: categoryKey,
+          difficulty: 'medium',
+          count: count,
+          mode: 'free_play',
+        })
       });
 
-      console.log("[QUESTIONS] OpenAI response status:", response.status);
+      console.log("[QUESTIONS] Database response status:", response.status);
 
       if (response.ok) {
         const data = await response.json();
-        console.log("[QUESTIONS] ✓ Received", data.questions?.length, "questions from OpenAI");
+        console.log("[QUESTIONS] ✓ Received", data.questions?.length, "questions from database");
         console.log("[QUESTIONS] Sample question:", data.questions?.[0]?.question?.substring(0, 50));
 
-        // Transform OpenAI format to our format if needed
+        // Transform to our format
         const questions = (data.questions || []).map(q => ({
           id: q.id || Math.random().toString(36),
           question: q.question,
@@ -133,21 +138,28 @@ async function fetchQuestionsForCategory(categoryKey, count) {
           category: categoryKey
         }));
 
+        // Hide offline banner if showing
+        hideOfflineBanner();
+
         return questions;
       } else {
         const errorText = await response.text();
-        console.warn("[QUESTIONS] ⚠️  OpenAI endpoint failed:", response.status, errorText);
+        console.warn("[QUESTIONS] ⚠️  Database endpoint failed:", response.status, errorText);
       }
     } else {
-      console.log("[QUESTIONS] ℹ️  Supabase env vars not configured, skipping OpenAI");
+      console.log("[QUESTIONS] ℹ️  Supabase env vars not configured, using offline mode");
     }
   } catch (error) {
-    console.error("[QUESTIONS] ⚠️  Failed to fetch from OpenAI:", error);
+    console.error("[QUESTIONS] ⚠️  Failed to fetch from database:", error);
     console.error("[QUESTIONS] Error details:", error.message, error.stack);
   }
 
   // Fallback to static QUESTION_BANK
   console.log("[QUESTIONS] 📚 Falling back to static question bank");
+
+  // Show offline mode banner
+  showOfflineBanner();
+
   if (window.QUESTION_BANK && window.QUESTION_BANK[categoryKey]) {
     const pool = window.QUESTION_BANK[categoryKey];
     const shuffled = [...pool].sort(() => Math.random() - 0.5);
@@ -166,7 +178,7 @@ async function fetchQuestionsForCategory(categoryKey, count) {
     });
   }
 
-  console.warn("[QUESTIONS] No AI endpoint configured and no static bank available");
+  console.warn("[QUESTIONS] No database connection and no static bank available");
   return [];
 }
 
@@ -1163,6 +1175,62 @@ function finishTriviaSession() {
 }
 
 // ============================================================================
+// OFFLINE MODE BANNER
+// ============================================================================
+
+/**
+ * Show a visible warning banner when using offline fallback questions.
+ */
+function showOfflineBanner() {
+  // Check if banner already exists
+  let banner = document.getElementById('offline-mode-banner');
+  if (banner) {
+    banner.style.display = 'block';
+    return;
+  }
+
+  // Create banner
+  banner = document.createElement('div');
+  banner.id = 'offline-mode-banner';
+  banner.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+    color: white;
+    padding: 12px 20px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    z-index: 100000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  `;
+  banner.innerHTML = `
+    <span style="font-size: 1.2rem;">⚠️</span>
+    <span>OFFLINE MODE: Using fallback questions (limited variety)</span>
+  `;
+
+  document.body.appendChild(banner);
+  console.log('[OFFLINE-BANNER] Offline mode banner displayed');
+}
+
+/**
+ * Hide the offline mode banner.
+ */
+function hideOfflineBanner() {
+  const banner = document.getElementById('offline-mode-banner');
+  if (banner) {
+    banner.style.display = 'none';
+    console.log('[OFFLINE-BANNER] Offline mode banner hidden');
+  }
+}
+
+// ============================================================================
 // EXPORTS
 // ============================================================================
 
@@ -1171,6 +1239,8 @@ window.startTriviaSession = startTriviaSession;
 window.cleanupTriviaSession = cleanupTriviaSession;
 window.exitTriviaSession = exitTriviaSession;
 window.calculateBrainDashScore = calculateBrainDashScore;
+window.showOfflineBanner = showOfflineBanner;
+window.hideOfflineBanner = hideOfflineBanner;
 
 // Also keep legacy names for compatibility
 window.startTriviaEngine = startTriviaSession;

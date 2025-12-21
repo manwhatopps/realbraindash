@@ -10,19 +10,67 @@ interface StartMatchRequest {
   match_id: string;
 }
 
-// Sample question pool - in production, fetch from your questions table
-const SAMPLE_QUESTIONS = [
-  { id: 1, question: 'What is 2 + 2?', answers: ['3', '4', '5', '6'], correct: 1, category: 'math' },
-  { id: 2, question: 'What is the capital of France?', answers: ['London', 'Berlin', 'Paris', 'Madrid'], correct: 2, category: 'geography' },
-  { id: 3, question: 'Who painted the Mona Lisa?', answers: ['Van Gogh', 'Da Vinci', 'Picasso', 'Monet'], correct: 1, category: 'art' },
-  { id: 4, question: 'What is 10 × 5?', answers: ['45', '50', '55', '60'], correct: 1, category: 'math' },
-  { id: 5, question: 'What year did WWII end?', answers: ['1943', '1944', '1945', '1946'], correct: 2, category: 'history' },
-  { id: 6, question: 'What is the largest planet?', answers: ['Mars', 'Saturn', 'Jupiter', 'Neptune'], correct: 2, category: 'science' },
-  { id: 7, question: 'Who wrote Romeo and Juliet?', answers: ['Dickens', 'Shakespeare', 'Austen', 'Hemingway'], correct: 1, category: 'literature' },
-  { id: 8, question: 'What is H2O?', answers: ['Hydrogen', 'Helium', 'Water', 'Oxygen'], correct: 2, category: 'science' },
-  { id: 9, question: 'What is 100 ÷ 4?', answers: ['20', '25', '30', '35'], correct: 1, category: 'math' },
-  { id: 10, question: 'What is the speed of light?', answers: ['100k km/s', '200k km/s', '300k km/s', '400k km/s'], correct: 2, category: 'science' },
-];
+/**
+ * Fetch questions from database for this match.
+ * Returns null if insufficient questions are available.
+ */
+async function fetchQuestionsForMatch(
+  category: string,
+  difficulty: string,
+  count: number,
+  matchId: string
+): Promise<any[] | null> {
+  try {
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+
+    console.log(`[MATCH-START] Fetching ${count} ${difficulty} questions for ${category}`);
+
+    // Call get-questions endpoint as server
+    const response = await fetch(`${supabaseUrl}/functions/v1/get-questions`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${serviceKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        category,
+        difficulty,
+        count,
+        mode: 'cash',
+        matchId,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('[MATCH-START] Failed to fetch questions:', errorData);
+      return null;
+    }
+
+    const data = await response.json();
+
+    if (data.success && data.questions && data.questions.length >= count) {
+      console.log(`[MATCH-START] ✓ Fetched ${data.questions.length} questions from database`);
+
+      // Transform to match format
+      return data.questions.map((q: any) => ({
+        id: q.id,
+        question: q.question,
+        answers: q.choices,
+        correct: q.correctIndex,
+        category: q.category,
+        difficulty: q.difficulty,
+      }));
+    }
+
+    console.error(`[MATCH-START] Insufficient questions: got ${data.questions?.length || 0}, need ${count}`);
+    return null;
+  } catch (error) {
+    console.error('[MATCH-START] Error fetching questions:', error);
+    return null;
+  }
+}
 
 Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
@@ -108,10 +156,32 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    // Select questions for this match
-    // In production, this would query your questions table based on category, difficulty, etc.
+    // Fetch questions from database for this match
     const questionCount = match.question_count || 10;
-    const selectedQuestions = SAMPLE_QUESTIONS.slice(0, questionCount);
+    const category = match.category || 'sports';
+    const difficulty = match.difficulty || 'medium';
+
+    console.log(`[MATCH-START] Match ${match.id}: fetching ${questionCount} ${difficulty} ${category} questions`);
+
+    const selectedQuestions = await fetchQuestionsForMatch(
+      category,
+      difficulty,
+      questionCount,
+      match.id
+    );
+
+    if (!selectedQuestions || selectedQuestions.length < questionCount) {
+      console.error('[MATCH-START] Insufficient questions available in database');
+      return new Response(
+        JSON.stringify({
+          error: 'Cannot start match: insufficient questions available',
+          details: 'Question database needs to be populated. Please contact support.',
+          needed: questionCount,
+          available: selectedQuestions?.length || 0,
+        }),
+        { status: 503, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
     // Update match with questions and set to active
     const { error: updateError } = await supabase

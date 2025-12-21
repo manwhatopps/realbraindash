@@ -69,6 +69,8 @@ Deno.serve(async (req: Request) => {
     } else if (req.method === 'POST') {
       if (action === 'generate-batch') {
         return await handleGenerateBatch(adminSupabase, req, user.id);
+      } else if (action === 'bootstrap') {
+        return await handleBootstrap(adminSupabase, user.id);
       } else if (action === 'deactivate-question') {
         return await handleDeactivateQuestion(adminSupabase, req);
       } else {
@@ -250,6 +252,108 @@ async function handleGenerateBatch(supabase: any, req: Request, userId: string) 
       success: true,
       results: results,
       message: `Generated questions for ${results.successful}/${results.total} category/difficulty combinations`,
+    }),
+    { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+  );
+}
+
+// Bootstrap initial question pool
+async function handleBootstrap(supabase: any, userId: string) {
+  console.log('[BOOTSTRAP] Starting initial question pool generation');
+
+  const serviceKey = Deno.env.get('SERVICE_KEY');
+  if (!serviceKey) {
+    return new Response(
+      JSON.stringify({ error: 'Service key not configured' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
+
+  // Standard categories to populate
+  const bootstrapConfig = [
+    { category: 'sports', difficulties: ['easy', 'medium', 'hard'], count: 50 },
+    { category: 'movies', difficulties: ['easy', 'medium', 'hard'], count: 50 },
+    { category: 'history', difficulties: ['easy', 'medium', 'hard'], count: 50 },
+    { category: 'science', difficulties: ['easy', 'medium', 'hard'], count: 50 },
+    { category: 'geography', difficulties: ['easy', 'medium', 'hard'], count: 50 },
+  ];
+
+  const generateUrl = `${Deno.env.get('SUPABASE_URL')}/functions/v1/generate-questions`;
+  const results = {
+    total: 0,
+    successful: 0,
+    failed: 0,
+    totalInserted: 0,
+    details: [] as any[],
+  };
+
+  for (const config of bootstrapConfig) {
+    for (const difficulty of config.difficulties) {
+      results.total++;
+
+      try {
+        console.log(`[BOOTSTRAP] Generating ${config.count} ${difficulty} questions for ${config.category}`);
+
+        const response = await fetch(generateUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Service-Key': serviceKey,
+          },
+          body: JSON.stringify({
+            category: config.category,
+            difficulty,
+            count: config.count,
+            createdBy: userId,
+          }),
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          results.successful++;
+          results.totalInserted += result.inserted || 0;
+          results.details.push({
+            category: config.category,
+            difficulty,
+            status: 'success',
+            inserted: result.inserted,
+            duplicates: result.duplicates,
+          });
+          console.log(`[BOOTSTRAP] ✓ Generated ${result.inserted} questions for ${config.category}/${difficulty}`);
+        } else {
+          results.failed++;
+          results.details.push({
+            category: config.category,
+            difficulty,
+            status: 'failed',
+            error: result.error || result.details,
+          });
+          console.error(`[BOOTSTRAP] ✗ Failed for ${config.category}/${difficulty}:`, result.error);
+        }
+      } catch (err) {
+        results.failed++;
+        results.details.push({
+          category: config.category,
+          difficulty,
+          status: 'failed',
+          error: err.message,
+        });
+        console.error(`[BOOTSTRAP] ✗ Exception for ${config.category}/${difficulty}:`, err);
+      }
+
+      // Rate limit: wait 2 seconds between requests to avoid API throttling
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    }
+  }
+
+  console.log(`[BOOTSTRAP] Complete: ${results.successful}/${results.total} successful, ${results.totalInserted} questions inserted`);
+
+  return new Response(
+    JSON.stringify({
+      success: true,
+      results: results,
+      message: `Bootstrap complete: Generated ${results.totalInserted} questions across ${results.successful}/${results.total} category/difficulty combinations`,
     }),
     { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
   );
