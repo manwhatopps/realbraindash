@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Verification & Limits - BrainDash</title>
+  <link rel="stylesheet" href="/src/header/header-styles.css">
+  <style>
+    :root{--bg:#0a0b0f;--card:#111425;--txt:#e7eaf6;--muted:#9aa3b2;--dim:#6b7280;--line:#1f2937;--accent:#39ff88;--accent2:#00eaff;--brand:#2563eb}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{margin:0;background:radial-gradient(1200px 800px at 10% -10%,rgba(0,234,255,.12),transparent),radial-gradient(1000px 700px at 110% 10%,rgba(57,255,136,.08),transparent),var(--bg);color:var(--txt);font-family:Inter,system-ui,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh;padding-top:73px}
+    .container{max-width:1000px;margin:0 auto;padding:32px 24px}
+    .page-title{font-size:2.5rem;font-weight:900;margin-bottom:8px;background:linear-gradient(135deg,var(--accent2),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .page-subtitle{color:var(--muted);font-size:1.125rem;margin-bottom:32px}
+
+    .badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:0.875rem;font-weight:600;transition:all .2s}
+
+    .badge-tier-t0{background:rgba(156,163,175,.2);color:#9CA3AF;border:1px solid rgba(156,163,175,.3)}
+    .badge-tier-t1{background:rgba(59,130,246,.2);color:#3B82F6;border:1px solid rgba(59,130,246,.3);box-shadow:0 0 20px rgba(59,130,246,.15)}
+    .badge-tier-t2{background:rgba(34,197,94,.2);color:#22C55E;border:1px solid rgba(34,197,94,.3);box-shadow:0 0 20px rgba(34,197,94,.2)}
+    .badge-tier-t3{background:linear-gradient(135deg,rgba(168,85,247,.25),rgba(236,72,153,.25));color:#A855F7;border:1px solid rgba(168,85,247,.4);box-shadow:0 0 30px rgba(168,85,247,.3)}
+
+    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px;margin-bottom:24px}
+    .card-title{font-size:1.5rem;font-weight:700;margin-bottom:16px;color:var(--txt)}
+    .tier-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:24px 0}
+    .tier-card{background:rgba(255,255,255,.03);border:2px solid var(--line);border-radius:12px;padding:20px;transition:all .3s;cursor:pointer}
+    .tier-card:hover{border-color:var(--accent2);transform:translateY(-2px)}
+    .tier-card.current{border-color:var(--accent2);background:rgba(0,234,255,.05);box-shadow:0 0 20px rgba(0,234,255,.2)}
+    .tier-card.locked{opacity:.6;cursor:not-allowed}
+    .tier-card.locked:hover{transform:none;border-color:var(--line)}
+    .tier-icon{font-size:2.5rem;margin-bottom:8px}
+    .tier-name{font-size:1.125rem;font-weight:700;margin-bottom:4px}
+    .tier-desc{font-size:0.875rem;color:var(--muted);margin-bottom:12px}
+
+    .feature-list{list-style:none;margin:16px 0}
+    .feature-list li{padding:8px 0;display:flex;align-items:start;gap:8px;color:var(--txt);font-size:0.9375rem}
+    .feature-list li:before{content:"✓";color:var(--accent);font-weight:700;flex-shrink:0}
+
+    .requirement-list{list-style:none;margin:16px 0}
+    .requirement-list li{padding:8px 0;display:flex;align-items:start;gap:8px;color:var(--muted);font-size:0.9375rem}
+    .requirement-list li:before{content:"•";color:var(--accent2);font-weight:700;flex-shrink:0;margin-right:4px}
+
+    .limits-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px 0}
+    .limit-box{background:rgba(0,234,255,.05);border:1px solid rgba(0,234,255,.2);border-radius:12px;padding:16px;text-align:center}
+    .limit-label{color:var(--muted);font-size:0.875rem;margin-bottom:4px}
+    .limit-value{color:var(--accent2);font-size:1.5rem;font-weight:700}
+
+    .progress-bar{background:rgba(255,255,255,.05);border-radius:8px;height:8px;overflow:hidden;margin:12px 0}
+    .progress-fill{background:linear-gradient(90deg,var(--accent2),var(--accent));height:100%;transition:width .3s}
+
+    .btn{padding:14px 28px;background:linear-gradient(135deg,var(--accent2),#0af);color:#000;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:inherit;width:100%}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,234,255,.3)}
+    .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+    .btn-secondary{background:rgba(255,255,255,.05);color:var(--txt);border:1px solid var(--line)}
+    .btn-secondary:hover{background:rgba(255,255,255,.08);box-shadow:0 4px 12px rgba(0,0,0,.3)}
+
+    .status-banner{padding:16px 20px;border-radius:12px;margin-bottom:24px;display:flex;align-items:center;gap:12px;border:1px solid}
+    .status-banner.pending{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3);color:#F59E0B}
+    .status-banner.verified{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:#22C55E}
+    .status-banner.rejected{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:#EF4444}
+
+    .info-box{background:rgba(0,234,255,.05);border:1px solid rgba(0,234,255,.2);border-radius:12px;padding:16px;margin:16px 0}
+    .info-box p{color:var(--muted);line-height:1.6;margin:0}
+  </style>
+</head>
+<body>
+  <header id="appHeader"></header>
+
+  <div class="container">
+    <h1 class="page-title">Verification & Limits</h1>
+    <p class="page-subtitle">Manage your identity verification and account limits</p>
+
+    <div id="statusBanner"></div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:20px">
+        <div>
+          <h2 class="card-title">Your Current Tier</h2>
+          <div id="currentTierBadge"></div>
+        </div>
+        <div id="currentStatusBadge"></div>
+      </div>
+
+      <div class="limits-grid" id="currentLimits">
+        <div class="limit-box">
+          <div class="limit-label">Monthly Deposits</div>
+          <div class="limit-value" id="depositLimit">$0</div>
+        </div>
+        <div class="limit-box">
+          <div class="limit-label">Monthly Withdrawals</div>
+          <div class="limit-value" id="withdrawLimit">$0</div>
+        </div>
+        <div class="limit-box">
+          <div class="limit-label">Cash Matches</div>
+          <div class="limit-value" id="cashMatchStatus">🔒</div>
+        </div>
+      </div>
+
+      <div id="currentTierFeatures"></div>
+    </div>
+
+    <div class="card">
+      <h2 class="card-title">Verification Tiers</h2>
+      <p style="color:var(--muted);margin-bottom:20px">Unlock higher limits and exclusive features by upgrading your verification tier.</p>
+
+      <div class="tier-grid" id="tierGrid"></div>
+    </div>
+
+    <div class="card" id="upgradeCard" style="display:none">
+      <h2 class="card-title">Upgrade to <span id="upgradeTierName"></span></h2>
+      <div id="upgradeRequirements"></div>
+      <button class="btn" id="startVerificationBtn">Start Verification</button>
+      <div class="info-box" style="margin-top:16px">
+        <p>💡 <strong>Coming Soon:</strong> Automated identity verification will be integrated with a KYC provider. For now, verification is handled manually by our compliance team.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.VITE_SUPABASE_URL = 'https://uimxwujknpuespwvipbi.supabase.co';
+    window.VITE_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVpbXh3dWprbnB1ZXNwd3ZpcGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIwMjc2NDcsImV4cCI6MjA3NzYwMzY0N30.ZKXbrtYr47DqESnoOXgxjvS0pjEHpzuQ0BHAM8QpzWw';
+  </script>
+  <script type="module" src="/src/verification-page.js"></script>
+  <script type="module">
+    import { initHeader } from '/src/header/header.js';
+    initHeader();
+  </script>
+</body>
+</html>

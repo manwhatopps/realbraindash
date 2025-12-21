@@ -1,0 +1,3174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>BrainDash – Free Play & Cash Play</title>
+  <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
+  <meta http-equiv="X-Frame-Options" content="DENY"/>
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin"/>
+  <link rel="stylesheet" href="/src/header/header-styles.css">
+  <style>
+    :root{--bg:#0a0b0f;--card:#111425;--txt:#e7eaf6;--muted:#9aa3b2;--dim:#6b7280;--line:#1f2937;--accent:#39ff88;--accent2:#00eaff;--brand:#2563eb}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{margin:0;background:radial-gradient(1200px 800px at 10% -10%,rgba(0,234,255,.12),transparent),radial-gradient(1000px 700px at 110% 10%,rgba(57,255,136,.08),transparent),var(--bg);color:var(--txt);font-family:Inter,system-ui,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh;padding-top:73px}
+    .wrap{max-width:960px;margin:0 auto;padding:32px 24px;min-height:calc(100vh - 73px);display:flex;flex-direction:column;justify-content:center}
+    .header{text-align:center;margin-bottom:48px}
+    .h1{font-size:3rem;margin:0 0 12px;font-weight:900;background:linear-gradient(135deg,var(--accent2),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-.02em}
+    .tagline{color:var(--muted);font-size:1.125rem;margin:0}
+    .modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-bottom:32px}
+    .mode-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:32px;cursor:pointer;transition:all .3s ease;position:relative;overflow:hidden}
+    .mode-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--accent2),var(--accent));opacity:0;transition:opacity .3s ease}
+    .mode-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.3);border-color:var(--accent2)}
+    .mode-card:hover::before{opacity:1}
+    .mode-card.cash{border-color:rgba(0,234,255,.3)}
+    .mode-card.cash::before{background:linear-gradient(90deg,var(--accent2),#0af)}
+    .mode-icon{font-size:3rem;margin-bottom:16px}
+    .mode-title{font-size:1.5rem;font-weight:700;margin-bottom:8px;color:var(--txt)}
+    .mode-desc{color:var(--muted);font-size:.9375rem;line-height:1.5;margin-bottom:16px}
+    .mode-meta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+    .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;background:rgba(0,234,255,.1);border:1px solid rgba(0,234,255,.3);border-radius:6px;color:var(--accent2);font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+    .badge.free{background:rgba(57,255,136,.1);border-color:rgba(57,255,136,.3);color:var(--accent)}
+    .btn{display:block;width:100%;padding:12px 20px;background:linear-gradient(135deg,var(--accent2),#0af);color:#000;border:none;border-radius:10px;font-size:1rem;font-weight:600;cursor:pointer;transition:all .2s ease;font-family:inherit}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,234,255,.3)}
+    .btn.secondary{background:rgba(255,255,255,.05);color:var(--txt);border:1px solid var(--line)}
+    .btn.secondary:hover{background:rgba(255,255,255,.08);box-shadow:0 4px 12px rgba(0,0,0,.3)}
+    .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+    .footer{text-align:center;margin-top:48px;color:var(--dim);font-size:.875rem}
+    .footer a{color:var(--accent2);text-decoration:none}
+    .footer a:hover{text-decoration:underline}
+    .sheet{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);z-index:50;animation:fadeIn .2s ease}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .modal{width:min(480px,92vw);background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,.6);position:relative;max-height:90vh;overflow-y:auto}
+    .modal-title{margin:0 0 8px;font-size:1.5rem;font-weight:700}
+    .modal-sub{margin:0 0 20px;color:var(--muted);font-size:.875rem;line-height:1.5}
+    .provider{width:100%;margin:8px 0;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.03);color:#fff;cursor:pointer;font-size:.9375rem;font-weight:600;transition:all .2s ease;display:flex;align-items:center;justify-content:center;gap:10px;font-family:inherit}
+    .provider:hover{background:rgba(255,255,255,.06);border-color:var(--accent2);transform:translateY(-1px)}
+    .provider:disabled{opacity:.5;cursor:not-allowed;transform:none}
+    .provider.guest{background:rgba(57,255,136,.1);border-color:rgba(57,255,136,.3);color:var(--accent)}
+    .provider.guest:hover{background:rgba(57,255,136,.15);border-color:var(--accent)}
+    .oauth-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px;border-radius:10px;border:1px solid var(--line);text-decoration:none;color:var(--txt);background:rgba(255,255,255,.03);cursor:pointer;transition:all .2s ease;font-size:.9375rem;font-weight:500;flex:1;font-family:inherit}
+    .oauth-btn:hover{background:rgba(255,255,255,.06);border-color:var(--accent2);transform:translateY(-1px)}
+    .oauth-btn .icon{width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+    .oauth-google{border-color:rgba(234,67,53,.3);background:rgba(234,67,53,.05)}
+    .oauth-google:hover{border-color:rgba(234,67,53,.6);background:rgba(234,67,53,.1)}
+    .oauth-apple{background:#000;color:#fff;border-color:#333}
+    .oauth-apple:hover{background:#111;border-color:#555}
+    .sep{display:flex;align-items:center;gap:12px;color:#666;margin:16px 0;font-size:.8125rem}
+    .sep::before,.sep::after{content:"";flex:1;height:1px;background:var(--line)}
+    .form{display:grid;gap:12px;margin:10px 0}
+    label{font-size:.8125rem;color:var(--muted);font-weight:500;margin-bottom:4px}
+    input{padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:#fff;font-size:.9375rem;width:100%;font-family:inherit;transition:border-color .2s ease}
+    input:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 0 3px rgba(0,234,255,.1)}
+    input::placeholder{color:#555}
+    details{margin-top:12px;border:1px solid var(--line);border-radius:10px;padding:12px;background:rgba(0,0,0,.2)}
+    details[open]{padding-bottom:16px}
+    details summary{cursor:pointer;color:var(--muted);font-weight:600;user-select:none;padding:4px}
+    details summary:hover{color:var(--txt)}
+    .hint{color:var(--dim);font-size:.75rem;line-height:1.4}
+    .terms{font-size:.75rem;color:var(--dim);margin-top:16px;line-height:1.5;text-align:center}
+    .close{position:absolute;top:16px;right:16px;background:transparent;border:0;color:#999;font-size:28px;cursor:pointer;line-height:1;padding:4px 8px;transition:color .2s ease}
+    .close:hover{color:#fff}
+    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(17,20,37,.95);border:1px solid var(--line);border-radius:12px;padding:14px 20px;color:var(--txt);display:none;box-shadow:0 8px 24px rgba(0,0,0,.5);max-width:90vw;z-index:100;animation:slideUp .3s ease;backdrop-filter:blur(10px)}
+    @keyframes slideUp{from{opacity:0;transform:translate(-50%,20px)}to{opacity:1;transform:translate(-50%,0)}}
+    .spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.1);opacity:0.8}}
+    .form-group{display:grid;gap:6px}
+    .choices{display:grid;gap:12px}
+    @media(max-width:640px){.h1{font-size:2.25rem}.modes{grid-template-columns:1fr}.mode-card{padding:24px}}
+    .tile{border:1px solid var(--line);border-radius:12px;background:var(--card);transition:all .2s ease}
+    .tile.selectable{cursor:pointer}
+    .tile.selectable:hover{background:rgba(255,255,255,.05);border-color:var(--accent2)}
+    .tile.selectable.selected{outline:3px solid var(--accent2);outline-offset:-3px}
+    .chip{display:inline-flex;padding:8px 16px;background:rgba(0,234,255,.08);border:1px solid rgba(0,234,255,.3);border-radius:8px;color:var(--accent2);font-size:.875rem;font-weight:600}
+    .hidden{display:none!important}
+    .auth-tab{padding:10px 16px;background:transparent;border:none;border-bottom:2px solid transparent;color:var(--muted);font-size:.9375rem;font-weight:600;cursor:pointer;transition:all .2s ease;font-family:inherit}
+    .auth-tab:hover{color:var(--txt)}
+    .auth-tab.active-tab{color:var(--accent2);border-bottom-color:var(--accent2)}
+    @media(max-width:768px){body{padding-top:61px}.wrap{min-height:calc(100vh - 61px)}}
+  </style>
+</head>
+<body>
+  <!-- Modern Header -->
+  <header id="appHeader">
+    <div class="header-content">
+      <!-- Logo -->
+      <div class="header-logo" onclick="window.location.href='/'">
+        <span class="header-logo-text">BrainDash</span>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="header-nav">
+        <button class="header-nav-link" id="headerRulesBtn">Rules</button>
+        <button class="header-nav-link" id="headerHelpBtn">Help</button>
+        <button class="header-nav-link" id="headerTermsBtn">Terms</button>
+      </nav>
+
+      <!-- Desktop Auth Controls -->
+      <div class="header-auth-controls">
+        <!-- Guest View -->
+        <div id="headerGuestControls" style="display:flex;gap:12px;align-items:center">
+          <button id="headerSignIn" class="header-btn">Sign In</button>
+          <button id="headerSignUp" class="header-btn header-btn-primary">Sign Up</button>
+        </div>
+
+        <!-- Authenticated View -->
+        <div id="headerAuthControls" style="display:none;gap:12px;align-items:center">
+          <!-- Wallet Pill -->
+          <div style="position:relative">
+            <button id="headerWalletPill" class="header-wallet-pill">
+              <span class="header-wallet-icon">💰</span>
+              <span id="headerWalletBalance">$0.00</span>
+            </button>
+            <div id="headerWalletMenu" class="header-wallet-menu">
+              <button class="header-menu-item" data-action="deposit">
+                <span>💵</span>
+                <span>Deposit</span>
+              </button>
+              <button class="header-menu-item" data-action="withdraw">
+                <span>💸</span>
+                <span>Withdraw</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- User Menu -->
+          <div class="header-user-section">
+            <button id="headerUserMenuBtn" class="header-user-menu-btn">
+              <div id="headerUserAvatar" class="header-user-avatar">U</div>
+              <div style="display:flex;flex-direction:column;align-items:flex-start;gap:2px">
+                <span id="headerUserName">User</span>
+                <span id="headerTierBadge" style="display:none;font-size:0.7rem"></span>
+              </div>
+            </button>
+            <div id="headerUserMenu" class="header-user-menu">
+              <button class="header-menu-item" onclick="window.location.href='/verification.html'">
+                <span>🔐</span>
+                <span>Verification & Limits</span>
+              </button>
+              <button class="header-menu-item" onclick="alert('Profile coming soon!')">
+                <span>👤</span>
+                <span>Profile</span>
+              </button>
+              <button class="header-menu-item" onclick="alert('Match history coming soon!')">
+                <span>📊</span>
+                <span>History</span>
+              </button>
+              <button id="headerSignOut" class="header-menu-item">
+                <span>🚪</span>
+                <span>Sign Out</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button id="headerMobileMenuBtn" class="header-mobile-menu-btn">
+        <span>☰</span>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="headerMobileMenu" class="header-mobile-menu">
+      <!-- Navigation -->
+      <div class="header-mobile-section">
+        <div class="header-mobile-title">Information</div>
+        <div class="header-mobile-nav">
+          <button class="header-mobile-nav-link" id="headerMobileRulesBtn">📋 Rules</button>
+          <button class="header-mobile-nav-link" id="headerMobileHelpBtn">❓ Help</button>
+          <button class="header-mobile-nav-link" id="headerMobileTermsBtn">📄 Terms & Conditions</button>
+        </div>
+      </div>
+
+      <!-- Guest Auth (mobile) -->
+      <div id="headerMobileGuestSection" class="header-mobile-section">
+        <div class="header-mobile-title">Account</div>
+        <div class="header-mobile-nav">
+          <button id="headerMobileSignIn" class="header-mobile-nav-link">🔑 Sign In</button>
+          <button id="headerMobileSignUp" class="header-mobile-nav-link" style="background:rgba(0,234,255,0.1);border-color:rgba(0,234,255,0.3);color:var(--accent2)">✨ Sign Up</button>
+        </div>
+      </div>
+
+      <!-- Authenticated (mobile) -->
+      <div id="headerMobileAuthSection" class="header-mobile-section" style="display:none">
+        <div class="header-mobile-title">Wallet</div>
+        <div class="header-mobile-wallet">
+          <div class="header-mobile-wallet-balance" id="headerMobileWalletBalance">$0.00</div>
+          <div class="header-mobile-wallet-actions">
+            <button class="header-btn" data-action="deposit">💵 Deposit</button>
+            <button class="header-btn" data-action="withdraw">💸 Withdraw</button>
+          </div>
+        </div>
+        <div class="header-mobile-nav">
+          <button class="header-mobile-nav-link" onclick="alert('Profile coming soon!')">👤 Profile</button>
+          <button class="header-mobile-nav-link" onclick="alert('Match history coming soon!')">📊 History</button>
+          <button id="headerMobileSignOut" class="header-mobile-nav-link" style="color:#ff6b6b">🚪 Sign Out</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="header">
+      <h1 class="h1">🧠 BrainDash Royale</h1>
+      <p class="tagline">Answer questions faster than your opponents. Compete for prizes.</p>
+      <div id="oldWalletStrip" style="margin-top:16px;display:none;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap">
+        <button id="openDeposit" class="btn secondary" style="font-size:0.875rem;padding:8px 16px">💵 Deposit</button>
+        <button id="openWithdraw" class="btn secondary" style="font-size:0.875rem;padding:8px 16px">💰 Withdraw</button>
+        <span id="walletBalance" class="chip">Balance: $0.00</span>
+        <button id="toggleBalance" class="btn secondary" style="font-size:0.75rem;padding:6px 12px">👁️</button>
+      </div>
+    </div>
+
+    <div class="modes">
+      <!-- Free Play Mode -->
+      <div class="mode-card" id="freeCard">
+        <div class="mode-icon">🎮</div>
+        <h3 class="mode-title">Free Play</h3>
+        <p class="mode-desc">Play stress-free matches with no stakes. Continue as guest or sign in to save progress.</p>
+        <div class="mode-meta">
+          <span class="badge free">Free</span>
+          <span class="badge free">Guest OK</span>
+        </div>
+        <button class="btn" id="freeBtn">Play Now</button>
+      </div>
+
+      <!-- Cash Challenge Test Mode -->
+      <div class="mode-card" id="testCashCard" style="border-color:rgba(245,158,11,.3)">
+        <div class="mode-icon">🧪</div>
+        <h3 class="mode-title">Cash Challenge (TEST MODE)</h3>
+        <p class="mode-desc">Test the complete cash match flow with mock KYC and virtual credits. No real money.</p>
+        <div class="mode-meta">
+          <span class="badge" style="background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3);color:#F59E0B">Test Mode</span>
+          <span class="badge free">No Real Money</span>
+        </div>
+        <button class="btn secondary" id="testCashBtn">Test Cash Flow</button>
+      </div>
+
+      <!-- Cash Play Mode -->
+      <div class="mode-card cash" id="cashCard">
+        <div class="mode-icon">💰</div>
+        <h3 class="mode-title">Cash Play</h3>
+        <p class="mode-desc">Put your knowledge to the test for real prizes. Identity verification required.</p>
+        <div class="mode-meta">
+          <span class="badge">Real Prizes</span>
+          <span class="badge">Verified Only</span>
+        </div>
+        <button class="btn" id="cashBtn">Enter Cash Play</button>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <p>By playing Cash Play, you agree to our <a href="/legal/terms.md" target="_blank">Terms</a> and <a href="/legal/privacy.md" target="_blank">Privacy Policy</a>.</p>
+    </div>
+  </div>
+
+  <!-- Test Cash Challenge Screen -->
+  <div id="cash-test-screen" class="hidden screen" style="position:fixed;inset:0;background:var(--bg);z-index:9999;display:none;overflow-y:auto;padding-top:73px">
+    <div style="max-width:1200px;margin:0 auto;padding:32px 24px">
+      <!-- Top Bar -->
+      <div style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:12px;padding:16px 24px;margin-bottom:24px">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+          <div>
+            <h1 style="font-size:1.5rem;font-weight:900;background:linear-gradient(135deg,#F59E0B,#FBBF24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:0 0 4px">🧪 Test Cash Challenge</h1>
+            <p style="font-size:0.875rem;color:var(--muted);margin:0">No Login · Fake Money · Bot Simulation</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.3);border:1px solid rgba(245,158,11,.4);border-radius:10px;padding:8px 16px">
+              <span style="font-size:0.875rem;color:#F59E0B;font-weight:600">Your Balance:</span>
+              <span id="testBalance" style="font-size:1.125rem;font-weight:700;color:#FBBF24">$100.00</span>
+            </div>
+            <button id="addTestFunds" style="background:linear-gradient(135deg,#10B981,#059669);color:#000;border:none;border-radius:10px;padding:8px 16px;font-size:0.875rem;font-weight:600;cursor:pointer;transition:all .2s ease">+ Add $20</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Back Button + Quick Cash -->
+      <div style="margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+        <button id="testCashBackBtn" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:10px;padding:10px 20px;color:var(--txt);cursor:pointer;font-size:0.9375rem;font-weight:600;transition:all .2s ease" aria-label="Back to Home">← Back to Home</button>
+        <button id="quickCashBtn" style="background:linear-gradient(135deg,#F59E0B,#FBBF24);color:#000;border:none;border-radius:10px;padding:12px 24px;font-size:0.9375rem;font-weight:700;cursor:pointer;transition:all .2s ease;box-shadow:0 4px 12px rgba(245,158,11,.3)">⚡ Quick Cash Match ($10)</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:24px;align-items:start">
+        <!-- Left: Create Lobby -->
+        <div style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;position:sticky;top:105px">
+          <h2 style="font-size:1.5rem;font-weight:700;margin:0 0 8px;color:var(--txt)">Create Lobby</h2>
+          <p style="color:var(--muted);font-size:0.875rem;margin:0 0 20px">Set up a new cash match</p>
+
+          <div style="display:grid;gap:16px">
+            <!-- Category -->
+            <div class="form-group">
+              <label style="display:block;font-size:0.875rem;font-weight:600;margin-bottom:6px;color:var(--txt)">Trivia Category</label>
+              <select id="testCategory" style="width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--txt);font-size:0.9375rem;cursor:pointer">
+                <option value="Politics">🏛️ Politics</option>
+                <option value="Business & Economics">💼 Business & Economics</option>
+                <option value="Sports">🏈 Sports</option>
+                <option value="Music">🎵 Music</option>
+                <option value="Movies">🎬 Movies</option>
+                <option value="History">📜 History</option>
+                <option value="Geography">🗺️ Geography</option>
+                <option value="Science">🔬 Science</option>
+                <option value="Pop Culture">⭐ Pop Culture</option>
+              </select>
+            </div>
+
+            <!-- Stake -->
+            <div class="form-group">
+              <label style="display:block;font-size:0.875rem;font-weight:600;margin-bottom:6px;color:var(--txt)">Entry Stake</label>
+              <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px">
+                <button class="stake-quick-btn" data-stake="1">$1</button>
+                <button class="stake-quick-btn active" data-stake="10">$10</button>
+                <button class="stake-quick-btn" data-stake="20">$20</button>
+                <button class="stake-quick-btn" data-stake="50">$50</button>
+                <button class="stake-quick-btn" data-stake="100">$100</button>
+              </div>
+              <input id="testStake" type="number" min="1" step="1" value="10" placeholder="Selected stake" readonly style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:rgba(0,0,0,.2);color:var(--txt);font-size:0.875rem;text-align:center;margin-top:8px;cursor:default" />
+            </div>
+
+            <!-- Max Players -->
+            <div class="form-group">
+              <label style="display:block;font-size:0.875rem;font-weight:600;margin-bottom:6px;color:var(--txt)">Max Players</label>
+              <select id="testMaxPlayers" style="width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--txt);font-size:0.9375rem;cursor:pointer">
+                <option value="2">2 Players</option>
+                <option value="4">4 Players</option>
+                <option value="8">8 Players</option>
+              </select>
+            </div>
+
+            <button id="testCreateLobby" class="btn" style="width:100%;background:linear-gradient(135deg,#F59E0B,#FBBF24);color:#000;margin-top:8px">Create Lobby (Test)</button>
+          </div>
+        </div>
+
+        <!-- Right: Lobby List -->
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+            <h2 style="font-size:1.5rem;font-weight:700;margin:0;color:var(--txt)">Open Lobbies</h2>
+            <span id="lobbyCount" style="background:rgba(0,234,255,.1);border:1px solid rgba(0,234,255,.3);border-radius:8px;padding:4px 12px;color:var(--accent2);font-size:0.875rem;font-weight:600">0 lobbies</span>
+          </div>
+
+          <!-- Filters -->
+          <div style="background:rgba(0,234,255,.05);border:1px solid rgba(0,234,255,.2);border-radius:12px;padding:16px;margin-bottom:16px">
+            <!-- Category Filter -->
+            <div style="margin-bottom:16px">
+              <label style="display:block;font-size:0.75rem;font-weight:600;color:var(--accent2);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px">Categories</label>
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                <button class="filter-pill" data-type="category" data-value="Politics">Politics</button>
+                <button class="filter-pill" data-type="category" data-value="Business & Economics">Business</button>
+                <button class="filter-pill" data-type="category" data-value="Sports">Sports</button>
+                <button class="filter-pill" data-type="category" data-value="Music">Music</button>
+                <button class="filter-pill" data-type="category" data-value="Movies">Movies</button>
+                <button class="filter-pill" data-type="category" data-value="History">History</button>
+                <button class="filter-pill" data-type="category" data-value="Geography">Geography</button>
+                <button class="filter-pill" data-type="category" data-value="Science">Science</button>
+                <button class="filter-pill" data-type="category" data-value="Pop Culture">Pop Culture</button>
+              </div>
+            </div>
+
+            <!-- Stake Filter -->
+            <div style="margin-bottom:16px">
+              <label style="display:block;font-size:0.75rem;font-weight:600;color:var(--accent2);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px">Stakes</label>
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                <button class="filter-pill" data-type="stake" data-value="1">$1</button>
+                <button class="filter-pill" data-type="stake" data-value="10">$10</button>
+                <button class="filter-pill" data-type="stake" data-value="20">$20</button>
+                <button class="filter-pill" data-type="stake" data-value="50">$50</button>
+                <button class="filter-pill" data-type="stake" data-value="100">$100</button>
+              </div>
+            </div>
+
+            <!-- Lobby Size Filter -->
+            <div>
+              <label style="display:block;font-size:0.75rem;font-weight:600;color:var(--accent2);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px">Lobby Size</label>
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                <button class="filter-pill" data-type="size" data-value="2">2 Players</button>
+                <button class="filter-pill" data-type="size" data-value="4">4 Players</button>
+                <button class="filter-pill" data-type="size" data-value="8">8 Players</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="testLobbyList" style="display:grid;gap:12px">
+            <!-- Empty state -->
+            <div id="emptyState" style="background:var(--card);border:1px dashed var(--line);border-radius:16px;padding:48px 24px;text-align:center">
+              <div style="font-size:3rem;margin-bottom:12px;opacity:0.5">🎮</div>
+              <div style="font-size:1.125rem;font-weight:600;color:var(--muted);margin-bottom:8px">No lobbies yet</div>
+              <div style="font-size:0.875rem;color:var(--dim)">Create your first lobby to get started</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lobby Details / Waiting Room Screen -->
+  <div id="lobby-details-screen" class="hidden screen" style="position:fixed;inset:0;background:var(--bg);z-index:9999;display:none;overflow-y:auto;padding-top:73px">
+    <div style="max-width:900px;margin:0 auto;padding:32px 24px">
+      <!-- Back Button -->
+      <button id="lobbyDetailsBackBtn" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:10px;padding:10px 20px;color:var(--txt);cursor:pointer;font-size:0.9375rem;font-weight:600;transition:all .2s ease;margin-bottom:24px">← Back to Lobbies</button>
+
+      <!-- Lobby Info Card -->
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:32px;margin-bottom:24px">
+        <div style="display:flex;align-items:start;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:16px">
+          <div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+              <span id="lobbyDetailsIcon" style="font-size:2.5rem">🎯</span>
+              <div>
+                <h1 id="lobbyDetailsCategory" style="font-size:2rem;font-weight:900;color:var(--txt);margin:0 0 4px">Category</h1>
+                <p id="lobbyDetailsHost" style="font-size:0.875rem;color:var(--muted);margin:0">Host: Username</p>
+              </div>
+            </div>
+            <div id="lobbyDetailsStatus" style="font-size:0.9375rem;color:var(--muted);margin-bottom:8px">Waiting for more players to join...</div>
+          </div>
+          <div style="text-align:right">
+            <div id="lobbyDetailsStake" style="font-size:2rem;font-weight:900;color:var(--accent2);margin-bottom:4px">$10</div>
+            <div style="font-size:0.875rem;color:var(--muted)">entry fee</div>
+          </div>
+        </div>
+
+        <!-- Players List -->
+        <div style="border-top:1px solid var(--line);padding-top:24px;margin-bottom:24px">
+          <h3 style="font-size:1.125rem;font-weight:700;color:var(--txt);margin:0 0 16px">Players <span id="lobbyDetailsPlayerCount" style="color:var(--accent2)">(0/2)</span></h3>
+          <div id="lobbyDetailsPlayersList" style="display:grid;gap:8px">
+            <!-- Players will be inserted here -->
+          </div>
+        </div>
+
+        <!-- Join Button -->
+        <div id="lobbyDetailsJoinSection" style="border-top:1px solid var(--line);padding-top:24px">
+          <div style="background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:16px;margin-bottom:16px;text-align:center">
+            <p style="font-size:0.875rem;color:var(--muted);margin:0;line-height:1.6">
+              Join this lobby to participate in the match. You'll need to accept terms and ready up before the match starts.
+              <br><br>
+              <strong style="color:#F59E0B">(This is TEST MODE: fake money only for UX testing.)</strong>
+            </p>
+          </div>
+          <button id="lobbyDetailsJoinBtn" class="btn" style="width:100%;background:linear-gradient(135deg,var(--accent2),#0af);color:#000;font-size:1rem;font-weight:700;padding:14px">Join Lobby</button>
+        </div>
+
+        <!-- Already Joined - Terms & Ready Section -->
+        <div id="lobbyDetailsAlreadyJoined" style="display:none;border-top:1px solid var(--line);padding-top:24px">
+          <!-- Terms Acceptance Phase -->
+          <div id="lobby-terms-phase" style="display:none">
+            <div style="background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:20px;margin-bottom:16px">
+              <h3 style="font-size:1.125rem;font-weight:700;color:var(--txt);margin:0 0 12px">Terms & Conditions</h3>
+              <p style="font-size:0.875rem;color:var(--muted);margin:0 0 16px;line-height:1.6">
+                Before you can ready up, please review and accept the Cash Challenge terms and conditions. By participating you agree that all wagers are final and results are based on skill-based trivia outcomes.
+                <br><br>
+                <strong style="color:#F59E0B">(This is TEST MODE: fake money only for UX testing.)</strong>
+              </p>
+              <button id="lobby-accept-terms-btn" class="btn" style="width:100%;background:linear-gradient(135deg,#F59E0B,#FBBF24);color:#000">Accept Terms & Conditions</button>
+            </div>
+          </div>
+
+          <!-- Ready Up Phase -->
+          <div id="lobby-ready-phase" style="display:none">
+            <div style="background:rgba(57,255,136,.05);border:1px solid rgba(57,255,136,.2);border-radius:12px;padding:20px;margin-bottom:16px;text-align:center">
+              <div style="font-size:1.125rem;font-weight:700;color:var(--accent);margin-bottom:8px">✓ You're in this lobby!</div>
+              <div id="lobby-ready-status" style="font-size:0.875rem;color:var(--muted);margin-bottom:16px">0/2 players ready</div>
+              <button id="lobby-ready-btn" class="btn" style="width:100%;background:linear-gradient(135deg,var(--accent),#10B981);color:#000;font-weight:700;padding:14px">Ready Up!</button>
+            </div>
+          </div>
+
+          <!-- Waiting for Match Start -->
+          <div id="lobby-waiting-phase" style="display:none">
+            <div style="background:rgba(57,255,136,.05);border:1px solid rgba(57,255,136,.2);border-radius:12px;padding:20px;text-align:center">
+              <div style="font-size:1.125rem;font-weight:700;color:var(--accent);margin-bottom:4px">✓ Ready!</div>
+              <div style="font-size:0.875rem;color:var(--muted)">Waiting for all players to ready up...</div>
+              <div id="lobby-ready-status-waiting" style="font-size:0.875rem;color:var(--accent2);margin-top:8px;font-weight:600">0/2 players ready</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lobby Full Message -->
+        <div id="lobbyDetailsFull" style="display:none;border-top:1px solid var(--line);padding-top:24px">
+          <div style="background:rgba(255,193,7,.05);border:1px solid rgba(255,193,7,.2);border-radius:12px;padding:20px;text-align:center">
+            <div style="font-size:1.125rem;font-weight:700;color:#FFC107;margin-bottom:4px">🔒 Lobby Full</div>
+            <div style="font-size:0.875rem;color:var(--muted)">This lobby has reached maximum capacity</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leave Lobby Confirmation Modal -->
+  <div id="leave-lobby-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);z-index:10002;align-items:center;justify-content:center">
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:32px;max-width:500px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,0.5)">
+      <h2 style="font-size:1.5rem;font-weight:900;color:var(--txt);margin:0 0 12px">Leave lobby?</h2>
+      <p style="font-size:0.9375rem;color:var(--muted);line-height:1.6;margin:0 0 24px">
+        If you leave now, you'll be removed from this match and will not participate when it starts. Your stake will be refunded.
+      </p>
+      <div style="display:flex;gap:12px">
+        <button id="confirmLeaveLobby" class="btn" style="flex:1;background:linear-gradient(135deg,#EF4444,#DC2626);color:#fff">Yes, leave lobby</button>
+        <button id="cancelLeaveLobby" class="btn secondary" style="flex:1">Stay in lobby</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="match-end-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);z-index:10003;align-items:center;justify-content:center">
+    <div style="background:var(--card);border:2px solid var(--line);border-radius:20px;padding:48px 32px;max-width:550px;width:90%;box-shadow:0 16px 48px rgba(0,0,0,0.6);text-align:center">
+      <div id="match-end-icon" style="font-size:5rem;margin-bottom:24px"></div>
+      <h2 id="match-end-title" style="font-size:2rem;font-weight:900;color:var(--txt);margin:0 0 16px"></h2>
+      <div id="match-end-message" style="font-size:1.125rem;color:var(--muted);line-height:1.6;margin:0 0 32px"></div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <button id="match-end-home-btn" class="btn" style="width:100%;background:linear-gradient(135deg,var(--accent2),#0af);color:#000;font-size:1rem;font-weight:700;padding:14px">Go to Home</button>
+        <button id="match-end-rematch-btn" class="btn secondary" style="width:100%;font-size:1rem;padding:14px">Request Rematch</button>
+        <button id="match-end-deposit-btn" class="btn secondary" style="width:100%;font-size:1rem;padding:14px">Add Funds</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .stake-quick-btn {
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--txt);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s ease;
+    }
+    .stake-quick-btn:hover {
+      background: rgba(255,255,255,.08);
+      border-color: var(--accent2);
+    }
+    .stake-quick-btn.active {
+      background: linear-gradient(135deg, var(--accent2), #0af);
+      border-color: var(--accent2);
+      color: #000;
+    }
+    .filter-pill {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--txt);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s ease;
+      white-space: nowrap;
+    }
+    .filter-pill:hover {
+      background: rgba(255,255,255,.08);
+      border-color: var(--accent2);
+      box-shadow: 0 0 8px rgba(0,234,255,.2);
+    }
+    .filter-pill.active {
+      background: linear-gradient(135deg, var(--accent2), #0af);
+      border-color: var(--accent2);
+      color: #000;
+      box-shadow: 0 0 12px rgba(0,234,255,.4);
+    }
+    .lobby-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px;
+      transition: all .2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .lobby-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      opacity: 0;
+      transition: opacity .2s ease;
+    }
+    .lobby-card:hover::before {
+      opacity: 1;
+    }
+    .lobby-card:hover {
+      border-color: var(--accent2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,.3);
+    }
+    .lobby-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .lobby-badge.open {
+      background: rgba(57,255,136,.1);
+      border: 1px solid rgba(57,255,136,.3);
+      color: var(--accent);
+    }
+    .lobby-badge.in-progress {
+      background: rgba(255,193,7,.1);
+      border: 1px solid rgba(255,193,7,.3);
+      color: #FFC107;
+    }
+    .lobby-badge.finished {
+      background: rgba(156,163,175,.1);
+      border: 1px solid rgba(156,163,175,.3);
+      color: #9CA3AF;
+    }
+    @media (max-width: 768px) {
+      #cash-test-screen > div:first-child > div:first-child {
+        flex-direction: column;
+        gap: 16px;
+      }
+      #cash-test-screen > div:first-child > div:first-child > button:first-child {
+        font-size: 0.875rem;
+        padding: 8px 16px;
+      }
+      #cash-test-screen > div:first-child > div:first-child > h1 {
+        font-size: 1.5rem;
+      }
+      #cash-test-screen > div:first-child > div:nth-child(2) {
+        grid-template-columns: 1fr !important;
+      }
+      #cash-test-screen > div:first-child > div:nth-child(2) > div:first-child {
+        position: static !important;
+      }
+    }
+  </style>
+
+  <!-- Free Play choice sheet -->
+  <div id="freeSheet" class="sheet" aria-hidden="true">
+    <div class="modal">
+      <button class="close" data-close="freeSheet" aria-label="Close">&times;</button>
+      <h2 class="modal-title">Free Play</h2>
+      <p class="modal-sub">Play instantly as a guest, or sign in to save progress.</p>
+      <div class="choices">
+        <button id="guestBtn" class="provider guest">🚀 Continue as Guest</button>
+        <button id="freeSignInBtn" class="provider">🔑 Sign in (optional)</button>
+      </div>
+      <p class="terms">Guest mode: No account, no storage. Just instant play!</p>
+    </div>
+  </div>
+
+  <!-- Free Play Setup Screen -->
+  <div id="freeplaySetup" class="sheet" aria-hidden="true">
+    <div class="modal">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <button id="btnBackSetup" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--txt);cursor:pointer;font-size:18px" aria-label="Back">←</button>
+        <h2 class="modal-title" style="margin:0;flex:1;text-align:center">Free Play Setup</h2>
+        <button id="btnHomeSetup" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--txt);cursor:pointer;font-size:18px" aria-label="Home">🏠</button>
+      </div>
+
+      <p class="modal-sub">Customize your game settings</p>
+
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:16px 0">
+        <div style="display:grid;gap:16px">
+          <!-- Bots -->
+          <label style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+            <span style="color:var(--muted);font-size:.9375rem">Bots</span>
+            <input id="fpBots" type="number" min="0" max="7" step="1" value="3" style="width:80px;padding:8px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--txt);text-align:center" />
+          </label>
+
+          <!-- Difficulty -->
+          <label style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+            <span style="color:var(--muted);font-size:.9375rem">Difficulty</span>
+            <select id="fpDifficulty" style="width:120px;padding:8px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--txt)">
+              <option value="easy">Easy</option>
+              <option value="normal" selected>Normal</option>
+              <option value="hard">Hard</option>
+            </select>
+          </label>
+
+          <!-- Total Rounds -->
+          <label style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+            <span style="color:var(--muted);font-size:.9375rem">Total Rounds</span>
+            <input id="fpRounds" type="number" min="3" max="12" step="1" value="5" style="width:80px;padding:8px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--txt);text-align:center" />
+          </label>
+
+          <!-- Elimination Start -->
+          <label style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+            <span style="color:var(--muted);font-size:.9375rem">Elimination Starts Round</span>
+            <input id="fpElimStart" type="number" min="2" max="11" step="1" value="3" style="width:80px;padding:8px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--txt);text-align:center" />
+          </label>
+
+          <!-- Category -->
+          <label style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+            <span style="color:var(--muted);font-size:.9375rem">Category</span>
+            <select id="fpCategory" style="width:150px;padding:8px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--txt)">
+              <option value="">Any</option>
+              <option value="general">General Knowledge</option>
+              <option value="science">Science</option>
+              <option value="history">History</option>
+              <option value="geography">Geography</option>
+              <option value="sports">Sports</option>
+              <option value="entertainment">Entertainment</option>
+              <option value="arts">Arts & Literature</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <button id="startFreePlay" class="btn" style="width:100%;margin-top:8px">Start Game</button>
+      <p class="terms" style="margin-top:12px">Settings are saved for your next game</p>
+    </div>
+  </div>
+
+  <!-- Offline Wizard: Step 1 - Bots -->
+  <div id="offlineStepBots" class="sheet" aria-hidden="true">
+    <div class="modal">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <button id="offBackBots" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--txt);cursor:pointer;font-size:18px" aria-label="Back">←</button>
+        <h2 class="modal-title" style="margin:0;flex:1;text-align:center">Choose Bots</h2>
+        <button id="offHomeBots" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--txt);cursor:pointer;font-size:18px" aria-label="Home">🏠</button>
+      </div>
+
+      <p class="modal-sub">Select 1-15 opponents</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:12px;margin:16px 0">
+        <div class="wizard-tile" data-val="1">1</div>
+        <div class="wizard-tile" data-val="3">3</div>
+        <div class="wizard-tile" data-val="5">5</div>
+        <div class="wizard-tile" data-val="7">7</div>
+        <div class="wizard-tile" data-val="10">10</div>
+        <div class="wizard-tile" data-val="12">12</div>
+        <div class="wizard-tile" data-val="15">15</div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin:16px 0;display:flex;align-items:center;gap:12px">
+        <label style="color:var(--muted)">Custom:</label>
+        <input id="botsInput" type="number" min="1" max="15" value="3" style="flex:1;padding:8px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--txt);text-align:center" />
+      </div>
+
+      <button id="nextFromBots" class="btn" style="width:100%">Next: Rounds</button>
+    </div>
+  </div>
+
+  <!-- Offline Wizard: Step 2 - Rounds -->
+  <div id="offlineStepRounds" class="sheet" aria-hidden="true">
+    <div class="modal">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <button id="offBackRounds" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--txt);cursor:pointer;font-size:18px" aria-label="Back">←</button>
+        <h2 class="modal-title" style="margin:0;flex:1;text-align:center">Total Rounds</h2>
+        <button id="offHomeRounds" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--txt);cursor:pointer;font-size:18px" aria-label="Home">🏠</button>
+      </div>
+
+      <p class="modal-sub">Select 3-20 rounds</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:12px;margin:16px 0">
+        <div class="wizard-tile" data-val="3">3</div>
+        <div class="wizard-tile" data-val="5">5</div>
+        <div class="wizard-tile" data-val="7">7</div>
+        <div class="wizard-tile" data-val="10">10</div>
+        <div class="wizard-tile" data-val="12">12</div>
+        <div class="wizard-tile" data-val="15">15</div>
+        <div class="wizard-tile" data-val="20">20</div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin:16px 0;display:flex;align-items:center;gap:12px">
+        <label style="color:var(--muted)">Custom:</label>
+        <input id="roundsInput" type="number" min="3" max="20" value="5" style="flex:1;padding:8px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--txt);text-align:center" />
+      </div>
+
+      <button id="nextFromRounds" class="btn" style="width:100%">Next: Difficulty</button>
+    </div>
+  </div>
+
+  <!-- Offline Wizard: Step 3 - Difficulty & Elimination -->
+  <div id="offlineStepDifficulty" class="sheet" aria-hidden="true">
+    <div class="modal">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <button id="offBackDiff" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--txt);cursor:pointer;font-size:18px" aria-label="Back">←</button>
+        <h2 class="modal-title" style="margin:0;flex:1;text-align:center">Difficulty</h2>
+        <button id="offHomeDiff" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--txt);cursor:pointer;font-size:18px" aria-label="Home">🏠</button>
+      </div>
+
+      <p class="modal-sub">Choose AI difficulty and elimination settings</p>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0">
+        <div class="wizard-tile" data-diff="easy">Easy</div>
+        <div class="wizard-tile wizard-tile-selected" data-diff="normal">Medium</div>
+        <div class="wizard-tile" data-diff="hard">Hard</div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:16px 0">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px">
+          <label style="color:var(--txt);font-weight:600">Enable Elimination Rounds</label>
+          <button id="elimToggle" class="toggle-btn toggle-on">ON</button>
+        </div>
+
+        <div id="elimPreview" style="display:flex;flex-direction:column;gap:8px">
+          <strong style="color:var(--txt)">Elimination starts at Round <span id="elimStartPreview">3</span></strong>
+          <small style="color:var(--muted);font-size:.8125rem;line-height:1.4">Lowest scorer eliminated each round until 2 finalists remain. After the final round, the top 2 face off in a championship match (Best of 3).</small>
+        </div>
+      </div>
+
+      <button id="nextFromDiff" class="btn" style="width:100%">Next: Categories</button>
+    </div>
+  </div>
+
+  <!-- Offline Wizard: Step 4 - Categories -->
+  <div id="offlineStepCategories" class="sheet" aria-hidden="true">
+    <div class="modal">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <button id="offBackCats" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--txt);cursor:pointer;font-size:18px" aria-label="Back">←</button>
+        <h2 class="modal-title" style="margin:0;flex:1;text-align:center">Categories</h2>
+        <button id="offHomeCats" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--txt);cursor:pointer;font-size:18px" aria-label="Home">🏠</button>
+      </div>
+
+      <p class="modal-sub">Select one or more, or choose Any</p>
+
+      <div id="catsGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px;margin:16px 0">
+        <!-- Categories will be dynamically rendered from TRIVIA_CATEGORIES -->
+      </div>
+
+      <button id="startOfflineWizard" class="btn" style="width:100%">Start Game</button>
+    </div>
+  </div>
+
+  <style>
+    .wizard-tile {
+      background: var(--card);
+      border: 2px solid var(--line);
+      border-radius: 12px;
+      padding: 16px 8px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .wizard-tile:hover {
+      background: rgba(255,255,255,.08);
+      border-color: var(--accent);
+    }
+    .wizard-tile.wizard-tile-selected {
+      background: linear-gradient(135deg, var(--accent), #0af);
+      border-color: var(--accent);
+      color: #000;
+      box-shadow: 0 4px 12px rgba(0,234,255,.3);
+    }
+    .toggle-btn {
+      padding: 8px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.875rem;
+      transition: all 0.2s ease;
+      min-width: 60px;
+    }
+    .toggle-btn.toggle-on {
+      background: linear-gradient(135deg, var(--accent), #0af);
+      color: #000;
+      border-color: var(--accent);
+    }
+    .toggle-btn.toggle-off {
+      background: rgba(255,255,255,.05);
+      color: var(--muted);
+      border-color: var(--line);
+    }
+    .cat-icon {
+      font-size: 32px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .cat-title {
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+  </style>
+
+  <!-- Universal Auth Sheet -->
+  <div id="authSheet" class="sheet" aria-hidden="true">
+    <div class="modal">
+      <button class="close" data-close="authSheet" aria-label="Close">&times;</button>
+      <h2 class="modal-title">Sign in to BrainDash</h2>
+      <p class="modal-sub">Choose your preferred sign-in method</p>
+
+      <!-- Magic Link (Passwordless) -->
+      <form id="magicForm" class="form">
+        <div class="form-group">
+          <label for="magicEmail">Email (Magic Link)</label>
+          <input id="magicEmail" type="email" placeholder="you@example.com" required />
+        </div>
+        <button id="magicSendBtn" type="submit" class="btn">Send sign-in link</button>
+        <small id="magicMsg" class="hint"></small>
+      </form>
+
+      <div class="sep"><span>or</span></div>
+
+      <!-- Sign Up -->
+      <details>
+        <summary>Create new account</summary>
+        <form id="signupForm" class="form" style="margin-top:12px">
+          <div class="form-group">
+            <label for="suEmail">Email</label>
+            <input id="suEmail" type="email" placeholder="you@example.com" required />
+          </div>
+          <div class="form-group">
+            <label for="suUsername">Username (optional)</label>
+            <input id="suUsername" placeholder="gamer_handle" />
+          </div>
+          <div class="form-group">
+            <label for="suPassword">Password (min 8 chars)</label>
+            <input id="suPassword" type="password" placeholder="••••••••" minlength="8" required />
+          </div>
+          <button id="suBtn" type="submit" class="btn secondary">Create account</button>
+          <small id="suMsg" class="hint"></small>
+        </form>
+      </details>
+
+      <!-- Sign In -->
+      <details>
+        <summary>Sign in with password</summary>
+        <form id="signinForm" class="form" style="margin-top:12px">
+          <div class="form-group">
+            <label for="siEmail">Email</label>
+            <input id="siEmail" type="email" placeholder="you@example.com" required />
+          </div>
+          <div class="form-group">
+            <label for="siPassword">Password</label>
+            <input id="siPassword" type="password" placeholder="••••••••" required />
+          </div>
+          <button id="siBtn" type="submit" class="btn secondary">Sign in</button>
+          <small id="siMsg" class="hint"></small>
+        </form>
+      </details>
+
+      <!-- OAuth (HIDDEN - Enable in Supabase dashboard first to avoid connection errors) -->
+      <!-- To enable: Remove class="hidden" after configuring providers in Supabase -->
+      <div id="oauthRow" class="hidden" style="margin-top:16px">
+        <div class="sep"><span>or continue with</span></div>
+        <div class="row" style="margin-top:12px;gap:12px">
+          <a id="googleBtn" href="#" target="_top" rel="noopener" class="oauth-btn oauth-google">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" width="18" height="18">
+                <path fill="#EA4335" d="M24 9.5c3.5 0 6.7 1.2 9.2 3.6l-3.7 3.6c-1.5-1.4-3.5-2.2-5.6-2.2-4.7 0-8.7 3.4-9.8 7.8l-4.1-3.2C12 13 17.6 9.5 24 9.5z"/>
+                <path fill="#34A853" d="M14.2 25.3c-.2-.7-.3-1.5-.3-2.3s.1-1.6.3-2.3l-4.1-3.2C9.4 19.7 9 21.8 9 24s.4 4.3 1.1 6.5l4.1-3.2z"/>
+                <path fill="#FBBC05" d="M24 38.5c-6.4 0-12-3.5-14.8-8.9l4.1-3.2c1.1 4.4 5.1 7.8 9.8 7.8 2.4 0 4.6-.8 6.3-2.1l3.8 3.7c-2.8 2.4-6.3 3.7-10 3.7z"/>
+                <path fill="#4285F4" d="M41 24c0-1-.1-1.9-.3-2.8H24v5.6h9.6c-.4 2.3-1.7 4.2-3.6 5.5l3.8 3.7C37.6 33 41 28 41 24z"/>
+              </svg>
+            </span>
+            <span>Continue with Google</span>
+          </a>
+
+          <a id="appleBtn" href="#" target="_top" rel="noopener" class="oauth-btn oauth-apple">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M16.365 2.43c0 1.105-.45 2.147-1.18 2.902-.76.78-1.96 1.38-3.08 1.3-.14-1.03.41-2.15 1.13-2.9.76-.79 2.1-1.36 3.13-1.302zM20.5 17.1c-.37.86-.81 1.66-1.33 2.4-.71 1.02-1.28 1.73-2.14 1.75-.83.02-1.1-.52-2.3-.52-1.2 0-1.51.5-2.33.53-.95.03-1.67-.93-2.39-1.95-1.3-1.87-2.3-5.27-.96-7.58.66-1.14 1.84-1.86 3.13-1.88 1.02-.02 1.99.57 2.33.57.33 0 1.61-.7 2.72-.6.46.02 1.75.18 2.58 1.44-.07.04-1.54.9-1.52 2.69.03 2.14 1.96 2.85 1.98 2.86z"/>
+              </svg>
+            </span>
+            <span>Continue with Apple</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Top-level hint -->
+      <div id="topLevelHint" class="hidden" style="margin-top:12px;padding:10px;background:rgba(255,200,0,.1);border-radius:8px;font-size:.8125rem">
+        For OAuth, <a href="/" target="_top" style="color:var(--accent)">open this in a new tab</a>.
+      </div>
+
+      <p class="terms">By continuing you agree to our <a href="/legal/terms.md" target="_blank">Terms</a>. Cash Play requires identity verification.</p>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <!-- Sign Up Modal -->
+  <div id="signUpSheet" class="sheet" aria-hidden="true">
+    <div class="modal">
+      <button class="close" onclick="document.getElementById('signUpSheet').style.display='none'" aria-label="Close">&times;</button>
+      <h2 class="modal-title">Create your BrainDash account</h2>
+      <p class="modal-sub">Sign up to save progress and play Cash Challenges</p>
+
+      <!-- OAuth Sign Up -->
+      <div style="display:grid;gap:12px;margin:16px 0">
+        <button class="oauth-btn oauth-google" data-oauth="google">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" width="18" height="18">
+              <path fill="#EA4335" d="M24 9.5c3.5 0 6.7 1.2 9.2 3.6l-3.7 3.6c-1.5-1.4-3.5-2.2-5.6-2.2-4.7 0-8.7 3.4-9.8 7.8l-4.1-3.2C12 13 17.6 9.5 24 9.5z"/>
+              <path fill="#34A853" d="M14.2 25.3c-.2-.7-.3-1.5-.3-2.3s.1-1.6.3-2.3l-4.1-3.2C9.4 19.7 9 21.8 9 24s.4 4.3 1.1 6.5l4.1-3.2z"/>
+              <path fill="#FBBC05" d="M24 38.5c-6.4 0-12-3.5-14.8-8.9l4.1-3.2c1.1 4.4 5.1 7.8 9.8 7.8 2.4 0 4.6-.8 6.3-2.1l3.8 3.7c-2.8 2.4-6.3 3.7-10 3.7z"/>
+              <path fill="#4285F4" d="M41 24c0-1-.1-1.9-.3-2.8H24v5.6h9.6c-.4 2.3-1.7 4.2-3.6 5.5l3.8 3.7C37.6 33 41 28 41 24z"/>
+            </svg>
+          </span>
+          <span>Continue with Google</span>
+        </button>
+
+        <button class="oauth-btn oauth-apple" data-oauth="apple">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+              <path d="M16.365 2.43c0 1.105-.45 2.147-1.18 2.902-.76.78-1.96 1.38-3.08 1.3-.14-1.03.41-2.15 1.13-2.9.76-.79 2.1-1.36 3.13-1.302zM20.5 17.1c-.37.86-.81 1.66-1.33 2.4-.71 1.02-1.28 1.73-2.14 1.75-.83.02-1.1-.52-2.3-.52-1.2 0-1.51.5-2.33.53-.95.03-1.67-.93-2.39-1.95-1.3-1.87-2.3-5.27-.96-7.58.66-1.14 1.84-1.86 3.13-1.88 1.02-.02 1.99.57 2.33.57.33 0 1.61-.7 2.72-.6.46.02 1.75.18 2.58 1.44-.07.04-1.54.9-1.52 2.69.03 2.14 1.96 2.85 1.98 2.86z"/>
+            </svg>
+          </span>
+          <span>Continue with Apple</span>
+        </button>
+      </div>
+
+      <div class="sep"><span>or sign up with</span></div>
+
+      <!-- Tab Navigation -->
+      <div style="display:flex;gap:8px;margin:16px 0;border-bottom:1px solid var(--line)">
+        <button id="signUpTabEmail" class="auth-tab active-tab">Email</button>
+        <button id="signUpTabPhone" class="auth-tab">Phone</button>
+      </div>
+
+      <!-- Email Sign Up -->
+      <div id="emailSignUpSection">
+        <form id="emailSignUpForm" class="form">
+          <div class="form-group">
+            <label for="signUpName">Name (optional)</label>
+            <input id="signUpName" type="text" placeholder="Your name" />
+          </div>
+          <div class="form-group">
+            <label for="signUpEmail">Email</label>
+            <input id="signUpEmail" type="email" placeholder="you@example.com" required />
+          </div>
+          <div class="form-group">
+            <label for="signUpPassword">Password (min 8 characters)</label>
+            <input id="signUpPassword" type="password" placeholder="••••••••" minlength="8" required />
+          </div>
+          <button type="submit" class="btn">Create Account</button>
+          <small id="emailSignUpMessage" class="hint" style="display:none"></small>
+        </form>
+      </div>
+
+      <!-- Phone Sign Up -->
+      <div id="phoneSignUpSection" class="hidden">
+        <form id="phoneSignUpForm" class="form">
+          <div class="form-group">
+            <label for="signUpPhoneName">Name (optional)</label>
+            <input id="signUpPhoneName" type="text" placeholder="Your name" />
+          </div>
+          <div class="form-group">
+            <label for="signUpPhone">Phone Number</label>
+            <input id="signUpPhone" type="tel" placeholder="+1234567890" required />
+          </div>
+          <div class="form-group">
+            <label for="signUpPhonePassword">Password (min 8 characters)</label>
+            <input id="signUpPhonePassword" type="password" placeholder="••••••••" minlength="8" required />
+          </div>
+          <button type="submit" class="btn">Create Account</button>
+          <small id="phoneSignUpMessage" class="hint" style="display:none"></small>
+        </form>
+      </div>
+
+      <p class="terms" style="margin-top:16px">
+        Already have an account? <a href="#" data-switch="signin" style="color:var(--accent2);text-decoration:none;font-weight:600">Sign In</a>
+      </p>
+
+      <p class="terms">By continuing you agree to our <a href="/legal/terms.md" target="_blank">Terms</a>. Cash Play requires identity verification.</p>
+    </div>
+  </div>
+
+  <!-- Sign In Modal -->
+  <div id="signInSheet" class="sheet" aria-hidden="true">
+    <div class="modal">
+      <button class="close" onclick="document.getElementById('signInSheet').style.display='none'" aria-label="Close">&times;</button>
+      <h2 class="modal-title">Welcome back</h2>
+      <p class="modal-sub">Sign in to continue where you left off</p>
+
+      <!-- OAuth Sign In -->
+      <div style="display:grid;gap:12px;margin:16px 0">
+        <button class="oauth-btn oauth-google" data-oauth="google">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" width="18" height="18">
+              <path fill="#EA4335" d="M24 9.5c3.5 0 6.7 1.2 9.2 3.6l-3.7 3.6c-1.5-1.4-3.5-2.2-5.6-2.2-4.7 0-8.7 3.4-9.8 7.8l-4.1-3.2C12 13 17.6 9.5 24 9.5z"/>
+              <path fill="#34A853" d="M14.2 25.3c-.2-.7-.3-1.5-.3-2.3s.1-1.6.3-2.3l-4.1-3.2C9.4 19.7 9 21.8 9 24s.4 4.3 1.1 6.5l4.1-3.2z"/>
+              <path fill="#FBBC05" d="M24 38.5c-6.4 0-12-3.5-14.8-8.9l4.1-3.2c1.1 4.4 5.1 7.8 9.8 7.8 2.4 0 4.6-.8 6.3-2.1l3.8 3.7c-2.8 2.4-6.3 3.7-10 3.7z"/>
+              <path fill="#4285F4" d="M41 24c0-1-.1-1.9-.3-2.8H24v5.6h9.6c-.4 2.3-1.7 4.2-3.6 5.5l3.8 3.7C37.6 33 41 28 41 24z"/>
+            </svg>
+          </span>
+          <span>Continue with Google</span>
+        </button>
+
+        <button class="oauth-btn oauth-apple" data-oauth="apple">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+              <path d="M16.365 2.43c0 1.105-.45 2.147-1.18 2.902-.76.78-1.96 1.38-3.08 1.3-.14-1.03.41-2.15 1.13-2.9.76-.79 2.1-1.36 3.13-1.302zM20.5 17.1c-.37.86-.81 1.66-1.33 2.4-.71 1.02-1.28 1.73-2.14 1.75-.83.02-1.1-.52-2.3-.52-1.2 0-1.51.5-2.33.53-.95.03-1.67-.93-2.39-1.95-1.3-1.87-2.3-5.27-.96-7.58.66-1.14 1.84-1.86 3.13-1.88 1.02-.02 1.99.57 2.33.57.33 0 1.61-.7 2.72-.6.46.02 1.75.18 2.58 1.44-.07.04-1.54.9-1.52 2.69.03 2.14 1.96 2.85 1.98 2.86z"/>
+            </svg>
+          </span>
+          <span>Continue with Apple</span>
+        </button>
+      </div>
+
+      <!-- Biometric Login (Coming Soon) -->
+      <button id="biometricSignIn" class="oauth-btn" style="background:linear-gradient(135deg,rgba(0,234,255,.15),rgba(57,255,136,.15));border:1px solid rgba(0,234,255,.3);position:relative">
+        <span class="icon" aria-hidden="true" style="font-size:20px">🔐</span>
+        <span>Sign in with Biometrics</span>
+        <span style="position:absolute;top:4px;right:8px;font-size:10px;background:rgba(255,193,7,.2);color:#ffc107;padding:2px 6px;border-radius:4px;font-weight:600">SOON</span>
+      </button>
+
+      <div class="sep"><span>or sign in with</span></div>
+
+      <!-- Tab Navigation -->
+      <div style="display:flex;gap:8px;margin:16px 0;border-bottom:1px solid var(--line)">
+        <button id="signInTabEmail" class="auth-tab active-tab">Email</button>
+        <button id="signInTabPhone" class="auth-tab">Phone</button>
+      </div>
+
+      <!-- Email Sign In -->
+      <div id="emailSignInSection">
+        <form id="emailSignInForm" class="form">
+          <div class="form-group">
+            <label for="signInEmail">Email</label>
+            <input id="signInEmail" type="email" placeholder="you@example.com" required />
+          </div>
+          <div class="form-group">
+            <label for="signInPassword">Password</label>
+            <input id="signInPassword" type="password" placeholder="••••••••" required />
+          </div>
+          <button type="submit" class="btn">Sign In</button>
+          <small id="emailSignInMessage" class="hint" style="display:none"></small>
+        </form>
+      </div>
+
+      <!-- Phone Sign In -->
+      <div id="phoneSignInSection" class="hidden">
+        <form id="phoneSignInForm" class="form">
+          <div class="form-group">
+            <label for="signInPhone">Phone Number</label>
+            <input id="signInPhone" type="tel" placeholder="+1234567890" required />
+          </div>
+          <div class="form-group">
+            <label for="signInPhonePassword">Password</label>
+            <input id="signInPhonePassword" type="password" placeholder="••••••••" required />
+          </div>
+          <button type="submit" class="btn">Sign In</button>
+          <small id="phoneSignInMessage" class="hint" style="display:none"></small>
+        </form>
+      </div>
+
+      <p class="terms" style="margin-top:16px">
+        New here? <a href="#" data-switch="signup" style="color:var(--accent2);text-decoration:none;font-weight:600">Sign Up</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Offline Game Screen - Full Screen View -->
+  <section id="offlineGame" class="hidden" style="position:fixed;inset:0;background:var(--bg);z-index:10000;display:none;flex-direction:column;overflow:hidden">
+    <header style="display:flex;align-items:center;justify-content:space-between;padding:20px 32px;border-bottom:1px solid var(--line);background:rgba(17,20,37,0.8);backdrop-filter:blur(10px)">
+      <button id="ogBackToMenu" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;padding:10px 16px;color:var(--txt);cursor:pointer;font-size:16px;font-weight:600;transition:all .2s" aria-label="Home">← Exit</button>
+      <div style="display:flex;gap:20px;align-items:center">
+        <strong id="ogRoundLabel" style="font-size:20px;color:var(--accent2)">Round 1</strong>
+        <span id="ogCategoryLabel" style="opacity:.7;font-size:16px">Any</span>
+      </div>
+      <div style="width:80px"></div>
+    </header>
+
+    <div id="ogQuestionView" style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;overflow-y:auto">
+      <div style="max-width:900px;width:100%">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding:0 20px">
+          <div id="ogScoreDisplay" style="font-size:20px;font-weight:700;color:var(--accent2)">Score: 0</div>
+          <div id="ogStreakDisplay" style="font-size:18px;font-weight:600;color:var(--accent)">Streak: 0 🔥</div>
+        </div>
+        <div id="ogTimerBar" style="width:100%;height:8px;background:rgba(255,255,255,0.1);border-radius:4px;margin-bottom:32px;overflow:hidden">
+          <div id="ogTimerProgress" style="width:100%;height:100%;background:linear-gradient(90deg, #39ff88, #ffd700);transition:width 0.1s linear"></div>
+        </div>
+        <div id="ogPrompt" style="font-weight:700;font-size:32px;line-height:1.4;margin-bottom:24px;text-align:center;color:var(--txt)">Question will appear…</div>
+        <div id="ogScoringBreakdown" style="margin-bottom:24px"></div>
+        <div id="ogChoices" style="display:grid;gap:16px;max-width:700px;margin:0 auto"></div>
+      </div>
+    </div>
+
+    <div id="ogLeaderboardView" style="flex:1;display:none;align-items:center;justify-content:center;padding:40px 20px;overflow-y:auto;background:rgba(0,0,0,0.3)">
+      <div style="max-width:600px;width:100%">
+        <h2 style="font-size:28px;font-weight:700;text-align:center;margin-bottom:32px;color:var(--accent2)">🏆 Current Standings</h2>
+        <div id="ogLeaderboard" style="display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+    </div>
+
+    <style>
+      #offlineGame.hidden {
+        display: none !important;
+      }
+      #offlineGame:not(.hidden) {
+        display: flex !important;
+      }
+      #ogChoices .btn {
+        width: 100%;
+        text-align: center;
+        padding: 20px 24px;
+        font-size: 18px;
+        font-weight: 600;
+        border-radius: 12px;
+        background: var(--card);
+        border: 2px solid var(--line);
+        color: var(--txt);
+        cursor: pointer;
+        transition: all .2s ease;
+      }
+      #ogChoices .btn:hover:not(:disabled) {
+        background: rgba(255,255,255,.08);
+        border-color: var(--accent2);
+        transform: translateY(-2px);
+      }
+      #ogChoices .btn:disabled {
+        cursor: default;
+        opacity: 0.8;
+      }
+      @media (max-width: 640px) {
+        #ogPrompt {
+          font-size: 24px !important;
+          margin-bottom: 32px !important;
+        }
+        #ogChoices .btn {
+          padding: 16px 20px !important;
+          font-size: 16px !important;
+        }
+      }
+    </style>
+  </section>
+
+  <!-- Dev Mode Toggle - Only active in development -->
+  <script>
+    window.__DEV_MODE__ = true;
+    window.VITE_SUPABASE_URL = 'https://uimxwujknpuespwvipbi.supabase.co';
+    window.VITE_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVpbXh3dWprbnB1ZXNwd3ZpcGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIwMjc2NDcsImV4cCI6MjA3NzYwMzY0N30.ZKXbrtYr47DqESnoOXgxjvS0pjEHpzuQ0BHAM8QpzWw';
+  </script>
+  <script type="module" src="/src/dev/dev-mode.js"></script>
+  <script type="module" src="/src/math-generator.js"></script>
+  <script src="/src/questions.js"></script>
+  <script type="module" src="/src/question-selection.js"></script>
+  <script src="/src/ui/banner.js"></script>
+  <script src="/src/ui/countdown.js"></script>
+  <script src="/src/ui/question-timer.js"></script>
+  <script src="/src/ui/elimination-banner.js"></script>
+
+  <script type="module">
+    // ===== TEST MODE CONFIG =====
+    const TEST_CASH_MODE = true;
+
+    // === CATEGORY MAPPING (SHARED BY FREE PLAY & TEST CASH) ===
+    // Maps UI display labels to internal category keys used by question loader
+    // Free Play uses: data-cat="sports" (lowercase, no spaces)
+    // Test Cash uses: categoryLabel="Sports" (display) -> categoryKey="sports" (internal)
+    const TRIVIA_CATEGORY_MAP = {
+      "Politics": "politics",
+      "Business & Economics": "business",
+      "Sports": "sports",
+      "Music": "music",
+      "Movies": "movies",
+      "History": "history",
+      "Geography": "geography",
+      "Science": "science",
+      "Pop Culture": "pop_culture",
+      "Math": "math"
+    };
+
+    // === KAHOOT-STYLE SCORING ===
+    // Calculate points for a single question (0 if incorrect)
+    // Speed-based: faster answers get more base points (up to 1000)
+    // Streak bonus: +100 per consecutive correct answer (capped at +500)
+    // NOTE: This function is also defined in trivia-engine.js for consistency
+    function calculateKahootStyleScore({ correct, timeRemaining, maxTime, currentStreak }) {
+      if (!correct) return 0;
+
+      const MAX_POINTS = 1000;
+      const clampedTime = Math.max(0, Math.min(timeRemaining, maxTime));
+      const speedFactor = maxTime > 0 ? clampedTime / maxTime : 0;
+      const basePoints = Math.round(MAX_POINTS * speedFactor);
+      const streakBonus = Math.min(currentStreak * 100, 500);
+      const total = basePoints + streakBonus;
+
+      console.log('[SCORING] correct:', correct, 'timeRemaining:', timeRemaining, 'currentStreak:', currentStreak,
+                  '=> base:', basePoints, 'streakBonus:', streakBonus, 'total:', total);
+
+      return total;
+    }
+
+    // Export to window for backward compatibility
+    window.calculateKahootStyleScore = calculateKahootStyleScore;
+
+    // Test user and lobbies state
+    const testUser = {
+      id: "user-test-1",
+      username: "You",
+      balance: 100
+    };
+
+    const botProfiles = [
+      { id: "bot-1", username: "Bot Blake", balance: 80 },
+      { id: "bot-2", username: "Bot Nova", balance: 150 },
+      { id: "bot-3", username: "Bot Pixel", balance: 200 },
+      { id: "bot-4", username: "Bot Turbo", balance: 120 }
+    ];
+
+    let testLobbies = [];
+    let botIntervalId = null;
+    let currentLobbyId = null;
+    let lobbyRefreshInterval = null;
+    let currentUserLobbyId = null; // Track which lobby the user has actually joined
+
+    // Lobby filters state - multi-select
+    const lobbyFilters = {
+      categories: [], // array of strings
+      stakes: [],     // array of numbers
+      sizes: []       // array of numbers
+    };
+
+    // Create default lobbies
+    function initDefaultLobbies() {
+      const defaultLobbiesConfig = [
+        { category: "Sports", stake: 10, maxPlayers: 2 },
+        { category: "Movies", stake: 20, maxPlayers: 2 },
+        { category: "Music", stake: 10, maxPlayers: 4 },
+        { category: "Science", stake: 50, maxPlayers: 2 },
+        { category: "Pop Culture", stake: 10, maxPlayers: 2 }
+      ];
+
+      defaultLobbiesConfig.forEach((config, index) => {
+        testLobbies.push({
+          id: `default-${index + 1}`,
+          hostId: "system",
+          hostName: "BrainDash Auto Lobby",
+          category: config.category,
+          stake: config.stake,
+          maxPlayers: config.maxPlayers,
+          participants: [],
+          status: "open",
+          isDefault: true
+        });
+      });
+    }
+
+    // ===== CONFIG =====
+    const SUPABASE_URL  = import.meta.env?.VITE_SUPABASE_URL || window.VITE_SUPABASE_URL;
+    const SUPABASE_ANON = import.meta.env?.VITE_SUPABASE_ANON_KEY || window.VITE_SUPABASE_ANON_KEY;
+    const BACKEND_BASE  = window.location.origin;
+
+    // ===== Supabase client =====
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+    const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    // ===== UI helpers =====
+    const toast = document.getElementById('toast');
+    const authSheet = document.getElementById('authSheet');
+    const freeSheet = document.getElementById('freeSheet');
+
+    const showToast = (m, ms=3000) => { toast.textContent=m; toast.style.display='block'; setTimeout(()=>toast.style.display='none',ms); };
+    const openSheet = el => { el.style.display='grid'; el.setAttribute('aria-hidden','false'); };
+    const closeSheet = el => { el.style.display='none'; el.setAttribute('aria-hidden','true'); };
+
+    // ===== ACTIVE MATCH STATE =====
+    // Global flags to track active matches and prevent unwanted navigation
+    let activeMatchMode = null;    // "free" | "cash" | "cash-test" | null
+    let activeMatchLobbyId = null; // for cash modes
+
+    // ===== TEST CASH MODE HELPERS =====
+    function _showScreenInternal(name) {
+      console.log('[showScreen] Showing screen:', name);
+
+      // Hide all screens
+      document.querySelectorAll('.screen').forEach(s => {
+        s.classList.add('hidden');
+        s.style.display = 'none';
+      });
+
+      // Handle homepage vs modal screens
+      const wrapEl = document.querySelector('.wrap');
+      if (name === 'home' && wrapEl) {
+        // Show homepage
+        wrapEl.style.display = 'flex';
+        console.log('[showScreen] Showing homepage wrap');
+      } else {
+        // Hide homepage for modal screens
+        if (wrapEl) {
+          wrapEl.style.display = 'none';
+          console.log('[showScreen] Hidden wrap element');
+        }
+
+        // Show the requested screen
+        const screen = document.getElementById(name);
+        console.log('[showScreen] Found screen element:', screen);
+        if (screen) {
+          screen.classList.remove('hidden');
+          screen.style.display = 'block';
+          console.log('[showScreen] Screen display set to:', screen.style.display);
+          console.log('[showScreen] Screen classList:', screen.classList.toString());
+        }
+      }
+
+      if (name === 'cash-test-screen') {
+        console.log('[showScreen] Starting bot simulation');
+        startBotSimulation();
+      } else {
+        stopBotSimulation();
+      }
+    }
+
+    // ===== NAVIGATION WRAPPER WITH MATCH PROTECTION =====
+    // Intercepts all navigation to prevent leaving active matches
+    function showScreen(name) {
+      console.log('[NAV] showScreen called', {
+        target: name,
+        activeMatchMode,
+        activeMatchLobbyId
+      });
+
+      // Block navigation to home screens during active cash-test matches
+      const homeScreens = ['home', 'home-screen', 'main-menu'];
+      if (activeMatchMode === 'cash-test' && homeScreens.includes(name)) {
+        console.warn('[NAV] ❌ BLOCKED navigation to', name, 'during active cash-test match');
+        console.warn('[NAV] Match must complete or be exited before returning home');
+        return;
+      }
+
+      // Block navigation to cash-test screen during active match
+      if (activeMatchMode === 'cash-test' && name === 'cash-test-screen') {
+        console.warn('[NAV] ❌ BLOCKED navigation to cash-test-screen during active match');
+        return;
+      }
+
+      // Allow navigation
+      console.log('[NAV] ✓ Navigation allowed to', name);
+      _showScreenInternal(name);
+    }
+
+    function hideScreen(name) {
+      console.log('[hideScreen] Hiding screen:', name);
+      const screen = document.getElementById(name);
+      if (screen) {
+        screen.classList.add('hidden');
+        screen.style.display = 'none';
+        console.log('[hideScreen] Screen hidden');
+      }
+
+      // [FIX] DO NOT automatically show homepage when hiding screens
+      // This was causing cash-test to redirect to home after countdown
+      // The wrap should only be shown when explicitly navigating to home via showScreen
+      // const wrapEl = document.querySelector('.wrap');
+      // if (wrapEl) {
+      //   wrapEl.style.display = 'flex';
+      //   console.log('[hideScreen] Shown wrap element');
+      // }
+      console.log('[FIX] NOT showing wrap - prevents unwanted home navigation');
+
+      if (name === 'cash-test-screen') {
+        console.log('[hideScreen] Stopping bot simulation');
+        stopBotSimulation();
+      }
+    }
+
+    function updateTestUserBalanceUI() {
+      const balanceEl = document.getElementById('testBalance');
+      if (balanceEl) {
+        balanceEl.textContent = '$' + testUser.balance.toFixed(2);
+      }
+    }
+
+    function createTestLobby({ hostId, hostName, category, stake, maxPlayers, isBotHost }) {
+      // Map display category to internal key for question loader
+      const categoryLabel = category; // UI display: "Sports", "Politics", etc.
+      const categoryKey = TRIVIA_CATEGORY_MAP[categoryLabel] || null; // Internal: "sports", "politics", etc.
+
+      console.log('[Test Cash] Creating lobby - categoryLabel:', categoryLabel, 'categoryKey:', categoryKey);
+
+      const lobby = {
+        id: "lobby-" + Date.now() + "-" + Math.floor(Math.random() * 9999),
+        hostId,
+        hostName,
+        category: categoryLabel,      // Keep for UI display
+        categoryLabel,                 // Explicit label field
+        categoryKey,                   // Key for question loader
+        stake,
+        maxPlayers,
+        participants: isBotHost ? [{
+          id: hostId,
+          username: hostName,
+          isBot: true,
+          hasAcceptedTerms: true,  // Bots auto-accept
+          isReady: true             // Bots auto-ready
+        }] : [],
+        status: "open"
+      };
+      testLobbies.unshift(lobby);
+      renderTestLobbyList();
+      return lobby;
+    }
+
+    function joinTestLobby(lobbyId, player) {
+      const lobby = testLobbies.find(l => l.id === lobbyId);
+      if (!lobby) {
+        console.error('[Join] Lobby not found:', lobbyId);
+        return false;
+      }
+
+      // Allow joining open or full lobbies (full by status, not by count)
+      if (lobby.status !== "open" && lobby.status !== "full") {
+        console.error('[Join] Lobby status is', lobby.status, '- cannot join');
+        return false;
+      }
+
+      if (lobby.participants.some(p => p.id === player.id)) {
+        console.log('[Join] User already in lobby');
+        return false;
+      }
+
+      if (lobby.participants.length >= lobby.maxPlayers) {
+        console.log('[Join] Lobby is full (player count)');
+        return false;
+      }
+
+      // Deduct stake from player balance
+      if (player.isBot) {
+        const bot = botProfiles.find(b => b.id === player.id);
+        if (bot && bot.balance >= lobby.stake) {
+          bot.balance -= lobby.stake;
+        }
+      } else if (player.id === testUser.id) {
+        if (testUser.balance < lobby.stake) return false;
+        testUser.balance -= lobby.stake;
+        updateTestUserBalanceUI();
+      }
+
+      // Bots auto-accept terms and auto-ready for testing
+      const isBot = !!player.isBot;
+      lobby.participants.push({
+        id: player.id,
+        username: player.username,
+        isBot: isBot,
+        hasAcceptedTerms: isBot ? true : (player.hasAcceptedTerms || false),
+        isReady: isBot ? true : (player.isReady || false)
+      });
+
+      // Track which lobby the user has joined
+      if (player.id === testUser.id) {
+        currentUserLobbyId = lobby.id;
+        console.log('[Test Cash] User joined lobby:', lobby.id);
+      }
+
+      renderTestLobbyList();
+
+      if (lobby.participants.length >= lobby.maxPlayers) {
+        lobby.status = "full";
+        // Don't auto-start countdown - wait for ready-up
+        updateLobbyDetailsView(lobby);
+      } else {
+        updateLobbyDetailsView(lobby);
+      }
+
+      // Check if everyone is ready (for bots that auto-join)
+      checkLobbyAllReady(lobby);
+
+      return true;
+    }
+
+    function startLobbyCountdown(lobby) {
+      console.log('[Lobby] Starting countdown for lobby:', lobby.id);
+
+      // HARD GUARD: Only show countdown if user is in this lobby
+      const userIsParticipant = lobby.participants.some(p => p.id === testUser.id);
+      if (!userIsParticipant || currentUserLobbyId !== lobby.id) {
+        console.log('[Test Cash] Skipping countdown for lobby', lobby.id, 'because user is not in this lobby');
+        return;
+      }
+
+      updateLobbyDetailsView(lobby);
+
+      // Start countdown immediately - no delay!
+      lobby.status = "in_progress";
+      renderTestLobbyList();
+      show5SecondCountdown(lobby);
+    }
+
+    function handleLobbyFull(lobby) {
+      console.log('[Lobby] Lobby is now full:', lobby.id);
+      // This function is now deprecated - ready-up flow handles countdown
+      updateLobbyDetailsView(lobby);
+    }
+
+    function show5SecondCountdown(lobby) {
+      // HARD GUARD: Only show countdown if user is in this lobby
+      const userIsParticipant = lobby.participants.some(p => p.id === testUser.id);
+      if (!userIsParticipant || currentUserLobbyId !== lobby.id) {
+        console.log('[Test Cash] Skipping countdown display for lobby', lobby.id);
+        return;
+      }
+      const countdownOverlay = document.createElement('div');
+      countdownOverlay.id = 'match-countdown-overlay';
+      countdownOverlay.style.cssText = `
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.95);
+        backdrop-filter: blur(10px);
+        z-index: 10001;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        animation: fadeIn 0.3s ease;
+      `;
+
+      countdownOverlay.innerHTML = `
+        <div style="text-align:center;max-width:600px;padding:40px">
+          <h1 style="font-size:2.5rem;font-weight:900;background:linear-gradient(135deg,var(--accent2),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:0 0 16px">Lobby Full!</h1>
+          <div style="font-size:1.125rem;color:var(--muted);margin-bottom:32px">
+            ${getCategoryIcon(lobby.category)} ${lobby.category} · $${lobby.stake} entry
+          </div>
+          <div style="font-size:1rem;color:var(--txt);margin-bottom:24px">Match starting in...</div>
+          <div id="match-countdown-number" style="font-size:8rem;font-weight:900;color:var(--accent2);line-height:1;">3</div>
+        </div>
+      `;
+
+      document.body.appendChild(countdownOverlay);
+
+      let count = 3;
+      const countdownEl = document.getElementById('match-countdown-number');
+
+      const countdownInterval = setInterval(() => {
+        // Check if user is still in lobby during countdown
+        const stillInLobby = lobby.participants.some(p => p.id === testUser.id);
+        if (!stillInLobby || currentUserLobbyId !== lobby.id) {
+          console.log('[Test Cash] User left lobby during countdown, stopping');
+          clearInterval(countdownInterval);
+          if (document.body.contains(countdownOverlay)) {
+            document.body.removeChild(countdownOverlay);
+          }
+          return;
+        }
+
+        count--;
+        if (count > 0) {
+          countdownEl.textContent = count;
+          countdownEl.style.animation = 'none';
+          setTimeout(() => { countdownEl.style.animation = 'pulse 0.5s ease'; }, 10);
+        } else {
+          clearInterval(countdownInterval);
+          countdownEl.textContent = 'GO!';
+          countdownEl.style.color = 'var(--accent)';
+          setTimeout(() => {
+            document.body.removeChild(countdownOverlay);
+            startTestMatch(lobby);
+          }, 500);
+        }
+      }, 1000);
+    }
+
+    function openLobbyDetails(lobbyId) {
+      currentLobbyId = lobbyId;
+      const lobby = testLobbies.find(l => l.id === lobbyId);
+      if (!lobby) return;
+
+      updateLobbyDetailsView(lobby);
+      showScreen('lobby-details-screen');
+
+      // Start polling for lobby updates
+      if (lobbyRefreshInterval) clearInterval(lobbyRefreshInterval);
+      lobbyRefreshInterval = setInterval(() => {
+        const currentLobby = testLobbies.find(l => l.id === currentLobbyId);
+        if (currentLobby && currentLobby.status === 'open' || currentLobby.status === 'full') {
+          updateLobbyDetailsView(currentLobby);
+        }
+      }, 1000);
+    }
+
+    function updateLobbyDetailsView(lobby) {
+      if (!lobby) return;
+
+      document.getElementById('lobbyDetailsIcon').textContent = getCategoryIcon(lobby.category);
+      document.getElementById('lobbyDetailsCategory').textContent = lobby.category;
+      document.getElementById('lobbyDetailsHost').textContent = `Host: ${lobby.hostName}`;
+      document.getElementById('lobbyDetailsStake').textContent = `$${lobby.stake}`;
+      document.getElementById('lobbyDetailsPlayerCount').textContent = `(${lobby.participants.length}/${lobby.maxPlayers})`;
+
+      // Update status text
+      const statusEl = document.getElementById('lobbyDetailsStatus');
+      if (lobby.status === 'full') {
+        statusEl.textContent = 'Lobby full! Preparing your match...';
+        statusEl.style.color = '#FFC107';
+      } else if (lobby.participants.length < lobby.maxPlayers) {
+        statusEl.textContent = 'Waiting for more players to join...';
+        statusEl.style.color = 'var(--muted)';
+      }
+
+      // Render players list
+      const playersListEl = document.getElementById('lobbyDetailsPlayersList');
+      playersListEl.innerHTML = '';
+      lobby.participants.forEach(p => {
+        const playerCard = document.createElement('div');
+        playerCard.style.cssText = 'display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:10px;padding:12px 16px';
+        playerCard.innerHTML = `
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="font-size:1.25rem">${p.isBot ? '🤖' : '👤'}</div>
+            <div>
+              <div style="font-size:0.9375rem;font-weight:600;color:var(--txt)">${p.username}</div>
+              <div style="font-size:0.75rem;color:var(--muted)">${p.isBot ? 'Bot' : 'Player'}</div>
+            </div>
+          </div>
+          ${!p.isBot ? '<div style="background:rgba(57,255,136,.1);border:1px solid rgba(57,255,136,.3);border-radius:6px;padding:4px 8px;font-size:0.75rem;font-weight:600;color:var(--accent)">YOU</div>' : ''}
+        `;
+        playersListEl.appendChild(playerCard);
+      });
+
+      // Show/hide sections based on user status
+      const userInLobby = lobby.participants.some(p => p.id === testUser.id);
+      const isFull = lobby.participants.length >= lobby.maxPlayers;
+
+      document.getElementById('lobbyDetailsJoinSection').style.display = !userInLobby && !isFull ? 'block' : 'none';
+      document.getElementById('lobbyDetailsAlreadyJoined').style.display = userInLobby ? 'block' : 'none';
+      document.getElementById('lobbyDetailsFull').style.display = !userInLobby && isFull ? 'block' : 'none';
+
+      // If user is in lobby, show the appropriate phase (terms -> ready -> waiting)
+      if (userInLobby) {
+        const currentParticipant = lobby.participants.find(p => p.id === testUser.id);
+        updateLobbyReadyPhases(lobby, currentParticipant);
+      }
+    }
+
+    function updateLobbyReadyPhases(lobby, participant) {
+      if (!lobby || !participant) return;
+
+      const termsPhase = document.getElementById('lobby-terms-phase');
+      const readyPhase = document.getElementById('lobby-ready-phase');
+      const waitingPhase = document.getElementById('lobby-waiting-phase');
+
+      // Count ready players
+      const readyCount = lobby.participants.filter(p => p.isReady).length;
+      const totalPlayers = lobby.participants.length;
+
+      if (!participant.hasAcceptedTerms) {
+        // Show terms acceptance phase
+        if (termsPhase) termsPhase.style.display = 'block';
+        if (readyPhase) readyPhase.style.display = 'none';
+        if (waitingPhase) waitingPhase.style.display = 'none';
+      } else if (!participant.isReady) {
+        // Show ready up phase
+        if (termsPhase) termsPhase.style.display = 'none';
+        if (readyPhase) readyPhase.style.display = 'block';
+        if (waitingPhase) waitingPhase.style.display = 'none';
+
+        const readyStatus = document.getElementById('lobby-ready-status');
+        if (readyStatus) {
+          readyStatus.textContent = `${readyCount}/${totalPlayers} players ready`;
+        }
+      } else {
+        // Show waiting phase (player is ready)
+        if (termsPhase) termsPhase.style.display = 'none';
+        if (readyPhase) readyPhase.style.display = 'none';
+        if (waitingPhase) waitingPhase.style.display = 'block';
+
+        const readyStatusWaiting = document.getElementById('lobby-ready-status-waiting');
+        if (readyStatusWaiting) {
+          readyStatusWaiting.textContent = `${readyCount}/${totalPlayers} players ready`;
+        }
+      }
+    }
+
+    function handleAcceptTerms(lobbyId) {
+      console.log('[LOBBY] User accepting terms', { lobbyId });
+
+      const lobby = testLobbies.find(l => l.id === lobbyId);
+      if (!lobby) return;
+
+      const participant = lobby.participants.find(p => p.id === testUser.id);
+      if (!participant) return;
+
+      participant.hasAcceptedTerms = true;
+      participant.isReady = false;
+
+      console.log('[LOBBY] Terms accepted for user', testUser.id);
+      updateLobbyDetailsView(lobby);
+      checkLobbyAllReady(lobby);
+    }
+
+    function handleReadyUp(lobbyId) {
+      console.log('[LOBBY] User ready up', { lobbyId });
+
+      const lobby = testLobbies.find(l => l.id === lobbyId);
+      if (!lobby) return;
+
+      const participant = lobby.participants.find(p => p.id === testUser.id);
+      if (!participant) {
+        console.warn('[LOBBY] Participant not found in lobby');
+        return;
+      }
+
+      if (!participant.hasAcceptedTerms) {
+        showToast('⚠️ You must accept the Terms & Conditions before readying up.');
+        return;
+      }
+
+      participant.isReady = true;
+
+      console.log('[LOBBY] User marked as ready', testUser.id);
+      updateLobbyDetailsView(lobby);
+      checkLobbyAllReady(lobby);
+    }
+
+    function checkLobbyAllReady(lobby) {
+      if (!lobby) return;
+
+      // Ensure all bots are auto-ready (redundant safety check)
+      lobby.participants.forEach(p => {
+        if (p.isBot) {
+          p.hasAcceptedTerms = true;
+          p.isReady = true;
+        }
+      });
+
+      // Check if there's at least one real user in the lobby
+      const hasRealUser = lobby.participants.some(p => !p.isBot);
+
+      const allAccepted = lobby.participants.length > 0 &&
+        lobby.participants.every(p => p.hasAcceptedTerms);
+
+      const allReady = lobby.participants.length > 0 &&
+        lobby.participants.every(p => p.isReady);
+
+      console.log('[LOBBY] checkLobbyAllReady', {
+        lobbyId: lobby.id,
+        hasRealUser,
+        participants: lobby.participants.map(p => ({
+          id: p.id,
+          username: p.username,
+          isBot: p.isBot,
+          hasAcceptedTerms: p.hasAcceptedTerms,
+          isReady: p.isReady
+        })),
+        allAccepted,
+        allReady,
+        status: lobby.status
+      });
+
+      // Only start countdown if there's a real user AND everyone is accepted and ready
+      if (hasRealUser && allAccepted && allReady && (lobby.status === 'open' || lobby.status === 'full')) {
+        console.log('[LOBBY] ✓ All players accepted terms and ready! Starting countdown...');
+        lobby.status = 'countdown';
+        startLobbyCountdown(lobby);
+      } else if (!hasRealUser) {
+        console.log('[LOBBY] ⏸️ Waiting for a real user to join before starting countdown');
+      }
+    }
+
+    function leaveLobby(lobbyId) {
+      const lobby = testLobbies.find(l => l.id === lobbyId);
+      if (!lobby) return;
+
+      const userIndex = lobby.participants.findIndex(p => p.id === testUser.id);
+      if (userIndex === -1) return; // User not in lobby
+
+      // Remove user from participants
+      lobby.participants.splice(userIndex, 1);
+
+      // Refund stake
+      testUser.balance += lobby.stake;
+      updateTestUserBalanceUI();
+
+      // If lobby was full or in_progress, revert to open
+      if (lobby.status === 'full' || lobby.status === 'in_progress') {
+        if (lobby.participants.length < lobby.maxPlayers) {
+          lobby.status = 'open';
+        }
+      }
+
+      renderTestLobbyList();
+
+      console.log('[Lobby] User left lobby:', lobbyId);
+      showToast('✓ Left lobby. Stake refunded.');
+
+      // Clear user's lobby membership
+      if (currentUserLobbyId === lobbyId) {
+        currentUserLobbyId = null;
+        console.log('[Test Cash] User no longer in any lobby');
+      }
+
+      // Navigate back to lobby list
+      if (lobbyRefreshInterval) clearInterval(lobbyRefreshInterval);
+      currentLobbyId = null;
+      hideScreen('lobby-details-screen');
+      showScreen('cash-test-screen');
+    }
+
+    let currentTestCashLobby = null;
+
+    function startTestMatch(lobby) {
+      console.log('[Test Cash] === startTestMatch called ===');
+      console.log('[Test Cash] Lobby ID:', lobby.id);
+      console.log('[Test Cash] Category Key:', lobby.categoryKey);
+
+      // HARD GUARD: Only start match if user is in this lobby
+      const userInLobby = lobby.participants.some(p => p.id === testUser.id);
+      if (!userInLobby || currentUserLobbyId !== lobby.id) {
+        console.log('[Test Cash] Skipping match start - user not in lobby');
+        return;
+      }
+
+      currentTestCashLobby = lobby;
+
+      // Set active match flags BEFORE hiding screens to prevent unwanted navigation
+      activeMatchMode = 'cash-test';
+      activeMatchLobbyId = lobby.id;
+      console.log('[FIX] Set activeMatchMode to cash-test and activeMatchLobbyId to', lobby.id);
+
+      // Hide ALL Test Cash screens
+      console.log('[Test Cash] Hiding all lobby screens');
+      if (lobbyRefreshInterval) clearInterval(lobbyRefreshInterval);
+      hideScreen('lobby-details-screen');
+      hideScreen('cash-test-screen');
+
+      // Hide main wrap
+      const wrapEl = document.querySelector('.wrap');
+      if (wrapEl) {
+        wrapEl.style.display = 'none';
+        console.log('[Test Cash] Hidden main wrap');
+      }
+
+      // Start 10-question trivia match using the SAME engine as Free Play
+      console.log('[DEBUG:CASH-COUNTDOWN] ========================================');
+      console.log('[DEBUG:CASH-COUNTDOWN] Countdown reached 0 for lobby:', lobby.id);
+      console.log('[DEBUG:CASH-COUNTDOWN] Mode:', lobby.mode);
+      console.log('[DEBUG:CASH-COUNTDOWN] Category:', lobby.categoryKey);
+      console.log('[DEBUG:CASH-COUNTDOWN] Participants:', lobby.participants.length);
+      console.log('[DEBUG:CASH-COUNTDOWN] Launching Test Cash match NOW');
+      console.log('[DEBUG:CASH-COUNTDOWN] ========================================');
+      console.log('[Test Cash] Calling startTestCashMatch...');
+      startTestCashMatch(lobby);
+    }
+
+    // === CASH CHALLENGE MATCH START (REAL MONEY) ===
+    function startCashChallengeMatch(lobby) {
+      console.log('[CASH] === STARTING REAL CASH MATCH ===');
+      console.log('[CASH] Lobby ID:', lobby.id);
+      console.log('[CASH] Category Key:', lobby.categoryKey);
+
+      // Only run on clients who are actually in this lobby
+      const userIsParticipant = lobby.participants.some(p => p.id === currentUser?.id);
+      if (!userIsParticipant) {
+        console.log("[CASH] Not starting match for non-participant on this client", lobby.id);
+        return;
+      }
+
+      // Check if Free Play's working engine is available
+      if (typeof window.getQuestionsForSession !== 'function' || typeof window.startTriviaEngine !== 'function') {
+        console.error('[CASH] Free Play trivia engine not available');
+        alert('Trivia engine not loaded. Please refresh the page.');
+        return;
+      }
+
+      const categoryKey = lobby.categoryKey || "mixed";
+      const QUESTION_COUNT = 10;
+
+      // Use FREE PLAY's working question loader
+      console.log('[CASH] Getting questions from Free Play question bank');
+      const questions = window.getQuestionsForSession(categoryKey, QUESTION_COUNT);
+
+      if (!questions || questions.length === 0) {
+        console.error('[CASH] No questions available for category:', categoryKey);
+        alert('No questions available. Please try a different category.');
+        return;
+      }
+
+      console.log('[CASH] Loaded', questions.length, 'questions');
+      console.log('[CASH] First question:', questions[0].question.substring(0, 50) + '...');
+
+      // Use FREE PLAY's working trivia engine
+      console.log('[CASH] Starting Free Play trivia engine');
+      window.startTriviaEngine({
+        mode: 'cash',
+        categoryKey,
+        questions,
+        onComplete: (score, details) => {
+          console.log('[CASH] Match completed! Score:', score);
+          onCashChallengeComplete(lobby, score, details);
+        }
+      });
+    }
+
+    // === TEST CASH CHALLENGE MATCH START (FAKE MONEY) ===
+    async function startTestCashMatch(lobby) {
+      console.log('[DEBUG:CASH-START] ========================================');
+      console.log('[DEBUG:CASH-START] startTestCashMatch called');
+      console.log('[DEBUG:CASH-START] Lobby ID:', lobby.id);
+      console.log('[DEBUG:CASH-START] Mode:', lobby.mode);
+      console.log('[DEBUG:CASH-START] Category Key (raw):', lobby.categoryKey);
+      console.log('[DEBUG:CASH-START] Category Label:', lobby.categoryLabel || lobby.category);
+      console.log('[DEBUG:CASH-START] Participants:', lobby.participants);
+      console.log('[DEBUG:CASH-START] ========================================');
+
+      console.log('[CASH-TEST] ========================================');
+      console.log('[CASH-TEST] === STARTING MATCH ===');
+      console.log('[CASH-TEST] Lobby ID:', lobby.id);
+      console.log('[CASH-TEST] Category Label:', lobby.categoryLabel || lobby.category);
+      console.log('[CASH-TEST] Category Key (raw):', lobby.categoryKey);
+
+      // FIX: If categoryKey is missing, derive it from categoryLabel/category
+      if (!lobby.categoryKey && (lobby.categoryLabel || lobby.category)) {
+        const categoryLabel = lobby.categoryLabel || lobby.category;
+        lobby.categoryKey = TRIVIA_CATEGORY_MAP[categoryLabel];
+        console.log('[CASH-TEST] 🔧 Fixed missing categoryKey - mapped "' + categoryLabel + '" to "' + lobby.categoryKey + '"');
+      }
+
+      console.log('[CASH-TEST] Category Key (final):', lobby.categoryKey);
+      console.log('[CASH-TEST] ========================================');
+
+      // Only run on clients who are actually in this lobby
+      const userIsParticipant = lobby.participants.some(p => p.id === testUser.id);
+      if (!userIsParticipant) {
+        console.log("[CASH-TEST] ❌ Not starting match - user not participant");
+        return;
+      }
+      console.log('[CASH-TEST] ✓ User is participant');
+
+      // Check if unified trivia engine is available
+      console.log('[CASH-TEST] Checking for unified trivia engine...');
+      console.log('[CASH-TEST] - window.getQuestionsForSession:', typeof window.getQuestionsForSession);
+      console.log('[CASH-TEST] - window.startTriviaSession:', typeof window.startTriviaSession);
+
+      if (typeof window.getQuestionsForSession !== 'function' || typeof window.startTriviaSession !== 'function') {
+        console.error('[CASH-TEST] ❌ Unified trivia engine not available!');
+        fallbackTestMatch(lobby);
+        return;
+      }
+      console.log('[CASH-TEST] ✓ Unified trivia engine available');
+
+      // FIX: Use sports as final fallback instead of "mixed" (which doesn't exist)
+      const categoryKey = lobby.categoryKey || "sports";
+      const QUESTION_COUNT = 10;
+
+      console.log('[CASH-TEST] Using categoryKey:', categoryKey);
+
+      // Use unified trivia engine's async question loader (with AI support)
+      console.log('[CASH-TEST] Calling getQuestionsForSession("' + categoryKey + '", ' + QUESTION_COUNT + ') - ASYNC');
+      const questions = await window.getQuestionsForSession(categoryKey, QUESTION_COUNT);
+
+      console.log('[CASH-TEST] Questions returned:', questions);
+      console.log('[CASH-TEST] Questions length:', questions ? questions.length : 'null/undefined');
+
+      if (!questions || questions.length === 0) {
+        console.error('[CASH-TEST] ❌ No questions available for category:', categoryKey);
+        fallbackTestMatch(lobby);
+        return;
+      }
+
+      console.log('[CASH-TEST] ✓ Loaded', questions.length, 'questions');
+      console.log('[CASH-TEST] First question preview:', questions[0].question.substring(0, 60) + '...');
+      console.log('[CASH-TEST] First question full:', questions[0]);
+
+      // Use unified trivia engine with lifecycle management and Kahoot scoring
+      console.log('[DEBUG:CASH-START] ========================================');
+      console.log('[DEBUG:CASH-START] Questions loaded successfully');
+      console.log('[DEBUG:CASH-START] About to call window.startTriviaSession');
+      console.log('[DEBUG:CASH-START] - categoryKey:', categoryKey);
+      console.log('[DEBUG:CASH-START] - questionCount:', questions.length);
+      console.log('[DEBUG:CASH-START] ========================================');
+
+      console.log('[CASH-TEST] ========================================');
+      console.log('[CASH-TEST] Calling startTriviaSession NOW');
+      console.log('[CASH-TEST] ========================================');
+
+      window.startTriviaSession({
+        mode: 'cash-test',
+        categoryKey,
+        questions,
+        lobby: lobby,
+        onComplete: (score, details) => {
+          console.log('[DEBUG:CASH-END] ========================================');
+          console.log('[DEBUG:CASH-END] Test Cash match completed');
+          console.log('[DEBUG:CASH-END] Lobby ID:', lobby.id);
+          console.log('[DEBUG:CASH-END] Final score:', score);
+          console.log('[DEBUG:CASH-END] Details:', details);
+          console.log('[DEBUG:CASH-END] ========================================');
+          console.log('[CASH-TEST] Match completed! Score:', score);
+          onTestCashMatchComplete(score, details, lobby);
+        }
+      });
+
+      console.log('[DEBUG:CASH-START] startTriviaSession called - should start rendering shortly');
+      console.log('[CASH-TEST] startTriviaSession called successfully');
+    }
+
+    // === PLACEHOLDER FOR REAL CASH COMPLETION ===
+    function onCashChallengeComplete(lobby, score, details) {
+      console.log('[CASH] Match complete handler called');
+      console.log('[CASH] Score:', score, 'Details:', details);
+      // TODO: Implement real cash winner determination and payout
+      alert(`Match complete! Your score: ${score} points`);
+    }
+
+    function fallbackTestMatch(lobby) {
+      // Fallback to instant result if trivia engine not available
+      console.log('[Test Cash] Using fallback match logic');
+
+      // Clear active match flags to allow navigation
+      activeMatchMode = null;
+      activeMatchLobbyId = null;
+      console.log('[Test Cash] Cleared active match flags for fallback');
+
+      const pot = lobby.stake * lobby.participants.length;
+      const userIndex = lobby.participants.findIndex(p => !p.isBot);
+      const winnerIndex = Math.random() < 0.55 && userIndex !== -1
+        ? userIndex
+        : Math.floor(Math.random() * lobby.participants.length);
+
+      const winner = lobby.participants[winnerIndex];
+
+      if (winner.isBot) {
+        const bot = botProfiles.find(b => b.id === winner.id);
+        if (bot) bot.balance += pot;
+      } else {
+        testUser.balance += pot;
+      }
+
+      lobby.status = "finished";
+      lobby.winnerId = winner.id;
+      lobby.winnerName = winner.username;
+
+      updateTestUserBalanceUI();
+      renderTestLobbyList();
+
+      showScreen('cash-test-screen');
+
+      if (lobby.participants.some(p => p.id === testUser.id)) {
+        const message = winner.id === testUser.id
+          ? `🎉 You WON this match! +$${pot.toFixed(2)} (fake)`
+          : `${winner.username} won this match. You lost your $${lobby.stake.toFixed(2)} entry (fake).`;
+
+        setTimeout(() => {
+          showToast(message, 5000);
+        }, 500);
+      }
+
+      currentTestCashLobby = null;
+    }
+
+    // Simulate bot Kahoot scores comparable to human score
+    function simulateBotKahootScore(baseUserScore) {
+      // Bots score in a similar range to the user (±40% variance)
+      const variance = (Math.random() - 0.5) * 0.8 * baseUserScore; // ±40%
+      const minFloor = Math.floor(baseUserScore * 0.3); // At least 30% of user score
+      return Math.max(minFloor, Math.round(baseUserScore + variance));
+    }
+
+    function onTestCashMatchComplete(userScore, userDetails, passedLobby) {
+      console.log('[Test Cash] Match complete. User Kahoot score:', userScore, 'Details:', userDetails);
+
+      // Clear active match flags (should already be cleared by finishTriviaSession, but ensure)
+      activeMatchMode = null;
+      activeMatchLobbyId = null;
+      console.log('[FIX] Cleared activeMatchMode in onTestCashMatchComplete');
+
+      // Use passed lobby if available, otherwise fallback
+      const lobby = passedLobby || currentTestCashLobby;
+      if (!lobby) {
+        console.error('[Test Cash] No active lobby found');
+        return;
+      }
+      console.log('[Test Cash] Using lobby:', lobby.id, 'with', lobby.participants.length, 'participants');
+
+      const userCorrectCount = userDetails?.correctAnswers || 0;
+
+      // Simulate bot scores using Kahoot-style range
+      const results = [
+        { id: testUser.id, username: testUser.username, score: userScore, correctCount: userCorrectCount, isBot: false }
+      ];
+
+      lobby.participants.forEach(p => {
+        if (p.isBot) {
+          const botScore = simulateBotKahootScore(userScore);
+          results.push({ id: p.id, username: p.username, score: botScore, isBot: true });
+        }
+      });
+
+      // Find winner (highest Kahoot score)
+      results.sort((a, b) => b.score - a.score);
+      const topScore = results[0].score;
+      const winners = results.filter(r => r.score === topScore);
+      const winner = winners[Math.floor(Math.random() * winners.length)];
+
+      console.log('[Test Cash] Final results:', results.map(r => `${r.username}: ${r.score}`).join(', '));
+
+      // Calculate pot and pay winner
+      const pot = lobby.stake * lobby.participants.length;
+
+      if (winner.isBot) {
+        const bot = botProfiles.find(b => b.id === winner.id);
+        if (bot) bot.balance += pot;
+      } else {
+        testUser.balance += pot;
+      }
+
+      // Update lobby status
+      lobby.status = "finished";
+      lobby.winnerId = winner.id;
+      lobby.winnerName = winner.username;
+
+      updateTestUserBalanceUI();
+      renderTestLobbyList();
+
+      // Clear user's lobby membership
+      if (currentUserLobbyId === lobby.id) {
+        currentUserLobbyId = null;
+        console.log('[Test Cash] Match finished for lobby', lobby.id, 'reset currentUserLobbyId');
+      }
+
+      // Navigate back to lobby list
+      showScreen('cash-test-screen');
+      currentTestCashLobby = null;
+
+      // Show end-game modal
+      setTimeout(() => {
+        showMatchEndModal(winner.id === testUser.id, pot, userScore, userCorrectCount, winner);
+      }, 500);
+    }
+
+    function showMatchEndModal(userWon, pot, userScore, correctCount, winner) {
+      const modal = document.getElementById('match-end-modal');
+      const icon = document.getElementById('match-end-icon');
+      const title = document.getElementById('match-end-title');
+      const message = document.getElementById('match-end-message');
+
+      if (!modal || !icon || !title || !message) return;
+
+      if (userWon) {
+        icon.textContent = '🎉';
+        title.textContent = 'Congratulations!';
+        title.style.color = 'var(--accent)';
+        message.innerHTML = `
+          You won the match!<br>
+          <strong style="color:var(--accent);font-size:1.3rem">+$${pot.toFixed(2)}</strong> added to your balance<br>
+          <span style="color:var(--muted);font-size:0.95rem">Score: ${Math.round(userScore)} pts (${correctCount}/10 correct)</span>
+        `;
+      } else {
+        const scoreDiff = Math.abs(Math.round(winner.score) - Math.round(userScore));
+        let encouragement = 'Better luck next time!';
+        if (scoreDiff < 500) {
+          encouragement = 'You were so close!';
+        } else if (scoreDiff < 1000) {
+          encouragement = 'Almost there!';
+        }
+
+        icon.textContent = '😔';
+        title.textContent = encouragement;
+        title.style.color = '#ff5757';
+        message.innerHTML = `
+          ${winner.username} won with ${Math.round(winner.score)} pts<br>
+          Your score: <strong>${Math.round(userScore)} pts</strong> (${correctCount}/10 correct)<br>
+          <span style="color:#ff5757;font-size:1.1rem">-$${pot.toFixed(2)}</span>
+        `;
+      }
+
+      modal.style.display = 'flex';
+    }
+
+    function closeMatchEndModal() {
+      const modal = document.getElementById('match-end-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function startBotSimulation() {
+      if (botIntervalId) return;
+      botIntervalId = setInterval(() => {
+        if (Math.random() < 0.5) {
+          const openLobbies = testLobbies.filter(l => l.status === "open" && l.participants.length < l.maxPlayers);
+          if (openLobbies.length > 0) {
+            const lobby = openLobbies[Math.floor(Math.random() * openLobbies.length)];
+            const availableBots = botProfiles.filter(b => b.balance >= lobby.stake && !lobby.participants.some(p => p.id === b.id));
+            if (availableBots.length > 0) {
+              const bot = availableBots[Math.floor(Math.random() * availableBots.length)];
+              joinTestLobby(lobby.id, { ...bot, isBot: true });
+              return;
+            }
+          }
+        }
+
+        const availableBots = botProfiles.filter(b => b.balance > 0);
+        if (availableBots.length === 0) return;
+
+        const bot = availableBots[Math.floor(Math.random() * availableBots.length)];
+        if (bot.balance <= 0) return;
+
+        const categories = ["Politics", "Business & Economics", "Sports", "Music", "Movies", "History", "Geography", "Science", "Pop Culture"];
+        const category = categories[Math.floor(Math.random() * categories.length)];
+        const stakes = [1, 10, 20, 50, 100];
+        const validStakes = stakes.filter(s => s <= bot.balance);
+        if (validStakes.length === 0) return;
+
+        const stake = validStakes[Math.floor(Math.random() * validStakes.length)];
+        const maxPlayersOptions = [2, 4];
+        const maxPlayers = maxPlayersOptions[Math.floor(Math.random() * maxPlayersOptions.length)];
+
+        if (bot.balance >= stake) {
+          createTestLobby({
+            hostId: bot.id,
+            hostName: bot.username,
+            category,
+            stake,
+            maxPlayers,
+            isBotHost: true
+          });
+        }
+      }, 4000);
+    }
+
+    function stopBotSimulation() {
+      if (botIntervalId) {
+        clearInterval(botIntervalId);
+        botIntervalId = null;
+      }
+    }
+
+    function getCategoryIcon(category) {
+      const icons = {
+        'Politics': '🏛️',
+        'Business & Economics': '💼',
+        'Sports': '🏈',
+        'Music': '🎵',
+        'Movies': '🎬',
+        'History': '📜',
+        'Geography': '🗺️',
+        'Science': '🔬',
+        'Pop Culture': '⭐'
+      };
+      return icons[category] || '🎯';
+    }
+
+    function renderTestLobbyList() {
+      const container = document.getElementById('testLobbyList');
+      const emptyState = document.getElementById('emptyState');
+      const lobbyCount = document.getElementById('lobbyCount');
+
+      if (!container || !lobbyCount) return;
+
+      // Apply multi-select filters
+      let lobbies = [...testLobbies];
+
+      // Category filter (OR within group)
+      if (lobbyFilters.categories.length > 0) {
+        lobbies = lobbies.filter(lobby => lobbyFilters.categories.includes(lobby.category));
+      }
+
+      // Stake filter (OR within group)
+      if (lobbyFilters.stakes.length > 0) {
+        lobbies = lobbies.filter(lobby => lobbyFilters.stakes.includes(lobby.stake));
+      }
+
+      // Size filter (OR within group)
+      if (lobbyFilters.sizes.length > 0) {
+        lobbies = lobbies.filter(lobby => lobbyFilters.sizes.includes(lobby.maxPlayers));
+      }
+
+      // Update count with filtered results
+      lobbyCount.textContent = `${lobbies.length} ${lobbies.length === 1 ? 'lobby' : 'lobbies'}`;
+
+      if (lobbies.length === 0) {
+        container.innerHTML = '';
+
+        // Check if it's because of filters or truly empty
+        if (testLobbies.length > 0) {
+          // Filtered to zero
+          const noResultsEl = document.createElement('div');
+          noResultsEl.style.cssText = 'background:var(--card);border:1px dashed var(--line);border-radius:16px;padding:48px 24px;text-align:center';
+          noResultsEl.innerHTML = `
+            <div style="font-size:3rem;margin-bottom:12px;opacity:0.5">🔍</div>
+            <div style="font-size:1.125rem;font-weight:600;color:var(--muted);margin-bottom:8px">No lobbies match your filters</div>
+            <div style="font-size:0.875rem;color:var(--dim)">Try changing the category, stake, or lobby size</div>
+          `;
+          container.appendChild(noResultsEl);
+        } else {
+          // Actually empty
+          if (emptyState) {
+            emptyState.style.display = 'block';
+            container.appendChild(emptyState);
+          }
+        }
+        return;
+      }
+
+      if (emptyState) emptyState.style.display = 'none';
+      container.innerHTML = '';
+
+      lobbies.forEach(lobby => {
+        const card = document.createElement('div');
+        card.className = 'lobby-card';
+
+        const statusBadge = lobby.status === 'open' ? 'open' :
+                           lobby.status === 'in_progress' ? 'in-progress' : 'finished';
+        const statusText = lobby.status === 'open' ? 'OPEN' :
+                          lobby.status === 'in_progress' ? 'IN PROGRESS' :
+                          `FINISHED`;
+
+        const userInLobby = lobby.participants.some(p => p.id === testUser.id);
+        const canJoin = lobby.status === 'open' && !userInLobby && testUser.balance >= lobby.stake;
+
+        let buttonHtml = '';
+        if (lobby.status === 'open' || lobby.status === 'full') {
+          buttonHtml = `<button class="btn" style="padding:8px 20px;font-size:0.875rem" onclick="window.openLobbyDetailsWrapper('${lobby.id}')">View Lobby</button>`;
+        } else {
+          buttonHtml = `<button class="btn secondary" style="padding:8px 20px;font-size:0.875rem;opacity:0.5;cursor:not-allowed" disabled>${lobby.status === 'in_progress' ? 'In Progress' : 'Finished'}</button>`;
+        }
+
+        card.innerHTML = `
+          <div style="display:flex;align-items:start;justify-content:space-between;margin-bottom:12px">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                <span style="font-size:1.5rem">${getCategoryIcon(lobby.category)}</span>
+                <h3 style="font-size:1.25rem;font-weight:700;margin:0;color:var(--txt)">${lobby.category}</h3>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+                <span class="lobby-badge ${statusBadge}">${statusText}</span>
+                <span style="font-size:0.875rem;color:var(--muted)">Host: ${lobby.hostName}</span>
+              </div>
+              ${lobby.status === 'finished' ? `<div style="font-size:0.875rem;color:var(--accent);font-weight:600">🏆 Winner: ${lobby.winnerName}</div>` : ''}
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:1.5rem;font-weight:700;color:var(--accent2);margin-bottom:4px">$${lobby.stake}</div>
+              <div style="font-size:0.75rem;color:var(--muted)">entry fee</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:12px;border-top:1px solid var(--line)">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-size:0.875rem;color:var(--muted)">Players:</span>
+              <span style="font-size:0.9375rem;font-weight:600;color:var(--txt)">${lobby.participants.length} / ${lobby.maxPlayers}</span>
+            </div>
+            ${buttonHtml}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    window.openLobbyDetailsWrapper = function(lobbyId) {
+      openLobbyDetails(lobbyId);
+    };
+
+    // Close buttons
+    document.querySelectorAll('.close').forEach(btn => {
+      btn.addEventListener('click', e => {
+        const sheetName = e.currentTarget.getAttribute('data-close');
+        const el = document.getElementById(sheetName);
+        if (el) closeSheet(el);
+      });
+    });
+
+    // Click outside to close
+    [authSheet, freeSheet].forEach(sheet => {
+      sheet.addEventListener('click', e => {
+        if (e.target === sheet) closeSheet(sheet);
+      });
+    });
+
+    // Track auth context for redirects after sign-in
+    let authContext = null; // 'free' or 'cash'
+
+    // ===== TEST CASH MODE SETUP =====
+    if (TEST_CASH_MODE) {
+      const testCashBtn = document.getElementById('testCashBtn');
+      const testCashCard = document.getElementById('testCashCard');
+      const testCashBackBtn = document.getElementById('testCashBackBtn');
+      const testCreateLobby = document.getElementById('testCreateLobby');
+      const addTestFunds = document.getElementById('addTestFunds');
+
+      testCashBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('[Test Mode] Opening Test Cash Challenge');
+        console.log('[Test Mode] Current TEST_CASH_MODE:', TEST_CASH_MODE);
+        showScreen('cash-test-screen');
+        console.log('[Test Mode] Screen shown');
+      });
+
+      testCashCard?.addEventListener('click', (e) => {
+        if (e.target !== testCashBtn && !testCashBtn.contains(e.target)) {
+          testCashBtn.click();
+        }
+      });
+
+      testCashBackBtn?.addEventListener('click', () => {
+        hideScreen('cash-test-screen');
+      });
+
+      addTestFunds?.addEventListener('click', () => {
+        testUser.balance += 20;
+        updateTestUserBalanceUI();
+        showToast('✓ Added $20 to test balance!');
+      });
+
+      // Quick stake buttons
+      document.querySelectorAll('.stake-quick-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const stake = btn.getAttribute('data-stake');
+          document.getElementById('testStake').value = stake;
+          document.querySelectorAll('.stake-quick-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        });
+      });
+
+      // Initialize default lobbies
+      if (testLobbies.length === 0) {
+        initDefaultLobbies();
+        renderTestLobbyList();
+      }
+
+      // Quick Cash Match
+      const quickCashBtn = document.getElementById('quickCashBtn');
+      quickCashBtn?.addEventListener('click', () => {
+        const validStakes = [1, 10, 20, 50, 100];
+        const stake = testUser.balance >= 10 ? 10 : (testUser.balance >= 1 ? 1 : null);
+
+        if (!stake) {
+          showToast('⚠️ Insufficient balance for Quick Cash Match');
+          return;
+        }
+
+        const categories = ["Politics", "Business & Economics", "Sports", "Music", "Movies", "History", "Geography", "Science", "Pop Culture"];
+        const category = categories[Math.floor(Math.random() * categories.length)];
+
+        const lobby = createTestLobby({
+          hostId: testUser.id,
+          hostName: testUser.username,
+          category,
+          stake,
+          maxPlayers: 2,
+          isBotHost: false
+        });
+
+        showToast(`⚡ Quick Cash Match created! ${category} · $${stake}`);
+
+        // Open lobby details to show terms and let user join
+        setTimeout(() => openLobbyDetails(lobby.id), 300);
+      });
+
+      // Create lobby
+      testCreateLobby?.addEventListener('click', () => {
+        const category = document.getElementById('testCategory').value;
+        const stake = parseInt(document.getElementById('testStake').value);
+        const maxPlayers = parseInt(document.getElementById('testMaxPlayers').value);
+        const validStakes = [1, 10, 20, 50, 100];
+
+        if (!category || !stake || !maxPlayers) {
+          showToast('⚠️ Please fill in all fields');
+          return;
+        }
+
+        if (!validStakes.includes(stake)) {
+          showToast('⚠️ Stake must be $1, $10, $20, $50, or $100');
+          return;
+        }
+
+        if (stake > testUser.balance) {
+          showToast('⚠️ Insufficient balance');
+          return;
+        }
+
+        if (maxPlayers < 2) {
+          showToast('⚠️ Max players must be at least 2');
+          return;
+        }
+
+        const lobby = createTestLobby({
+          hostId: testUser.id,
+          hostName: testUser.username,
+          category,
+          stake,
+          maxPlayers,
+          isBotHost: false
+        });
+
+        showToast(`✓ Lobby created!`);
+
+        // Open lobby details to show terms and let user join
+        setTimeout(() => openLobbyDetails(lobby.id), 300);
+      });
+
+      // Multi-select filter pill handlers
+      document.querySelectorAll('.filter-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+          const type = pill.getAttribute('data-type');
+          const value = pill.getAttribute('data-value');
+
+          if (type === 'category') {
+            const index = lobbyFilters.categories.indexOf(value);
+            if (index === -1) {
+              lobbyFilters.categories.push(value);
+              pill.classList.add('active');
+            } else {
+              lobbyFilters.categories.splice(index, 1);
+              pill.classList.remove('active');
+            }
+          } else if (type === 'stake') {
+            const numValue = Number(value);
+            const index = lobbyFilters.stakes.indexOf(numValue);
+            if (index === -1) {
+              lobbyFilters.stakes.push(numValue);
+              pill.classList.add('active');
+            } else {
+              lobbyFilters.stakes.splice(index, 1);
+              pill.classList.remove('active');
+            }
+          } else if (type === 'size') {
+            const numValue = Number(value);
+            const index = lobbyFilters.sizes.indexOf(numValue);
+            if (index === -1) {
+              lobbyFilters.sizes.push(numValue);
+              pill.classList.add('active');
+            } else {
+              lobbyFilters.sizes.splice(index, 1);
+              pill.classList.remove('active');
+            }
+          }
+
+          renderTestLobbyList();
+        });
+      });
+
+      // Lobby Details screen handlers
+      const lobbyDetailsBackBtn = document.getElementById('lobbyDetailsBackBtn');
+      const lobbyDetailsJoinBtn = document.getElementById('lobbyDetailsJoinBtn');
+
+      console.log('[Init] lobbyDetailsJoinBtn element found:', lobbyDetailsJoinBtn);
+
+      if (lobbyDetailsJoinBtn) {
+        console.log('[Init] Adding click listener to Join button');
+      } else {
+        console.error('[Init] Join button not found in DOM!');
+      }
+
+      lobbyDetailsBackBtn?.addEventListener('click', () => {
+        // Check if user is in the current lobby
+        const lobby = testLobbies.find(l => l.id === currentLobbyId);
+        const userInLobby = lobby && lobby.participants.some(p => p.id === testUser.id);
+
+        if (userInLobby) {
+          // Show confirmation modal
+          const modal = document.getElementById('leave-lobby-modal');
+          if (modal) {
+            modal.style.display = 'flex';
+          }
+        } else {
+          // User not in lobby, just go back
+          if (lobbyRefreshInterval) clearInterval(lobbyRefreshInterval);
+          currentLobbyId = null;
+          hideScreen('lobby-details-screen');
+          showScreen('cash-test-screen');
+        }
+      });
+
+      // Leave lobby confirmation modal handlers
+      const confirmLeaveLobby = document.getElementById('confirmLeaveLobby');
+      const cancelLeaveLobby = document.getElementById('cancelLeaveLobby');
+
+      confirmLeaveLobby?.addEventListener('click', () => {
+        const modal = document.getElementById('leave-lobby-modal');
+        if (modal) modal.style.display = 'none';
+
+        if (currentLobbyId) {
+          leaveLobby(currentLobbyId);
+        }
+      });
+
+      cancelLeaveLobby?.addEventListener('click', () => {
+        const modal = document.getElementById('leave-lobby-modal');
+        if (modal) modal.style.display = 'none';
+      });
+
+      // Match End Modal handlers
+      const matchEndHomeBtn = document.getElementById('match-end-home-btn');
+      const matchEndRematchBtn = document.getElementById('match-end-rematch-btn');
+      const matchEndDepositBtn = document.getElementById('match-end-deposit-btn');
+
+      matchEndHomeBtn?.addEventListener('click', () => {
+        closeMatchEndModal();
+        hideScreen('cash-test-screen');
+        const wrapEl = document.querySelector('.wrap');
+        if (wrapEl) wrapEl.style.display = 'block';
+        showScreen('fp-picker-screen');
+      });
+
+      matchEndRematchBtn?.addEventListener('click', () => {
+        closeMatchEndModal();
+        showToast('Rematch feature coming soon!');
+      });
+
+      matchEndDepositBtn?.addEventListener('click', () => {
+        closeMatchEndModal();
+        showToast('Deposit feature coming soon!');
+      });
+
+      if (lobbyDetailsJoinBtn) {
+        lobbyDetailsJoinBtn.addEventListener('click', () => {
+          console.log('[Join Button] ========== CLICKED ==========');
+          console.log('[Join Button] currentLobbyId:', currentLobbyId);
+          console.log('[Join Button] testUser:', testUser);
+
+        if (!currentLobbyId) {
+          console.error('[Join Button] No currentLobbyId!');
+          showToast('⚠️ Error: No lobby selected');
+          return;
+        }
+
+        const lobby = testLobbies.find(l => l.id === currentLobbyId);
+        console.log('[Join Button] Found lobby:', lobby);
+        console.log('[Join Button] User balance:', testUser.balance, 'Lobby stake:', lobby?.stake);
+
+        const success = joinTestLobby(currentLobbyId, {
+          id: testUser.id,
+          username: testUser.username,
+          isBot: false,
+          hasAcceptedTerms: false,
+          isReady: false
+        });
+
+        console.log('[Join Button] joinTestLobby returned:', success);
+
+        if (success) {
+          showToast('✓ Joined lobby successfully!');
+        } else {
+          showToast('⚠️ Unable to join lobby');
+        }
+        });
+        console.log('[Init] Join button click listener attached successfully');
+      } else {
+        console.error('[Init] Could not attach listener - button element is null');
+      }
+
+      // Wire up Terms & Ready buttons
+      const acceptTermsBtn = document.getElementById('lobby-accept-terms-btn');
+      const readyBtn = document.getElementById('lobby-ready-btn');
+
+      if (acceptTermsBtn) {
+        acceptTermsBtn.addEventListener('click', () => {
+          if (currentLobbyId) {
+            handleAcceptTerms(currentLobbyId);
+          }
+        });
+      }
+
+      if (readyBtn) {
+        readyBtn.addEventListener('click', () => {
+          if (currentLobbyId) {
+            handleReadyUp(currentLobbyId);
+          }
+        });
+      }
+    }
+
+    // ===== FREE PLAY BUTTONS =====
+    const freeBtn = document.getElementById('freeBtn');
+    const freeCard = document.getElementById('freeCard');
+
+    freeBtn.addEventListener('click', () => {
+      console.log('[Free Play] Opening choice sheet');
+      openSheet(freeSheet);
+    });
+
+    freeCard.addEventListener('click', (e) => {
+      if (e.target !== freeBtn && !freeBtn.contains(e.target)) {
+        freeBtn.click();
+      }
+    });
+
+    // Guest button - handled by freeplay-flow.js
+    // (Flow script intercepts this and shows setup screen first)
+
+    // Free sign-in button - optional auth, then go to free play
+    document.getElementById('freeSignInBtn').addEventListener('click', async () => {
+      console.log('[Free Play] Sign-in requested');
+      authContext = 'free';
+      closeSheet(freeSheet);
+      openSheet(authSheet);
+    });
+
+    // ===== CASH PLAY GATE =====
+    const cashBtn = document.getElementById('cashBtn');
+    const cashCard = document.getElementById('cashCard');
+
+    cashBtn.addEventListener('click', startCashGate);
+
+    cashCard.addEventListener('click', (e) => {
+      if (e.target !== cashBtn && !cashBtn.contains(e.target)) {
+        cashBtn.click();
+      }
+    });
+
+    async function startCashGate(){
+      console.log('[Cash Gate] Starting...');
+      authContext = 'cash';
+      cashBtn.disabled = true;
+      cashBtn.innerHTML = '⏱ Checking... <span class="spinner"></span>';
+
+      try {
+        let session = (await sb.auth.getSession()).data.session;
+
+        if (!session) {
+          console.log('[Cash Gate] No session - opening auth');
+          cashBtn.disabled = false;
+          cashBtn.innerHTML = 'Enter Cash Play';
+          openSheet(authSheet);
+          await waitForAuthChange();
+          closeSheet(authSheet);
+          session = (await sb.auth.getSession()).data.session;
+          if (!session) {
+            console.log('[Cash Gate] User cancelled');
+            return;
+          }
+        }
+
+        console.log('[Cash Gate] Authenticated, checking verification...');
+
+        const { data: { user }, error: userError } = await sb.auth.getUser();
+        if (userError || !user) {
+          showToast('Failed to get user info. Try again.');
+          cashBtn.disabled = false;
+          cashBtn.innerHTML = 'Enter Cash Play';
+          return;
+        }
+
+        const emailOk = !!user.email_confirmed_at;
+        const phoneOk = !!user.phone && !!user.phone_confirmed_at;
+
+        console.log('[Cash Gate] Email verified:', emailOk, 'Phone verified:', phoneOk);
+
+        if (!emailOk && !phoneOk) {
+          showToast('⚠️ Verify your email or phone first. Check your inbox/SMS.', 5000);
+          cashBtn.disabled = false;
+          cashBtn.innerHTML = 'Enter Cash Play';
+          return;
+        }
+
+        console.log('[Cash Gate] Contact verified, checking KYC...');
+
+        // Check KYC status
+        const { data: kycRecord } = await sb
+          .from('user_kyc_status')
+          .select('kyc_status')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
+        console.log('[Cash Gate] KYC record:', kycRecord);
+
+        if (kycRecord?.kyc_status === 'verified') {
+          console.log('[Cash Gate] KYC verified - entering');
+          showToast('✓ Verified! Entering Cash Play...');
+          setTimeout(() => { window.location.href = '/online.html'; }, 800);
+          return;
+        }
+
+        // Not verified → redirect to identity verification page
+        console.log('[Cash Gate] KYC not verified - redirecting to verify-identity');
+        showToast('🔒 Identity verification required...');
+
+        setTimeout(() => {
+          window.location.href = '/verify-identity.html';
+        }, 800);
+
+      } catch (error) {
+        console.error('[Cash Gate] Error:', error);
+        showToast('⚠️ Something went wrong. Try again.');
+        cashBtn.disabled = false;
+        cashBtn.innerHTML = 'Enter Cash Play';
+      }
+    }
+
+    // Import and initialize the auth UI module
+    import { initAuth } from '/src/auth/auth-ui.js';
+
+    // Initialize auth forms
+    initAuth();
+
+    // Import NEW category-based question bank (SINGLE SOURCE OF TRUTH)
+    import '/src/questions-new.js';
+
+    // Import UNIFIED trivia engine with AI, lifecycle, and Kahoot scoring
+    import '/src/trivia-engine-unified.js';
+
+    // Import and initialize Free Play flow
+    import '/src/freeplay-flow.js';
+
+    // Import and initialize Offline Wizard
+    import '/src/offline-wizard.js';
+
+    // ===== WIRE EXIT BUTTON FOR TRIVIA =====
+    document.addEventListener('DOMContentLoaded', () => {
+      const exitBtn = document.getElementById('ogBackToMenu');
+      if (exitBtn) {
+        exitBtn.addEventListener('click', () => {
+          if (typeof window.exitTriviaSession === 'function') {
+            window.exitTriviaSession();
+          }
+        });
+        console.log('[Trivia] Exit button wired to exitTriviaSession');
+      }
+
+
+      // ===== RENDER FREE PLAY CATEGORIES DYNAMICALLY =====
+      // Use TRIVIA_CATEGORIES as single source of truth for both Free Play and Cash
+      const renderFreePlayCategories = () => {
+        const catsGrid = document.getElementById('catsGrid');
+        if (!catsGrid || !window.TRIVIA_CATEGORIES) {
+          console.warn('[Categories] Cannot render - missing catsGrid or TRIVIA_CATEGORIES');
+          return;
+        }
+
+        console.log('[Categories] Rendering Free Play categories from TRIVIA_CATEGORIES');
+
+        // Clear existing content
+        catsGrid.innerHTML = '';
+
+        // Render each category from the canonical list
+        window.TRIVIA_CATEGORIES.forEach(cat => {
+          const tile = document.createElement('div');
+          tile.className = cat.key === 'mixed' ? 'wizard-tile wizard-tile-selected' : 'wizard-tile';
+          tile.setAttribute('data-cat', cat.key);
+
+          tile.innerHTML = `
+            <div class="cat-icon">${cat.icon}</div>
+            <div class="cat-title">${cat.label}</div>
+          `;
+
+          catsGrid.appendChild(tile);
+        });
+
+        console.log('[Categories] Rendered', window.TRIVIA_CATEGORIES.length, 'categories');
+      };
+
+      // Render when TRIVIA_CATEGORIES becomes available
+      if (window.TRIVIA_CATEGORIES) {
+        renderFreePlayCategories();
+      } else {
+        // Wait for questions-new.js to load
+        const checkInterval = setInterval(() => {
+          if (window.TRIVIA_CATEGORIES) {
+            clearInterval(checkInterval);
+            renderFreePlayCategories();
+          }
+        }, 100);
+        // Timeout after 5 seconds
+        setTimeout(() => clearInterval(checkInterval), 5000);
+      }
+    });
+
+    // ===== WAIT FOR AUTH =====
+    function waitForAuthChange(){
+      return new Promise((resolve)=>{
+        const sub = sb.auth.onAuthStateChange((evt, sess)=>{
+          if (sess) {
+            try { sub.data.subscription.unsubscribe(); } catch{}
+            resolve();
+          }
+        });
+        setTimeout(()=>{ try { sub.data.subscription.unsubscribe(); } catch{} resolve(); }, 120000);
+      });
+    }
+
+    // ===== INIT - Handle auth redirects =====
+    (async () => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.has('code') || params.has('access_token')) {
+        console.log('[Init] OAuth redirect detected');
+        showToast('✓ Signed in successfully!');
+        window.history.replaceState({}, document.title, window.location.pathname);
+
+        // Check if we should redirect based on previous context
+        const session = (await sb.auth.getSession()).data.session;
+        if (session && authContext === 'free') {
+          console.log('[Init] Redirecting to free play after auth');
+          setTimeout(() => { window.location.href = '/offline.html'; }, 1000);
+        }
+        // If authContext was 'cash', startCashGate will handle the flow
+      }
+    })();
+  </script>
+
+  <!-- Cash Challenge Wizard -->
+  <section id="cashStepMode" class="sheet hidden" aria-hidden="true">
+    <div class="modal">
+      <button class="close" id="cashModeBack" aria-label="Close">&times;</button>
+      <h2 class="modal-title">⚔️ Cash Challenge</h2>
+      <p class="modal-sub">Choose your match type</p>
+      <div style="display:grid;grid-template-columns:1fr;gap:12px;margin-top:16px">
+        <div class="tile selectable" id="cashTile1v1" style="padding:24px;text-align:center;cursor:pointer">
+          <div style="font-size:2rem;margin-bottom:8px">🎯</div>
+          <div style="font-weight:700;font-size:1.125rem">1 v 1</div>
+          <div style="font-size:0.8125rem;color:var(--muted);margin-top:4px">Challenge a friend</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cashStepRounds" class="sheet hidden" aria-hidden="true">
+    <div class="modal">
+      <button class="close" id="cashRoundsBack" aria-label="Close">&times;</button>
+      <h2 class="modal-title">1v1 — Rounds</h2>
+      <p class="modal-sub">How many questions?</p>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:16px">
+        <div class="tile selectable" data-val="3" style="padding:20px;text-align:center;cursor:pointer">3</div>
+        <div class="tile selectable" data-val="5" style="padding:20px;text-align:center;cursor:pointer">5</div>
+        <div class="tile selectable" data-val="7" style="padding:20px;text-align:center;cursor:pointer">7</div>
+        <div class="tile selectable" data-val="10" style="padding:20px;text-align:center;cursor:pointer">10</div>
+      </div>
+      <div class="form-group" style="margin-top:16px">
+        <label for="cashRoundsInput">Custom</label>
+        <input id="cashRoundsInput" type="number" min="1" max="20" value="5" />
+      </div>
+      <button id="cashRoundsNext" class="btn" style="width:100%;margin-top:16px">Next</button>
+    </div>
+  </section>
+
+  <section id="cashStepStake" class="sheet hidden" aria-hidden="true">
+    <div class="modal">
+      <button class="close" id="cashStakeBack" aria-label="Close">&times;</button>
+      <h2 class="modal-title">1v1 — Stake</h2>
+      <p class="modal-sub">Set the entry fee (per player)</p>
+      <div class="form-group" style="margin-top:16px">
+        <label for="cashStakeInput">Stake Amount (USD)</label>
+        <input id="cashStakeInput" type="number" min="1" step="1" value="5" />
+      </div>
+      <p style="margin-top:12px;font-size:0.8125rem;color:var(--muted)">
+        Both players must have sufficient balance. Funds are locked in escrow upon consent.
+      </p>
+      <button id="cashStakeNext" class="btn" style="width:100%;margin-top:16px">Next</button>
+    </div>
+  </section>
+
+  <section id="cashStepCatsDiff" class="sheet hidden" aria-hidden="true">
+    <div class="modal" style="max-height:90vh;overflow-y:auto">
+      <button class="close" id="cashCatsBack" aria-label="Close">&times;</button>
+      <h2 class="modal-title">1v1 — Categories & Difficulty</h2>
+      <p class="modal-sub">Choose question topics and difficulty</p>
+      <div style="margin-top:16px">
+        <label style="font-weight:600;margin-bottom:8px;display:block">Categories</label>
+        <div id="cashCatsGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
+          <div class="tile selectable selected" data-cat="" style="padding:16px;text-align:center;cursor:pointer">
+            <div style="font-size:1.5rem">🎲</div>
+            <div style="font-size:0.875rem;margin-top:4px">Any</div>
+          </div>
+          <div class="tile selectable" data-cat="sports" style="padding:16px;text-align:center;cursor:pointer">
+            <div style="font-size:1.5rem">🏈</div>
+            <div style="font-size:0.875rem;margin-top:4px">Sports</div>
+          </div>
+          <div class="tile selectable" data-cat="history" style="padding:16px;text-align:center;cursor:pointer">
+            <div style="font-size:1.5rem">🏛️</div>
+            <div style="font-size:0.875rem;margin-top:4px">History</div>
+          </div>
+          <div class="tile selectable" data-cat="music" style="padding:16px;text-align:center;cursor:pointer">
+            <div style="font-size:1.5rem">🎵</div>
+            <div style="font-size:0.875rem;margin-top:4px">Music</div>
+          </div>
+          <div class="tile selectable" data-cat="science" style="padding:16px;text-align:center;cursor:pointer">
+            <div style="font-size:1.5rem">🔬</div>
+            <div style="font-size:0.875rem;margin-top:4px">Science</div>
+          </div>
+          <div class="tile selectable" data-cat="movies" style="padding:16px;text-align:center;cursor:pointer">
+            <div style="font-size:1.5rem">🎬</div>
+            <div style="font-size:0.875rem;margin-top:4px">Movies</div>
+          </div>
+          <div class="tile selectable" data-cat="geography" style="padding:16px;text-align:center;cursor:pointer">
+            <div style="font-size:1.5rem">🗺️</div>
+            <div style="font-size:0.875rem;margin-top:4px">Geography</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:20px">
+        <label style="font-weight:600;margin-bottom:8px;display:block">Difficulty</label>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+          <div class="tile selectable" data-diff="easy" style="padding:16px;text-align:center;cursor:pointer">Easy</div>
+          <div class="tile selectable selected" data-diff="normal" style="padding:16px;text-align:center;cursor:pointer">Medium</div>
+          <div class="tile selectable" data-diff="hard" style="padding:16px;text-align:center;cursor:pointer">Hard</div>
+        </div>
+      </div>
+      <button id="cashCreateInvite" class="btn" style="width:100%;margin-top:20px">Create & Get Invite Link</button>
+    </div>
+  </section>
+
+  <section id="cashStepInvite" class="sheet hidden" aria-hidden="true">
+    <div class="modal">
+      <button class="close" id="cashInviteBack" aria-label="Close">&times;</button>
+      <h2 class="modal-title">1v1 — Invite & Consent</h2>
+      <p class="modal-sub">Share this link with your opponent</p>
+
+      <div style="background:rgba(0,234,255,0.05);border:1px solid rgba(0,234,255,0.2);border-radius:12px;padding:16px;margin:16px 0">
+        <div style="display:grid;grid-template-columns:auto 1fr;gap:8px;font-size:0.875rem">
+          <strong>Rounds:</strong><span id="ciRounds">-</span>
+          <strong>Stake:</strong><span>$<span id="ciStake">-</span></span>
+          <strong>Difficulty:</strong><span id="ciDiff">-</span>
+          <strong>Categories:</strong><span id="ciCats">-</span>
+        </div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:16px 0">
+        <label style="font-weight:600;margin-bottom:8px;display:block">Invite Link</label>
+        <input id="ciLink" readonly style="width:100%;padding:10px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,0.2);color:var(--txt);font-size:0.8125rem;margin-bottom:8px" />
+        <button id="ciCopy" class="btn secondary" style="width:100%">📋 Copy Link</button>
+      </div>
+
+      <div style="background:rgba(57,255,136,0.05);border:1px solid rgba(57,255,136,0.2);border-radius:12px;padding:16px;margin:16px 0">
+        <label style="font-weight:600;margin-bottom:8px;display:block">Status</label>
+        <div id="ciStatus" style="font-size:0.875rem">Waiting for opponent to join…</div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:16px 0">
+        <label style="display:flex;align-items:start;gap:8px;cursor:pointer;margin-bottom:12px">
+          <input type="checkbox" id="ciAgree" style="margin-top:2px" />
+          <span style="font-size:0.875rem">I agree to the number of rounds and stake, and to the <a href="/legal/terms.md" target="_blank" style="color:var(--accent2)">terms</a>.</span>
+        </label>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:12px">
+          <button id="ciConsent" class="btn" disabled style="width:100%">Agree & Lock Funds</button>
+          <button id="ciCancel" class="btn secondary">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Deposit Modal -->
+  <div id="depositModal" class="sheet hidden" aria-hidden="true">
+    <div class="modal">
+      <button class="close" id="closeDeposit" aria-label="Close">&times;</button>
+      <h2 class="modal-title">💵 Deposit Funds</h2>
+      <p class="modal-sub">Add funds to your wallet to play Cash Challenges</p>
+      <div class="form-group">
+        <label for="depAmount">Amount (USD)</label>
+        <input id="depAmount" type="number" min="1" step="1" value="10" placeholder="Enter amount" />
+      </div>
+      <div style="margin-top:16px">
+        <button id="payStripeLink" class="btn" style="width:100%">Pay with Card / Apple Pay / Google Pay</button>
+      </div>
+      <p style="margin-top:12px;font-size:0.75rem;color:var(--dim);text-align:center">
+        Secure payment powered by Stripe. Funds appear instantly.
+      </p>
+    </div>
+  </div>
+
+  <!-- Withdraw Modal -->
+  <div id="withdrawModal" class="sheet hidden" aria-hidden="true">
+    <div class="modal">
+      <button class="close" id="closeWithdraw" aria-label="Close">&times;</button>
+      <h2 class="modal-title">💰 Withdraw Funds</h2>
+      <p class="modal-sub">Cash out your winnings instantly</p>
+      <div class="form-group">
+        <label for="wdAmount">Amount (USD)</label>
+        <input id="wdAmount" type="number" min="1" step="1" value="10" placeholder="Enter amount" />
+      </div>
+      <p style="margin-top:12px;font-size:0.8125rem;color:var(--muted)">
+        ⚠️ Identity verification required for withdrawals
+      </p>
+      <div style="margin-top:16px">
+        <button id="doWithdraw" class="btn" style="width:100%">Instant Payout to Debit</button>
+      </div>
+      <p style="margin-top:12px;font-size:0.75rem;color:var(--dim);text-align:center">
+        Funds typically arrive within minutes
+      </p>
+    </div>
+  </div>
+
+  <script type="module" src="/src/wallet-ui.js"></script>
+  <script type="module">
+    import { initWalletUI } from '/src/wallet-ui.js';
+    initWalletUI();
+  </script>
+
+  <script type="module">
+    import { initHeader } from '/src/header/header.js';
+    initHeader();
+  </script>
+
+  <script type="module" src="/src/cash-duel-ui.js"></script>
+  <script type="module">
+    import { initCashDuelUI } from '/src/cash-duel-ui.js';
+    initCashDuelUI();
+  </script>
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Cash Matches - BrainDash</title>
+  <link rel="stylesheet" href="/src/header/header-styles.css">
+  <style>
+    :root{--bg:#0a0b0f;--card:#111425;--txt:#e7eaf6;--muted:#9aa3b2;--dim:#6b7280;--line:#1f2937;--accent:#39ff88;--accent2:#00eaff;--brand:#2563eb}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{margin:0;background:radial-gradient(1200px 800px at 10% -10%,rgba(0,234,255,.12),transparent),radial-gradient(1000px 700px at 110% 10%,rgba(57,255,136,.08),transparent),var(--bg);color:var(--txt);font-family:Inter,system-ui,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh;padding-top:73px}
+    .container{max-width:1200px;margin:0 auto;padding:32px 24px}
+    .page-title{font-size:2.5rem;font-weight:900;margin-bottom:8px;background:linear-gradient(135deg,var(--accent2),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .page-subtitle{color:var(--muted);font-size:1.125rem;margin-bottom:32px}
+    .balance-card{background:rgba(0,234,255,.08);border:1px solid rgba(0,234,255,.3);border-radius:16px;padding:24px;margin-bottom:32px;display:flex;justify-content:space-between;align-items:center}
+    .balance-label{color:var(--muted);font-size:0.875rem;margin-bottom:4px}
+    .balance-amount{font-size:2rem;font-weight:700;color:var(--accent2)}
+    .tabs{display:flex;gap:8px;margin-bottom:24px;border-bottom:2px solid var(--line)}
+    .tab{padding:12px 24px;background:transparent;border:none;color:var(--muted);font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;font-family:inherit;font-size:1rem}
+    .tab.active{color:var(--accent2);border-bottom-color:var(--accent2)}
+    .tab:hover{color:var(--txt)}
+    .tab-content{display:none}
+    .tab-content.active{display:block}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;margin-bottom:16px}
+    .form-group{margin-bottom:20px}
+    .form-label{display:block;color:var(--txt);font-weight:600;margin-bottom:8px;font-size:0.875rem}
+    .form-input,.form-select{width:100%;padding:12px 16px;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;color:var(--txt);font-size:1rem;font-family:inherit}
+    .form-input:focus,.form-select:focus{outline:none;border-color:var(--accent2);background:rgba(0,234,255,.05)}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .btn{padding:14px 28px;background:linear-gradient(135deg,var(--accent2),#0af);color:#000;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:inherit;width:100%}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,234,255,.3)}
+    .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+    .btn-secondary{background:rgba(255,255,255,.05);color:var(--txt);border:1px solid var(--line)}
+    .btn-secondary:hover{background:rgba(255,255,255,.08);box-shadow:0 4px 12px rgba(0,0,0,.3)}
+    .match-list{display:grid;gap:16px}
+    .match-item{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;cursor:pointer;transition:all .2s}
+    .match-item:hover{border-color:var(--accent2);transform:translateY(-2px)}
+    .match-header{display:flex;justify-content:space-between;align-items:start;margin-bottom:12px}
+    .match-pot{font-size:1.5rem;font-weight:700;color:var(--accent2)}
+    .match-status{padding:6px 12px;background:rgba(0,234,255,.15);border:1px solid rgba(0,234,255,.3);border-radius:8px;font-size:0.75rem;font-weight:600;color:var(--accent2);text-transform:uppercase}
+    .match-status.waiting{background:rgba(255,193,7,.15);border-color:rgba(255,193,7,.3);color:#ffc107}
+    .match-status.active{background:rgba(57,255,136,.15);border-color:var(--accent);color:var(--accent)}
+    .match-info{display:flex;gap:24px;flex-wrap:wrap;color:var(--muted);font-size:0.875rem}
+    .match-info span{display:flex;align-items:center;gap:6px}
+    .lobby-view{display:none}
+    .lobby-view.active{display:block}
+    .players-grid{display:grid;gap:12px;margin:24px 0}
+    .player-slot{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px}
+    .player-slot.filled{background:rgba(0,234,255,.05);border-color:rgba(0,234,255,.3)}
+    .player-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));display:flex;align-items:center;justify-content:center;font-weight:700;color:#000}
+    .player-slot.empty .player-avatar{background:rgba(255,255,255,.1)}
+    .player-name{font-weight:600}
+    .lobby-actions{display:flex;gap:12px;margin-top:24px}
+    .game-view{display:none}
+    .game-view.active{display:block}
+    .question-card{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:32px;margin-bottom:24px}
+    .question-number{color:var(--muted);font-size:0.875rem;margin-bottom:8px}
+    .question-text{font-size:1.5rem;font-weight:700;margin-bottom:24px;line-height:1.4}
+    .answers-grid{display:grid;gap:12px}
+    .answer-btn{padding:16px;background:rgba(255,255,255,.05);border:2px solid var(--line);border-radius:12px;color:var(--txt);font-size:1rem;font-weight:600;cursor:pointer;transition:all .2s;text-align:left;font-family:inherit}
+    .answer-btn:hover{background:rgba(0,234,255,.08);border-color:var(--accent2)}
+    .answer-btn.selected{background:rgba(0,234,255,.15);border-color:var(--accent2)}
+    .timer-bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:24px}
+    .timer-fill{height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .1s linear}
+    .results-view{display:none}
+    .results-view.active{display:block}
+    .results-podium{display:grid;gap:16px;margin:24px 0}
+    .result-item{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;display:flex;justify-content:space-between;align-items:center}
+    .result-item.winner{border-color:var(--accent);background:rgba(57,255,136,.05)}
+    .result-placement{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:900;color:#000}
+    .result-info{flex:1;margin-left:16px}
+    .result-score{font-size:1.25rem;font-weight:700}
+    .result-payout{font-size:1.5rem;font-weight:700;color:var(--accent2)}
+    .spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .error{color:#ff6b6b;padding:12px;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.3);border-radius:8px;margin-bottom:16px}
+    .success{color:var(--accent);padding:12px;background:rgba(57,255,136,.1);border:1px solid rgba(57,255,136,.3);border-radius:8px;margin-bottom:16px}
+    .test-mode-banner{position:fixed;top:73px;left:0;right:0;background:linear-gradient(135deg,#ff6b6b,#ff8c00);color:#fff;padding:12px;text-align:center;font-weight:700;z-index:999;box-shadow:0 4px 12px rgba(0,0,0,.3);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.85}}
+    .compliance-warning{background:rgba(255,107,107,.15);border:2px solid #ff6b6b;border-radius:12px;padding:20px;margin-bottom:24px}
+    .compliance-warning h3{color:#ff6b6b;margin-bottom:12px;font-size:1.25rem}
+    .compliance-warning p{color:var(--muted);line-height:1.6;margin-bottom:8px}
+    .compliance-warning ul{margin-left:20px;color:var(--muted);line-height:1.8}
+  </style>
+</head>
+<body>
+  <div class="test-mode-banner">
+    ⚠️ TEST MODE ONLY - NO REAL MONEY - DEVELOPMENT SANDBOX ⚠️
+  </div>
+  <header id="appHeader">
+    <div class="header-content">
+      <div class="header-logo" onclick="window.location.href='/'">
+        <span class="header-logo-text">BrainDash</span>
+      </div>
+      <nav class="header-nav">
+        <button class="header-nav-link" id="headerRulesBtn">Rules</button>
+        <button class="header-nav-link" id="headerHelpBtn">Help</button>
+        <button class="header-nav-link" id="headerTermsBtn">Terms</button>
+      </nav>
+      <div class="header-auth-controls">
+        <div id="headerGuestControls" style="display:flex;gap:12px;align-items:center">
+          <button id="headerSignIn" class="header-btn">Sign In</button>
+          <button id="headerSignUp" class="header-btn header-btn-primary">Sign Up</button>
+        </div>
+        <div id="headerAuthControls" style="display:none;gap:12px;align-items:center">
+          <div style="position:relative">
+            <button id="headerWalletPill" class="header-wallet-pill">
+              <span class="header-wallet-icon">💰</span>
+              <span id="headerWalletBalance">$0.00</span>
+            </button>
+            <div id="headerWalletMenu" class="header-wallet-menu">
+              <button class="header-menu-item" data-action="deposit"><span>💵</span><span>Deposit</span></button>
+              <button class="header-menu-item" data-action="withdraw"><span>💸</span><span>Withdraw</span></button>
+            </div>
+          </div>
+          <div class="header-user-section">
+            <button id="headerUserMenuBtn" class="header-user-menu-btn">
+              <div id="headerUserAvatar" class="header-user-avatar">U</div>
+              <span id="headerUserName">User</span>
+            </button>
+            <div id="headerUserMenu" class="header-user-menu">
+              <button class="header-menu-item" onclick="alert('Profile coming soon!')"><span>👤</span><span>Profile</span></button>
+              <button class="header-menu-item" onclick="alert('Match history coming soon!')"><span>📊</span><span>History</span></button>
+              <button id="headerSignOut" class="header-menu-item"><span>🚪</span><span>Sign Out</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button id="headerMobileMenuBtn" class="header-mobile-menu-btn"><span>☰</span></button>
+    </div>
+    <div id="headerMobileMenu" class="header-mobile-menu">
+      <div class="header-mobile-section">
+        <div class="header-mobile-title">Information</div>
+        <div class="header-mobile-nav">
+          <button class="header-mobile-nav-link" id="headerMobileRulesBtn">📋 Rules</button>
+          <button class="header-mobile-nav-link" id="headerMobileHelpBtn">❓ Help</button>
+          <button class="header-mobile-nav-link" id="headerMobileTermsBtn">📄 Terms & Conditions</button>
+        </div>
+      </div>
+      <div id="headerMobileGuestSection" class="header-mobile-section">
+        <div class="header-mobile-title">Account</div>
+        <div class="header-mobile-nav">
+          <button id="headerMobileSignIn" class="header-mobile-nav-link">🔑 Sign In</button>
+          <button id="headerMobileSignUp" class="header-mobile-nav-link" style="background:rgba(0,234,255,0.1);border-color:rgba(0,234,255,0.3);color:var(--accent2)">✨ Sign Up</button>
+        </div>
+      </div>
+      <div id="headerMobileAuthSection" class="header-mobile-section" style="display:none">
+        <div class="header-mobile-title">Wallet</div>
+        <div class="header-mobile-wallet">
+          <div class="header-mobile-wallet-balance" id="headerMobileWalletBalance">$0.00</div>
+          <div class="header-mobile-wallet-actions">
+            <button class="header-btn" data-action="deposit">💵 Deposit</button>
+            <button class="header-btn" data-action="withdraw">💸 Withdraw</button>
+          </div>
+        </div>
+        <div class="header-mobile-nav">
+          <button class="header-mobile-nav-link" onclick="alert('Profile coming soon!')">👤 Profile</button>
+          <button class="header-mobile-nav-link" onclick="alert('Match history coming soon!')">📊 History</button>
+          <button id="headerMobileSignOut" class="header-mobile-nav-link" style="color:#ff6b6b">🚪 Sign Out</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container" style="padding-top:calc(32px + 48px)">
+    <h1 class="page-title">Cash Matches</h1>
+    <p class="page-subtitle">Compete for real money in multi-player trivia tournaments</p>
+
+    <div class="compliance-warning">
+      <h3>⚠️ Development Mode - Compliance Notice</h3>
+      <p><strong>This system is currently in TEST MODE with sandbox wallets only.</strong></p>
+      <p>Before real-money gaming can be enabled, the following must be completed:</p>
+      <ul>
+        <li>Legal counsel review and approval</li>
+        <li>KYC/identity verification integration (Persona, Onfido, etc.)</li>
+        <li>Geo-blocking service integration (GeoComply, MaxMind)</li>
+        <li>Payment processor approval (Stripe, PayPal, etc.)</li>
+        <li>Terms & Conditions, Privacy Policy, Responsible Gaming policies</li>
+        <li>AML monitoring and fraud detection systems</li>
+      </ul>
+      <p style="margin-top:12px;font-weight:600">See <a href="/COMPLIANCE_CHECKLIST.md" style="color:#ff6b6b;text-decoration:underline">COMPLIANCE_CHECKLIST.md</a> for full requirements.</p>
+    </div>
+
+    <div class="balance-card">
+      <div>
+        <div class="balance-label">Your Wallet Balance</div>
+        <div class="balance-amount" id="walletBalance">$0.00</div>
+      </div>
+      <button class="btn btn-secondary" onclick="alert('Deposit coming soon!')" style="width:auto;padding:12px 24px">Add Funds</button>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="create">Create Match</button>
+      <button class="tab" data-tab="browse">Browse Matches</button>
+      <button class="tab" data-tab="join">Join by Code</button>
+    </div>
+
+    <div id="createTab" class="tab-content active">
+      <div class="card">
+        <h2 style="margin-bottom:24px;font-size:1.5rem">Create New Match</h2>
+        <div id="createError" class="error" style="display:none"></div>
+        <form id="createMatchForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Entry Fee ($)</label>
+              <input type="number" class="form-input" name="entry_fee" min="1" max="100" value="5" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Game Mode</label>
+              <select class="form-select" name="mode" required>
+                <option value="classic">Classic</option>
+                <option value="sprint">Sprint</option>
+                <option value="blitz">Blitz</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Min Players</label>
+              <input type="number" class="form-input" name="min_players" min="2" max="10" value="2" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Max Players</label>
+              <input type="number" class="form-input" name="max_players" min="2" max="10" value="4" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Questions</label>
+              <input type="number" class="form-input" name="question_count" min="5" max="20" value="10" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Payout Model</label>
+              <select class="form-select" name="payout_model" required>
+                <option value="winner_take_all">Winner Takes All</option>
+                <option value="top3">Top 3 Split</option>
+                <option value="percentile">Top 50% Split</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+              <input type="checkbox" name="is_private"> Make Private (generates room code)
+            </label>
+          </div>
+          <button type="submit" class="btn" id="createBtn">Create Match</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="browseTab" class="tab-content">
+      <div class="match-list" id="matchList">
+        <p style="text-align:center;color:var(--muted);padding:48px">Loading matches...</p>
+      </div>
+    </div>
+
+    <div id="joinTab" class="tab-content">
+      <div class="card">
+        <h2 style="margin-bottom:24px;font-size:1.5rem">Join Private Match</h2>
+        <div id="joinError" class="error" style="display:none"></div>
+        <form id="joinCodeForm">
+          <div class="form-group">
+            <label class="form-label">Room Code</label>
+            <input type="text" class="form-input" name="room_code" placeholder="Enter 6-character code" maxlength="6" required style="text-transform:uppercase">
+          </div>
+          <button type="submit" class="btn" id="joinBtn">Join Match</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="lobbyView" class="lobby-view">
+      <div class="card">
+        <button class="btn-secondary" onclick="showBrowseView()" style="width:auto;padding:8px 16px;margin-bottom:16px">← Back</button>
+        <h2 style="margin-bottom:8px;font-size:1.5rem" id="lobbyTitle">Match Lobby</h2>
+        <p style="color:var(--muted);margin-bottom:24px" id="lobbySubtitle"></p>
+        <div id="lobbyError" class="error" style="display:none"></div>
+        <div class="players-grid" id="playersGrid"></div>
+        <div class="lobby-actions">
+          <button class="btn" id="startMatchBtn" style="display:none">Start Match</button>
+          <button class="btn-secondary" onclick="showBrowseView()">Leave Lobby</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="gameView" class="game-view">
+      <div class="timer-bar"><div class="timer-fill" id="timerFill" style="width:100%"></div></div>
+      <div class="question-card">
+        <div class="question-number" id="questionNumber">Question 1 of 10</div>
+        <div class="question-text" id="questionText">Loading...</div>
+        <div class="answers-grid" id="answersGrid"></div>
+      </div>
+    </div>
+
+    <div id="resultsView" class="results-view">
+      <div class="card">
+        <h2 style="margin-bottom:24px;font-size:2rem;text-align:center">Match Results</h2>
+        <div class="results-podium" id="resultsPodium"></div>
+        <button class="btn" onclick="location.reload()">Back to Matches</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.__DEV_MODE__ = true;
+    window.VITE_SUPABASE_URL = 'https://uimxwujknpuespwvipbi.supabase.co';
+    window.VITE_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVpbXh3dWprbnB1ZXNwd3ZpcGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIwMjc2NDcsImV4cCI6MjA3NzYwMzY0N30.ZKXbrtYr47DqESnoOXgxjvS0pjEHpzuQ0BHAM8QpzWw';
+  </script>
+  <script type="module" src="/src/cash-matches-app.js"></script>
+  <script type="module">
+    import { initHeader } from '/src/header/header.js';
+    initHeader();
+  </script>
+</body>
+</html>

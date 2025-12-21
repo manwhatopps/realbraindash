@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Verification Complete - BrainDash</title>
+  <style>
+    :root{--bg:#0a0b0f;--card:#111425;--txt:#e7eaf6;--muted:#9aa3b2;--accent:#39ff88;--accent2:#00eaff}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{margin:0;background:radial-gradient(1200px 800px at 10% -10%,rgba(0,234,255,.12),transparent),radial-gradient(1000px 700px at 110% 10%,rgba(57,255,136,.08),transparent),var(--bg);color:var(--txt);font-family:Inter,system-ui,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+    .success-card{background:var(--card);border:1px solid rgba(57,255,136,.3);border-radius:16px;padding:48px;max-width:600px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.3)}
+    .success-icon{font-size:80px;margin-bottom:24px;animation:popIn .5s ease}
+    @keyframes popIn{0%{transform:scale(0);opacity:0}50%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+    h1{font-size:2rem;font-weight:900;margin-bottom:16px;color:var(--accent)}
+    p{color:var(--muted);line-height:1.6;margin-bottom:32px}
+    .btn{display:inline-block;padding:16px 32px;background:linear-gradient(135deg,var(--accent2),#0af);color:#000;border:none;border-radius:12px;font-size:1.125rem;font-weight:700;cursor:pointer;transition:all .2s ease;text-decoration:none}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,234,255,.3)}
+    .spinner{display:inline-block;width:20px;height:20px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .status{margin:24px 0;padding:16px;background:rgba(57,255,136,.1);border:1px solid rgba(57,255,136,.3);border-radius:12px;color:var(--accent)}
+  </style>
+</head>
+<body>
+  <div class="success-card">
+    <div class="success-icon">✅</div>
+    <h1>Verification Complete!</h1>
+    <p>Your identity has been successfully verified. You're now ready to play Cash Challenges on BrainDash.</p>
+
+    <div class="status" id="statusMsg">
+      <div class="spinner"></div>
+      <span style="margin-left:12px">Processing verification...</span>
+    </div>
+
+    <button class="btn" id="continueBtn" style="display:none" onclick="window.location.href='/'">Continue to BrainDash</button>
+  </div>
+
+  <script type="module">
+    const SUPABASE_URL = 'https://uimxwujknpuespwvipbi.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVpbXh3dWprbnB1ZXNwd3ZpcGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIwMjc2NDcsImV4cCI6MjA3NzYwMzY0N30.ZKXbrtYr47DqESnoOXgxjvS0pjEHpzuQ0BHAM8QpzWw';
+
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    async function completeVerification() {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+
+        if (!session) {
+          document.getElementById('statusMsg').innerHTML = '⚠️ Please sign in to complete verification';
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 2000);
+          return;
+        }
+
+        const response = await fetch(
+          `${SUPABASE_URL}/functions/v1/complete-kyc-verification`,
+          {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${session.access_token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ success: true }),
+          }
+        );
+
+        const data = await response.json();
+
+        if (response.ok) {
+          document.getElementById('statusMsg').innerHTML = '✅ Verification successful!';
+          document.getElementById('continueBtn').style.display = 'inline-block';
+        } else {
+          throw new Error(data.error || 'Failed to complete verification');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('statusMsg').innerHTML = '❌ Something went wrong. Redirecting...';
+        setTimeout(() => {
+          window.location.href = '/verify-identity.html';
+        }, 2000);
+      }
+    }
+
+    completeVerification();
+  </script>
+</body>
+</html>

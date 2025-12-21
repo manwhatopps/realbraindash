@@ -1,0 +1,6002 @@
+[
+  {
+    "question": "What is 117 + 159?",
+    "options": [
+      "277",
+      "278",
+      "276",
+      "266"
+    ],
+    "answer": "276",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 128 + 50?",
+    "options": [
+      "168",
+      "176",
+      "175",
+      "178"
+    ],
+    "answer": "178",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 84 + 101?",
+    "options": [
+      "175",
+      "185",
+      "188",
+      "186"
+    ],
+    "answer": "185",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 144 + 61?",
+    "options": [
+      "206",
+      "203",
+      "205",
+      "202"
+    ],
+    "answer": "205",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 132 + 67?",
+    "options": [
+      "196",
+      "200",
+      "199",
+      "201"
+    ],
+    "answer": "199",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 120 + 136?",
+    "options": [
+      "258",
+      "256",
+      "254",
+      "246"
+    ],
+    "answer": "256",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 112 + 70?",
+    "options": [
+      "181",
+      "182",
+      "172",
+      "185"
+    ],
+    "answer": "182",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 117 + 170?",
+    "options": [
+      "289",
+      "288",
+      "287",
+      "286"
+    ],
+    "answer": "287",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 170 + 117?",
+    "options": [
+      "285",
+      "284",
+      "287",
+      "290"
+    ],
+    "answer": "287",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 61 + 124?",
+    "options": [
+      "175",
+      "188",
+      "182",
+      "185"
+    ],
+    "answer": "185",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 107 + 156?",
+    "options": [
+      "253",
+      "263",
+      "265",
+      "260"
+    ],
+    "answer": "263",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 152 + 88?",
+    "options": [
+      "240",
+      "237",
+      "230",
+      "250"
+    ],
+    "answer": "240",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 125 + 105?",
+    "options": [
+      "227",
+      "228",
+      "232",
+      "230"
+    ],
+    "answer": "230",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 121 + 58?",
+    "options": [
+      "177",
+      "181",
+      "179",
+      "189"
+    ],
+    "answer": "179",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 65 + 85?",
+    "options": [
+      "152",
+      "150",
+      "148",
+      "160"
+    ],
+    "answer": "150",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 135 + 48?",
+    "options": [
+      "181",
+      "182",
+      "183",
+      "186"
+    ],
+    "answer": "183",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 100 + 74?",
+    "options": [
+      "164",
+      "174",
+      "176",
+      "175"
+    ],
+    "answer": "174",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 147 + 161?",
+    "options": [
+      "318",
+      "308",
+      "306",
+      "309"
+    ],
+    "answer": "308",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 137 + 58?",
+    "options": [
+      "198",
+      "205",
+      "196",
+      "195"
+    ],
+    "answer": "195",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 116 + 158?",
+    "options": [
+      "275",
+      "273",
+      "274",
+      "272"
+    ],
+    "answer": "274",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 149 + 68?",
+    "options": [
+      "207",
+      "217",
+      "216",
+      "215"
+    ],
+    "answer": "217",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 123 + 101?",
+    "options": [
+      "224",
+      "222",
+      "234",
+      "227"
+    ],
+    "answer": "224",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 86 + 74?",
+    "options": [
+      "160",
+      "170",
+      "163",
+      "157"
+    ],
+    "answer": "160",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 178 + 94?",
+    "options": [
+      "269",
+      "270",
+      "272",
+      "275"
+    ],
+    "answer": "272",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 95 + 50?",
+    "options": [
+      "147",
+      "145",
+      "144",
+      "135"
+    ],
+    "answer": "145",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 63 + 108?",
+    "options": [
+      "168",
+      "181",
+      "171",
+      "174"
+    ],
+    "answer": "171",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 85 + 161?",
+    "options": [
+      "247",
+      "246",
+      "248",
+      "249"
+    ],
+    "answer": "246",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 110 + 97?",
+    "options": [
+      "210",
+      "207",
+      "197",
+      "205"
+    ],
+    "answer": "207",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 119 + 123?",
+    "options": [
+      "245",
+      "242",
+      "252",
+      "240"
+    ],
+    "answer": "242",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 93 + 44?",
+    "options": [
+      "138",
+      "147",
+      "127",
+      "137"
+    ],
+    "answer": "137",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 114 + 48?",
+    "options": [
+      "164",
+      "162",
+      "159",
+      "172"
+    ],
+    "answer": "162",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 157 + 96?",
+    "options": [
+      "253",
+      "250",
+      "263",
+      "243"
+    ],
+    "answer": "253",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 168 + 93?",
+    "options": [
+      "259",
+      "261",
+      "258",
+      "263"
+    ],
+    "answer": "261",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 137 + 136?",
+    "options": [
+      "270",
+      "276",
+      "273",
+      "274"
+    ],
+    "answer": "273",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 112 + 143?",
+    "options": [
+      "252",
+      "258",
+      "256",
+      "255"
+    ],
+    "answer": "255",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 113 + 47?",
+    "options": [
+      "161",
+      "158",
+      "159",
+      "160"
+    ],
+    "answer": "160",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 101 + 130?",
+    "options": [
+      "231",
+      "234",
+      "230",
+      "229"
+    ],
+    "answer": "231",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 62 + 136?",
+    "options": [
+      "208",
+      "200",
+      "198",
+      "195"
+    ],
+    "answer": "198",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 175 + 86?",
+    "options": [
+      "258",
+      "262",
+      "261",
+      "260"
+    ],
+    "answer": "261",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 93 + 139?",
+    "options": [
+      "234",
+      "229",
+      "222",
+      "232"
+    ],
+    "answer": "232",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 132 + 131?",
+    "options": [
+      "263",
+      "260",
+      "273",
+      "266"
+    ],
+    "answer": "263",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 157 + 163?",
+    "options": [
+      "318",
+      "330",
+      "310",
+      "320"
+    ],
+    "answer": "320",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 77 + 158?",
+    "options": [
+      "237",
+      "238",
+      "225",
+      "235"
+    ],
+    "answer": "235",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 61 + 50?",
+    "options": [
+      "111",
+      "108",
+      "112",
+      "101"
+    ],
+    "answer": "111",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 101 + 61?",
+    "options": [
+      "161",
+      "162",
+      "165",
+      "160"
+    ],
+    "answer": "162",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 174 + 124?",
+    "options": [
+      "301",
+      "288",
+      "296",
+      "298"
+    ],
+    "answer": "298",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 120 + 65?",
+    "options": [
+      "175",
+      "182",
+      "185",
+      "183"
+    ],
+    "answer": "185",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 132 + 86?",
+    "options": [
+      "228",
+      "218",
+      "215",
+      "220"
+    ],
+    "answer": "218",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 74 + 67?",
+    "options": [
+      "142",
+      "138",
+      "131",
+      "141"
+    ],
+    "answer": "141",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 92 + 110?",
+    "options": [
+      "200",
+      "201",
+      "212",
+      "202"
+    ],
+    "answer": "202",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 129 − 90?",
+    "options": [
+      "39",
+      "36",
+      "44",
+      "34"
+    ],
+    "answer": "39",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 156 − 69?",
+    "options": [
+      "84",
+      "89",
+      "90",
+      "87"
+    ],
+    "answer": "87",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 154 − 35?",
+    "options": [
+      "114",
+      "124",
+      "116",
+      "119"
+    ],
+    "answer": "119",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 132 − 89?",
+    "options": [
+      "43",
+      "38",
+      "46",
+      "40"
+    ],
+    "answer": "43",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 157 − 120?",
+    "options": [
+      "35",
+      "37",
+      "40",
+      "39"
+    ],
+    "answer": "37",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 95 − 76?",
+    "options": [
+      "16",
+      "14",
+      "24",
+      "19"
+    ],
+    "answer": "19",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 123 − 117?",
+    "options": [
+      "11",
+      "6",
+      "3",
+      "8"
+    ],
+    "answer": "6",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 161 − 65?",
+    "options": [
+      "96",
+      "98",
+      "94",
+      "91"
+    ],
+    "answer": "96",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 134 − 33?",
+    "options": [
+      "101",
+      "106",
+      "100",
+      "102"
+    ],
+    "answer": "101",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 141 − 91?",
+    "options": [
+      "55",
+      "50",
+      "45",
+      "47"
+    ],
+    "answer": "50",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 136 − 84?",
+    "options": [
+      "51",
+      "52",
+      "53",
+      "57"
+    ],
+    "answer": "52",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 134 − 113?",
+    "options": [
+      "24",
+      "23",
+      "26",
+      "21"
+    ],
+    "answer": "21",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 89 − 69?",
+    "options": [
+      "20",
+      "23",
+      "22",
+      "15"
+    ],
+    "answer": "20",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 146 − 126?",
+    "options": [
+      "25",
+      "20",
+      "22",
+      "18"
+    ],
+    "answer": "20",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 149 − 131?",
+    "options": [
+      "15",
+      "18",
+      "21",
+      "20"
+    ],
+    "answer": "18",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 182 − 79?",
+    "options": [
+      "98",
+      "103",
+      "106",
+      "100"
+    ],
+    "answer": "103",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 108 − 96?",
+    "options": [
+      "14",
+      "11",
+      "9",
+      "12"
+    ],
+    "answer": "12",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 124 − 115?",
+    "options": [
+      "12",
+      "8",
+      "7",
+      "9"
+    ],
+    "answer": "9",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 142 − 127?",
+    "options": [
+      "10",
+      "12",
+      "13",
+      "15"
+    ],
+    "answer": "15",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 148 − 133?",
+    "options": [
+      "17",
+      "15",
+      "20",
+      "18"
+    ],
+    "answer": "15",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 147 − 76?",
+    "options": [
+      "76",
+      "72",
+      "69",
+      "71"
+    ],
+    "answer": "71",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 121 − 56?",
+    "options": [
+      "65",
+      "64",
+      "62",
+      "67"
+    ],
+    "answer": "65",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 179 − 147?",
+    "options": [
+      "33",
+      "37",
+      "27",
+      "32"
+    ],
+    "answer": "32",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 125 − 57?",
+    "options": [
+      "65",
+      "70",
+      "68",
+      "63"
+    ],
+    "answer": "68",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 160 − 100?",
+    "options": [
+      "55",
+      "65",
+      "60",
+      "59"
+    ],
+    "answer": "60",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 86 − 57?",
+    "options": [
+      "32",
+      "28",
+      "26",
+      "29"
+    ],
+    "answer": "29",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 137 − 131?",
+    "options": [
+      "1",
+      "6",
+      "7",
+      "9"
+    ],
+    "answer": "6",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 161 − 124?",
+    "options": [
+      "36",
+      "40",
+      "37",
+      "35"
+    ],
+    "answer": "37",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 114 − 108?",
+    "options": [
+      "4",
+      "9",
+      "1",
+      "6"
+    ],
+    "answer": "6",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 147 − 104?",
+    "options": [
+      "43",
+      "41",
+      "42",
+      "45"
+    ],
+    "answer": "43",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 119 − 81?",
+    "options": [
+      "36",
+      "40",
+      "41",
+      "38"
+    ],
+    "answer": "38",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 166 − 89?",
+    "options": [
+      "79",
+      "77",
+      "75",
+      "82"
+    ],
+    "answer": "77",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 195 − 108?",
+    "options": [
+      "84",
+      "92",
+      "89",
+      "87"
+    ],
+    "answer": "87",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 105 − 78?",
+    "options": [
+      "29",
+      "27",
+      "30",
+      "25"
+    ],
+    "answer": "27",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 93 − 48?",
+    "options": [
+      "40",
+      "45",
+      "44",
+      "48"
+    ],
+    "answer": "45",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 92 − 59?",
+    "options": [
+      "28",
+      "36",
+      "33",
+      "30"
+    ],
+    "answer": "33",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 178 − 48?",
+    "options": [
+      "129",
+      "128",
+      "130",
+      "127"
+    ],
+    "answer": "130",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 113 − 72?",
+    "options": [
+      "41",
+      "36",
+      "43",
+      "38"
+    ],
+    "answer": "41",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 180 − 67?",
+    "options": [
+      "118",
+      "113",
+      "112",
+      "108"
+    ],
+    "answer": "113",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 152 − 150?",
+    "options": [
+      "4",
+      "2",
+      "3",
+      "7"
+    ],
+    "answer": "2",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 169 − 72?",
+    "options": [
+      "99",
+      "96",
+      "97",
+      "94"
+    ],
+    "answer": "97",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 151 − 147?",
+    "options": [
+      "4",
+      "9",
+      "7",
+      "1"
+    ],
+    "answer": "4",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 127 − 110?",
+    "options": [
+      "16",
+      "19",
+      "17",
+      "12"
+    ],
+    "answer": "17",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 126 − 119?",
+    "options": [
+      "10",
+      "5",
+      "8",
+      "7"
+    ],
+    "answer": "7",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 102 − 73?",
+    "options": [
+      "28",
+      "32",
+      "29",
+      "26"
+    ],
+    "answer": "29",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 156 − 43?",
+    "options": [
+      "113",
+      "111",
+      "110",
+      "115"
+    ],
+    "answer": "113",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 185 − 85?",
+    "options": [
+      "100",
+      "97",
+      "102",
+      "105"
+    ],
+    "answer": "100",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 172 − 108?",
+    "options": [
+      "67",
+      "62",
+      "65",
+      "64"
+    ],
+    "answer": "64",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 90 − 86?",
+    "options": [
+      "4",
+      "3",
+      "1",
+      "6"
+    ],
+    "answer": "4",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 190 − 99?",
+    "options": [
+      "90",
+      "96",
+      "91",
+      "93"
+    ],
+    "answer": "91",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 8 × 11?",
+    "options": [
+      "90",
+      "88",
+      "91",
+      "89"
+    ],
+    "answer": "88",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 11 × 7?",
+    "options": [
+      "80",
+      "74",
+      "77",
+      "84"
+    ],
+    "answer": "77",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 12 × 7?",
+    "options": [
+      "72",
+      "84",
+      "81",
+      "87"
+    ],
+    "answer": "84",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 9 × 11?",
+    "options": [
+      "110",
+      "90",
+      "99",
+      "98"
+    ],
+    "answer": "99",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 11 × 11?",
+    "options": [
+      "123",
+      "122",
+      "120",
+      "121"
+    ],
+    "answer": "121",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 12 × 9?",
+    "options": [
+      "110",
+      "117",
+      "111",
+      "108"
+    ],
+    "answer": "108",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 8 × 11?",
+    "options": [
+      "89",
+      "80",
+      "85",
+      "88"
+    ],
+    "answer": "88",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 8 × 9?",
+    "options": [
+      "69",
+      "75",
+      "73",
+      "72"
+    ],
+    "answer": "72",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 13 × 12?",
+    "options": [
+      "143",
+      "159",
+      "156",
+      "154"
+    ],
+    "answer": "156",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 11 × 14?",
+    "options": [
+      "156",
+      "154",
+      "168",
+      "151"
+    ],
+    "answer": "154",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 11 × 7?",
+    "options": [
+      "77",
+      "78",
+      "79",
+      "66"
+    ],
+    "answer": "77",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 12 × 7?",
+    "options": [
+      "86",
+      "82",
+      "72",
+      "84"
+    ],
+    "answer": "84",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 8 × 12?",
+    "options": [
+      "98",
+      "97",
+      "88",
+      "96"
+    ],
+    "answer": "96",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 10 × 14?",
+    "options": [
+      "140",
+      "154",
+      "142",
+      "137"
+    ],
+    "answer": "140",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 10 × 9?",
+    "options": [
+      "87",
+      "90",
+      "89",
+      "91"
+    ],
+    "answer": "90",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 9 × 7?",
+    "options": [
+      "63",
+      "61",
+      "65",
+      "60"
+    ],
+    "answer": "63",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 12 × 12?",
+    "options": [
+      "144",
+      "142",
+      "147",
+      "146"
+    ],
+    "answer": "144",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 11 × 13?",
+    "options": [
+      "146",
+      "143",
+      "144",
+      "156"
+    ],
+    "answer": "143",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 11 × 14?",
+    "options": [
+      "157",
+      "168",
+      "151",
+      "154"
+    ],
+    "answer": "154",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 12 × 12?",
+    "options": [
+      "143",
+      "147",
+      "144",
+      "146"
+    ],
+    "answer": "144",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 8 × 9?",
+    "options": [
+      "81",
+      "75",
+      "71",
+      "72"
+    ],
+    "answer": "72",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 13 × 11?",
+    "options": [
+      "140",
+      "144",
+      "143",
+      "146"
+    ],
+    "answer": "143",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 8 × 10?",
+    "options": [
+      "80",
+      "81",
+      "77",
+      "78"
+    ],
+    "answer": "80",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 14 × 9?",
+    "options": [
+      "129",
+      "125",
+      "126",
+      "128"
+    ],
+    "answer": "126",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 12 × 12?",
+    "options": [
+      "144",
+      "146",
+      "147",
+      "142"
+    ],
+    "answer": "144",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 11 × 12?",
+    "options": [
+      "135",
+      "133",
+      "132",
+      "129"
+    ],
+    "answer": "132",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 15 × 13?",
+    "options": [
+      "192",
+      "195",
+      "193",
+      "198"
+    ],
+    "answer": "195",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 13 × 10?",
+    "options": [
+      "140",
+      "130",
+      "117",
+      "132"
+    ],
+    "answer": "130",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 14 × 8?",
+    "options": [
+      "112",
+      "120",
+      "115",
+      "114"
+    ],
+    "answer": "112",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 12 × 8?",
+    "options": [
+      "96",
+      "97",
+      "94",
+      "104"
+    ],
+    "answer": "96",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 13 × 7?",
+    "options": [
+      "88",
+      "94",
+      "93",
+      "91"
+    ],
+    "answer": "91",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 15 × 14?",
+    "options": [
+      "207",
+      "212",
+      "208",
+      "210"
+    ],
+    "answer": "210",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 10 × 10?",
+    "options": [
+      "97",
+      "103",
+      "100",
+      "90"
+    ],
+    "answer": "100",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 15 × 8?",
+    "options": [
+      "118",
+      "120",
+      "105",
+      "119"
+    ],
+    "answer": "120",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 11 × 9?",
+    "options": [
+      "99",
+      "88",
+      "102",
+      "97"
+    ],
+    "answer": "99",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 11 × 10?",
+    "options": [
+      "112",
+      "108",
+      "99",
+      "110"
+    ],
+    "answer": "110",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 9 × 14?",
+    "options": [
+      "126",
+      "117",
+      "125",
+      "124"
+    ],
+    "answer": "126",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 14 × 11?",
+    "options": [
+      "154",
+      "140",
+      "152",
+      "165"
+    ],
+    "answer": "154",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 10 × 11?",
+    "options": [
+      "100",
+      "113",
+      "111",
+      "110"
+    ],
+    "answer": "110",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 12 × 11?",
+    "options": [
+      "129",
+      "131",
+      "143",
+      "132"
+    ],
+    "answer": "132",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 8 × 10?",
+    "options": [
+      "77",
+      "82",
+      "80",
+      "79"
+    ],
+    "answer": "80",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 9 × 11?",
+    "options": [
+      "99",
+      "101",
+      "96",
+      "102"
+    ],
+    "answer": "99",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 10 × 14?",
+    "options": [
+      "142",
+      "141",
+      "140",
+      "130"
+    ],
+    "answer": "140",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 10 × 11?",
+    "options": [
+      "111",
+      "110",
+      "109",
+      "113"
+    ],
+    "answer": "110",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 10 × 8?",
+    "options": [
+      "79",
+      "77",
+      "80",
+      "78"
+    ],
+    "answer": "80",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 15 × 7?",
+    "options": [
+      "102",
+      "103",
+      "105",
+      "112"
+    ],
+    "answer": "105",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 11 × 14?",
+    "options": [
+      "154",
+      "153",
+      "152",
+      "156"
+    ],
+    "answer": "154",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 12 × 8?",
+    "options": [
+      "96",
+      "98",
+      "104",
+      "84"
+    ],
+    "answer": "96",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 14 × 11?",
+    "options": [
+      "165",
+      "151",
+      "153",
+      "154"
+    ],
+    "answer": "154",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 11 × 12?",
+    "options": [
+      "129",
+      "121",
+      "130",
+      "132"
+    ],
+    "answer": "132",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 9 × 12?",
+    "options": [
+      "110",
+      "108",
+      "111",
+      "99"
+    ],
+    "answer": "108",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 10 × 12?",
+    "options": [
+      "118",
+      "121",
+      "132",
+      "120"
+    ],
+    "answer": "120",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 14 × 8?",
+    "options": [
+      "120",
+      "114",
+      "115",
+      "112"
+    ],
+    "answer": "112",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 11 × 14?",
+    "options": [
+      "153",
+      "154",
+      "152",
+      "143"
+    ],
+    "answer": "154",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 10 × 13?",
+    "options": [
+      "133",
+      "129",
+      "120",
+      "130"
+    ],
+    "answer": "130",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 14 × 14?",
+    "options": [
+      "196",
+      "195",
+      "210",
+      "193"
+    ],
+    "answer": "196",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 8 × 7?",
+    "options": [
+      "56",
+      "58",
+      "63",
+      "53"
+    ],
+    "answer": "56",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 14 × 7?",
+    "options": [
+      "100",
+      "98",
+      "95",
+      "105"
+    ],
+    "answer": "98",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 10 × 7?",
+    "options": [
+      "60",
+      "67",
+      "70",
+      "68"
+    ],
+    "answer": "70",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 12 × 10?",
+    "options": [
+      "121",
+      "122",
+      "130",
+      "120"
+    ],
+    "answer": "120",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 90 ÷ 5?",
+    "options": [
+      "15",
+      "18",
+      "20",
+      "19"
+    ],
+    "answer": "18",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 63 ÷ 9?",
+    "options": [
+      "10",
+      "6",
+      "7",
+      "4"
+    ],
+    "answer": "7",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 96 ÷ 6?",
+    "options": [
+      "19",
+      "16",
+      "13",
+      "14"
+    ],
+    "answer": "16",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 136 ÷ 8?",
+    "options": [
+      "15",
+      "18",
+      "17",
+      "14"
+    ],
+    "answer": "17",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 204 ÷ 12?",
+    "options": [
+      "17",
+      "18",
+      "16",
+      "19"
+    ],
+    "answer": "17",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 60 ÷ 6?",
+    "options": [
+      "9",
+      "11",
+      "12",
+      "10"
+    ],
+    "answer": "10",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 112 ÷ 7?",
+    "options": [
+      "19",
+      "16",
+      "14",
+      "18"
+    ],
+    "answer": "16",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 56 ÷ 8?",
+    "options": [
+      "5",
+      "4",
+      "7",
+      "10"
+    ],
+    "answer": "7",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 70 ÷ 10?",
+    "options": [
+      "6",
+      "7",
+      "10",
+      "8"
+    ],
+    "answer": "7",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 99 ÷ 9?",
+    "options": [
+      "9",
+      "8",
+      "11",
+      "13"
+    ],
+    "answer": "11",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 192 ÷ 12?",
+    "options": [
+      "16",
+      "18",
+      "19",
+      "15"
+    ],
+    "answer": "16",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 44 ÷ 4?",
+    "options": [
+      "9",
+      "13",
+      "11",
+      "10"
+    ],
+    "answer": "11",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 33 ÷ 3?",
+    "options": [
+      "14",
+      "11",
+      "9",
+      "8"
+    ],
+    "answer": "11",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 80 ÷ 10?",
+    "options": [
+      "11",
+      "8",
+      "10",
+      "5"
+    ],
+    "answer": "8",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 176 ÷ 11?",
+    "options": [
+      "17",
+      "16",
+      "14",
+      "15"
+    ],
+    "answer": "16",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 104 ÷ 8?",
+    "options": [
+      "10",
+      "12",
+      "13",
+      "15"
+    ],
+    "answer": "13",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 160 ÷ 10?",
+    "options": [
+      "17",
+      "16",
+      "15",
+      "18"
+    ],
+    "answer": "16",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 56 ÷ 8?",
+    "options": [
+      "5",
+      "10",
+      "4",
+      "7"
+    ],
+    "answer": "7",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 32 ÷ 4?",
+    "options": [
+      "8",
+      "10",
+      "6",
+      "5"
+    ],
+    "answer": "8",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 39 ÷ 3?",
+    "options": [
+      "10",
+      "12",
+      "13",
+      "16"
+    ],
+    "answer": "13",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 198 ÷ 11?",
+    "options": [
+      "15",
+      "18",
+      "17",
+      "20"
+    ],
+    "answer": "18",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 32 ÷ 4?",
+    "options": [
+      "9",
+      "5",
+      "8",
+      "6"
+    ],
+    "answer": "8",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 110 ÷ 11?",
+    "options": [
+      "8",
+      "10",
+      "11",
+      "13"
+    ],
+    "answer": "10",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 144 ÷ 9?",
+    "options": [
+      "16",
+      "13",
+      "19",
+      "17"
+    ],
+    "answer": "16",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 120 ÷ 12?",
+    "options": [
+      "10",
+      "12",
+      "11",
+      "7"
+    ],
+    "answer": "10",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 110 ÷ 10?",
+    "options": [
+      "13",
+      "12",
+      "9",
+      "11"
+    ],
+    "answer": "11",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 64 ÷ 4?",
+    "options": [
+      "17",
+      "19",
+      "14",
+      "16"
+    ],
+    "answer": "16",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 51 ÷ 3?",
+    "options": [
+      "17",
+      "19",
+      "14",
+      "15"
+    ],
+    "answer": "17",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 60 ÷ 6?",
+    "options": [
+      "9",
+      "8",
+      "12",
+      "10"
+    ],
+    "answer": "10",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 24 ÷ 4?",
+    "options": [
+      "9",
+      "6",
+      "3",
+      "8"
+    ],
+    "answer": "6",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 60 ÷ 4?",
+    "options": [
+      "18",
+      "14",
+      "15",
+      "16"
+    ],
+    "answer": "15",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 126 ÷ 7?",
+    "options": [
+      "16",
+      "18",
+      "19",
+      "21"
+    ],
+    "answer": "18",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 33 ÷ 3?",
+    "options": [
+      "10",
+      "11",
+      "14",
+      "8"
+    ],
+    "answer": "11",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 32 ÷ 4?",
+    "options": [
+      "11",
+      "9",
+      "7",
+      "8"
+    ],
+    "answer": "8",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 68 ÷ 4?",
+    "options": [
+      "18",
+      "15",
+      "17",
+      "19"
+    ],
+    "answer": "17",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 36 ÷ 4?",
+    "options": [
+      "9",
+      "7",
+      "11",
+      "6"
+    ],
+    "answer": "9",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 54 ÷ 9?",
+    "options": [
+      "5",
+      "8",
+      "6",
+      "7"
+    ],
+    "answer": "6",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 216 ÷ 12?",
+    "options": [
+      "18",
+      "20",
+      "19",
+      "21"
+    ],
+    "answer": "18",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 156 ÷ 12?",
+    "options": [
+      "11",
+      "16",
+      "13",
+      "15"
+    ],
+    "answer": "13",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 63 ÷ 7?",
+    "options": [
+      "6",
+      "9",
+      "10",
+      "7"
+    ],
+    "answer": "9",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 32 + 7 × 9?",
+    "options": [
+      "92",
+      "95",
+      "94",
+      "96"
+    ],
+    "answer": "95",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is (31 + 8) × 5?",
+    "options": [
+      "190",
+      "200",
+      "195",
+      "194"
+    ],
+    "answer": "195",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 35 × 8 − 4?",
+    "options": [
+      "279",
+      "276",
+      "271",
+      "281"
+    ],
+    "answer": "276",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 21 + 9 × (8 − 1)?",
+    "options": [
+      "83",
+      "89",
+      "79",
+      "84"
+    ],
+    "answer": "84",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 31 + 8 × 7?",
+    "options": [
+      "84",
+      "87",
+      "89",
+      "92"
+    ],
+    "answer": "87",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is (22 + 6) × 5?",
+    "options": [
+      "145",
+      "140",
+      "135",
+      "143"
+    ],
+    "answer": "140",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 25 × 11 − 8?",
+    "options": [
+      "270",
+      "269",
+      "262",
+      "267"
+    ],
+    "answer": "267",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 19 + 4 × (4 − 1)?",
+    "options": [
+      "32",
+      "31",
+      "30",
+      "26"
+    ],
+    "answer": "31",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 28 + 6 × 4?",
+    "options": [
+      "57",
+      "53",
+      "52",
+      "51"
+    ],
+    "answer": "52",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is (16 + 5) × 10?",
+    "options": [
+      "210",
+      "209",
+      "215",
+      "212"
+    ],
+    "answer": "210",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 23 × 4 − 10?",
+    "options": [
+      "84",
+      "82",
+      "85",
+      "81"
+    ],
+    "answer": "82",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 23 + 4 × (5 − 1)?",
+    "options": [
+      "40",
+      "38",
+      "39",
+      "42"
+    ],
+    "answer": "39",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 17 + 9 × 9?",
+    "options": [
+      "103",
+      "98",
+      "97",
+      "93"
+    ],
+    "answer": "98",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is (23 + 6) × 6?",
+    "options": [
+      "176",
+      "171",
+      "174",
+      "169"
+    ],
+    "answer": "174",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 29 × 12 − 7?",
+    "options": [
+      "343",
+      "341",
+      "340",
+      "342"
+    ],
+    "answer": "341",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 35 + 7 × (4 − 1)?",
+    "options": [
+      "57",
+      "56",
+      "58",
+      "54"
+    ],
+    "answer": "56",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 12 + 5 × 9?",
+    "options": [
+      "57",
+      "56",
+      "62",
+      "52"
+    ],
+    "answer": "57",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is (25 + 4) × 3?",
+    "options": [
+      "88",
+      "84",
+      "87",
+      "85"
+    ],
+    "answer": "87",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 17 × 9 − 8?",
+    "options": [
+      "140",
+      "147",
+      "144",
+      "145"
+    ],
+    "answer": "145",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 33 + 11 × (8 − 1)?",
+    "options": [
+      "112",
+      "109",
+      "115",
+      "110"
+    ],
+    "answer": "110",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 20 + 6 × 4?",
+    "options": [
+      "43",
+      "45",
+      "39",
+      "44"
+    ],
+    "answer": "44",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is (34 + 12) × 5?",
+    "options": [
+      "230",
+      "229",
+      "235",
+      "227"
+    ],
+    "answer": "230",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 24 × 4 − 6?",
+    "options": [
+      "92",
+      "90",
+      "87",
+      "95"
+    ],
+    "answer": "90",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 15 + 10 × (6 − 1)?",
+    "options": [
+      "60",
+      "65",
+      "62",
+      "68"
+    ],
+    "answer": "65",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 15 + 8 × 3?",
+    "options": [
+      "39",
+      "36",
+      "37",
+      "38"
+    ],
+    "answer": "39",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is (15 + 9) × 5?",
+    "options": [
+      "118",
+      "120",
+      "117",
+      "121"
+    ],
+    "answer": "120",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 24 × 12 − 7?",
+    "options": [
+      "283",
+      "281",
+      "280",
+      "276"
+    ],
+    "answer": "281",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 30 + 4 × (8 − 1)?",
+    "options": [
+      "58",
+      "56",
+      "53",
+      "60"
+    ],
+    "answer": "58",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 25 + 11 × 3?",
+    "options": [
+      "53",
+      "56",
+      "58",
+      "63"
+    ],
+    "answer": "58",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is (11 + 5) × 7?",
+    "options": [
+      "114",
+      "112",
+      "113",
+      "110"
+    ],
+    "answer": "112",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 12 × 11 − 10?",
+    "options": [
+      "117",
+      "122",
+      "121",
+      "124"
+    ],
+    "answer": "122",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 31 + 7 × (7 − 1)?",
+    "options": [
+      "73",
+      "70",
+      "78",
+      "75"
+    ],
+    "answer": "73",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 30 + 5 × 5?",
+    "options": [
+      "58",
+      "55",
+      "50",
+      "60"
+    ],
+    "answer": "55",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is (23 + 10) × 9?",
+    "options": [
+      "295",
+      "300",
+      "294",
+      "297"
+    ],
+    "answer": "297",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 25 × 7 − 6?",
+    "options": [
+      "170",
+      "164",
+      "174",
+      "169"
+    ],
+    "answer": "169",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 31 + 5 × (8 − 1)?",
+    "options": [
+      "63",
+      "71",
+      "66",
+      "65"
+    ],
+    "answer": "66",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 16 + 12 × 10?",
+    "options": [
+      "138",
+      "135",
+      "136",
+      "141"
+    ],
+    "answer": "136",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is (17 + 10) × 8?",
+    "options": [
+      "215",
+      "217",
+      "216",
+      "219"
+    ],
+    "answer": "216",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 35 × 11 − 4?",
+    "options": [
+      "383",
+      "376",
+      "379",
+      "381"
+    ],
+    "answer": "381",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 16 + 6 × (3 − 1)?",
+    "options": [
+      "23",
+      "28",
+      "33",
+      "26"
+    ],
+    "answer": "28",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 23 + 5 × 10?",
+    "options": [
+      "70",
+      "71",
+      "73",
+      "74"
+    ],
+    "answer": "73",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is (25 + 7) × 9?",
+    "options": [
+      "283",
+      "288",
+      "290",
+      "289"
+    ],
+    "answer": "288",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 22 × 5 − 9?",
+    "options": [
+      "99",
+      "102",
+      "96",
+      "101"
+    ],
+    "answer": "101",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 17 + 12 × (9 − 1)?",
+    "options": [
+      "116",
+      "113",
+      "118",
+      "110"
+    ],
+    "answer": "113",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 16 + 11 × 9?",
+    "options": [
+      "115",
+      "120",
+      "117",
+      "113"
+    ],
+    "answer": "115",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is (30 + 12) × 10?",
+    "options": [
+      "425",
+      "421",
+      "420",
+      "419"
+    ],
+    "answer": "420",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 17 × 5 − 8?",
+    "options": [
+      "74",
+      "80",
+      "77",
+      "78"
+    ],
+    "answer": "77",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 19 + 7 × (9 − 1)?",
+    "options": [
+      "75",
+      "77",
+      "74",
+      "76"
+    ],
+    "answer": "75",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 18 + 8 × 9?",
+    "options": [
+      "90",
+      "92",
+      "93",
+      "89"
+    ],
+    "answer": "90",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is (26 + 11) × 8?",
+    "options": [
+      "291",
+      "298",
+      "296",
+      "293"
+    ],
+    "answer": "296",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 25% of 178?",
+    "options": [
+      "41.5",
+      "45.5",
+      "46.5",
+      "44.5"
+    ],
+    "answer": "44.5",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 30% of 237?",
+    "options": [
+      "76.1",
+      "74.1",
+      "66.1",
+      "71.1"
+    ],
+    "answer": "71.1",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 25% of 228?",
+    "options": [
+      "58",
+      "52",
+      "54",
+      "57"
+    ],
+    "answer": "57",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 50% of 66?",
+    "options": [
+      "30",
+      "33",
+      "38",
+      "34"
+    ],
+    "answer": "33",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 50% of 142?",
+    "options": [
+      "71",
+      "66",
+      "76",
+      "68"
+    ],
+    "answer": "71",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 30% of 218?",
+    "options": [
+      "65.4",
+      "64.4",
+      "68.4",
+      "60.400000000000006"
+    ],
+    "answer": "65.4",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 30% of 240?",
+    "options": [
+      "72",
+      "77",
+      "75",
+      "67"
+    ],
+    "answer": "72",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 50% of 76?",
+    "options": [
+      "35",
+      "37",
+      "39",
+      "38"
+    ],
+    "answer": "38",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 10% of 238?",
+    "options": [
+      "26.8",
+      "28.8",
+      "23.8",
+      "25.8"
+    ],
+    "answer": "23.8",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 20% of 123?",
+    "options": [
+      "26.6",
+      "24.6",
+      "23.6",
+      "27.6"
+    ],
+    "answer": "24.6",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 30% of 104?",
+    "options": [
+      "28.2",
+      "31.2",
+      "36.2",
+      "30.2"
+    ],
+    "answer": "31.2",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 50% of 188?",
+    "options": [
+      "97",
+      "94",
+      "91",
+      "92"
+    ],
+    "answer": "94",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 20% of 137?",
+    "options": [
+      "27.4",
+      "30.4",
+      "25.4",
+      "22.4"
+    ],
+    "answer": "27.4",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 50% of 155?",
+    "options": [
+      "72.5",
+      "75.5",
+      "82.5",
+      "77.5"
+    ],
+    "answer": "77.5",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 30% of 145?",
+    "options": [
+      "44.5",
+      "38.5",
+      "40.5",
+      "43.5"
+    ],
+    "answer": "43.5",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 10% of 97?",
+    "options": [
+      "7.699999999999999",
+      "4.699999999999999",
+      "10.7",
+      "9.7"
+    ],
+    "answer": "9.7",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 50% of 187?",
+    "options": [
+      "96.5",
+      "98.5",
+      "95.5",
+      "93.5"
+    ],
+    "answer": "93.5",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 15% of 139?",
+    "options": [
+      "17.85",
+      "19.85",
+      "20.85",
+      "25.85"
+    ],
+    "answer": "20.85",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 20% of 68?",
+    "options": [
+      "13.6",
+      "15.6",
+      "16.6",
+      "18.6"
+    ],
+    "answer": "13.6",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 20% of 222?",
+    "options": [
+      "43.4",
+      "44.4",
+      "49.4",
+      "42.4"
+    ],
+    "answer": "44.4",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 25% of 186?",
+    "options": [
+      "48.5",
+      "43.5",
+      "51.5",
+      "46.5"
+    ],
+    "answer": "46.5",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 50% of 120?",
+    "options": [
+      "55",
+      "57",
+      "60",
+      "58"
+    ],
+    "answer": "60",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 25% of 185?",
+    "options": [
+      "46.25",
+      "49.25",
+      "51.25",
+      "45.25"
+    ],
+    "answer": "46.25",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 25% of 97?",
+    "options": [
+      "25.25",
+      "24.25",
+      "26.25",
+      "21.25"
+    ],
+    "answer": "24.25",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 10% of 198?",
+    "options": [
+      "19.8",
+      "24.8",
+      "21.8",
+      "22.8"
+    ],
+    "answer": "19.8",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 20% of 77?",
+    "options": [
+      "16.4",
+      "14.4",
+      "15.4",
+      "17.4"
+    ],
+    "answer": "15.4",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 15% of 147?",
+    "options": [
+      "27.05",
+      "21.05",
+      "23.05",
+      "22.05"
+    ],
+    "answer": "22.05",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 50% of 193?",
+    "options": [
+      "96.5",
+      "91.5",
+      "93.5",
+      "95.5"
+    ],
+    "answer": "96.5",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 25% of 138?",
+    "options": [
+      "34.5",
+      "39.5",
+      "35.5",
+      "37.5"
+    ],
+    "answer": "34.5",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 50% of 93?",
+    "options": [
+      "43.5",
+      "41.5",
+      "45.5",
+      "46.5"
+    ],
+    "answer": "46.5",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 20% of 122?",
+    "options": [
+      "29.4",
+      "26.4",
+      "19.4",
+      "24.4"
+    ],
+    "answer": "24.4",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 30% of 214?",
+    "options": [
+      "63.2",
+      "64.2",
+      "59.2",
+      "65.2"
+    ],
+    "answer": "64.2",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 15% of 227?",
+    "options": [
+      "34.05",
+      "35.05",
+      "33.05",
+      "29.049999999999997"
+    ],
+    "answer": "34.05",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 50% of 67?",
+    "options": [
+      "32.5",
+      "28.5",
+      "33.5",
+      "35.5"
+    ],
+    "answer": "33.5",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 50% of 60?",
+    "options": [
+      "31",
+      "27",
+      "29",
+      "30"
+    ],
+    "answer": "30",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 25% of 105?",
+    "options": [
+      "21.25",
+      "28.25",
+      "26.25",
+      "23.25"
+    ],
+    "answer": "26.25",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 30% of 235?",
+    "options": [
+      "75.5",
+      "70.5",
+      "65.5",
+      "72.5"
+    ],
+    "answer": "70.5",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 30% of 109?",
+    "options": [
+      "32.7",
+      "29.700000000000003",
+      "33.7",
+      "35.7"
+    ],
+    "answer": "32.7",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 20% of 88?",
+    "options": [
+      "15.600000000000001",
+      "19.6",
+      "17.6",
+      "18.6"
+    ],
+    "answer": "17.6",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 15% of 83?",
+    "options": [
+      "11.45",
+      "7.449999999999999",
+      "12.45",
+      "15.45"
+    ],
+    "answer": "12.45",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 20% of 173?",
+    "options": [
+      "34.6",
+      "31.6",
+      "37.6",
+      "29.6"
+    ],
+    "answer": "34.6",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 30% of 128?",
+    "options": [
+      "43.4",
+      "39.4",
+      "35.4",
+      "38.4"
+    ],
+    "answer": "38.4",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 20% of 160?",
+    "options": [
+      "37",
+      "33",
+      "31",
+      "32"
+    ],
+    "answer": "32",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 50% of 98?",
+    "options": [
+      "49",
+      "46",
+      "50",
+      "51"
+    ],
+    "answer": "49",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 25% of 114?",
+    "options": [
+      "25.5",
+      "27.5",
+      "30.5",
+      "28.5"
+    ],
+    "answer": "28.5",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 30% of 232?",
+    "options": [
+      "70.6",
+      "71.6",
+      "64.6",
+      "69.6"
+    ],
+    "answer": "69.6",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 25% of 79?",
+    "options": [
+      "24.75",
+      "22.75",
+      "19.75",
+      "21.75"
+    ],
+    "answer": "19.75",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 20% of 138?",
+    "options": [
+      "26.6",
+      "27.6",
+      "29.6",
+      "22.6"
+    ],
+    "answer": "27.6",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 50% of 166?",
+    "options": [
+      "81",
+      "86",
+      "83",
+      "88"
+    ],
+    "answer": "83",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 15% of 146?",
+    "options": [
+      "18.9",
+      "26.9",
+      "21.9",
+      "19.9"
+    ],
+    "answer": "21.9",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 120?",
+    "options": [
+      "37",
+      "40",
+      "42",
+      "41"
+    ],
+    "answer": "40",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 132?",
+    "options": [
+      "43",
+      "44",
+      "41",
+      "42"
+    ],
+    "answer": "44",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 66?",
+    "options": [
+      "19",
+      "20",
+      "22",
+      "23"
+    ],
+    "answer": "22",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 54?",
+    "options": [
+      "16",
+      "18",
+      "20",
+      "15"
+    ],
+    "answer": "18",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 72?",
+    "options": [
+      "22",
+      "27",
+      "23",
+      "24"
+    ],
+    "answer": "24",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 120?",
+    "options": [
+      "43",
+      "41",
+      "42",
+      "40"
+    ],
+    "answer": "40",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 120?",
+    "options": [
+      "41",
+      "39",
+      "40",
+      "43"
+    ],
+    "answer": "40",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 120?",
+    "options": [
+      "40",
+      "37",
+      "38",
+      "43"
+    ],
+    "answer": "40",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 72?",
+    "options": [
+      "22",
+      "24",
+      "21",
+      "27"
+    ],
+    "answer": "24",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 132?",
+    "options": [
+      "46",
+      "44",
+      "43",
+      "45"
+    ],
+    "answer": "44",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 120?",
+    "options": [
+      "40",
+      "38",
+      "41",
+      "43"
+    ],
+    "answer": "40",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 132?",
+    "options": [
+      "41",
+      "43",
+      "44",
+      "42"
+    ],
+    "answer": "44",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 66?",
+    "options": [
+      "24",
+      "23",
+      "22",
+      "21"
+    ],
+    "answer": "22",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 108?",
+    "options": [
+      "38",
+      "39",
+      "35",
+      "36"
+    ],
+    "answer": "36",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 144?",
+    "options": [
+      "49",
+      "47",
+      "45",
+      "48"
+    ],
+    "answer": "48",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 84?",
+    "options": [
+      "28",
+      "31",
+      "27",
+      "29"
+    ],
+    "answer": "28",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 54?",
+    "options": [
+      "18",
+      "21",
+      "19",
+      "17"
+    ],
+    "answer": "18",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 144?",
+    "options": [
+      "47",
+      "49",
+      "48",
+      "51"
+    ],
+    "answer": "48",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 120?",
+    "options": [
+      "41",
+      "37",
+      "42",
+      "40"
+    ],
+    "answer": "40",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 54?",
+    "options": [
+      "19",
+      "20",
+      "18",
+      "15"
+    ],
+    "answer": "18",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 144?",
+    "options": [
+      "48",
+      "50",
+      "51",
+      "46"
+    ],
+    "answer": "48",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 96?",
+    "options": [
+      "29",
+      "32",
+      "35",
+      "30"
+    ],
+    "answer": "32",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 72?",
+    "options": [
+      "26",
+      "25",
+      "24",
+      "22"
+    ],
+    "answer": "24",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 108?",
+    "options": [
+      "37",
+      "36",
+      "34",
+      "39"
+    ],
+    "answer": "36",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 1/3 of 120?",
+    "options": [
+      "40",
+      "38",
+      "42",
+      "41"
+    ],
+    "answer": "40",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 4.6 + 6.1?",
+    "options": [
+      "12.7",
+      "10.7",
+      "11.7",
+      "13.7"
+    ],
+    "answer": "10.7",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 2.7 − 2.5?",
+    "options": [
+      "0.2",
+      "0.4",
+      "1.2",
+      "0"
+    ],
+    "answer": "0.2",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 7.2 + 4.7?",
+    "options": [
+      "11.9",
+      "10.9",
+      "14.9",
+      "9.9"
+    ],
+    "answer": "11.9",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 6.8 − 3.7?",
+    "options": [
+      "2.9",
+      "1.1",
+      "6.1",
+      "3.1"
+    ],
+    "answer": "3.1",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 4.0 + 2.2?",
+    "options": [
+      "4.2",
+      "9.2",
+      "6.2",
+      "7.2"
+    ],
+    "answer": "6.2",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 7.2 − 6.3?",
+    "options": [
+      "1.1",
+      "2.9",
+      "0.9",
+      "1.9"
+    ],
+    "answer": "0.9",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 12.3 + 6.3?",
+    "options": [
+      "18.4",
+      "21.6",
+      "18.6",
+      "15.600000000000001"
+    ],
+    "answer": "18.6",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 4.6 − 2.1?",
+    "options": [
+      "2.5",
+      "2.3",
+      "5.5",
+      "2.7"
+    ],
+    "answer": "2.5",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 13.4 + 5.9?",
+    "options": [
+      "16.3",
+      "18.3",
+      "19.1",
+      "19.3"
+    ],
+    "answer": "19.3",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 5.2 − 1.7?",
+    "options": [
+      "3.5",
+      "5.5",
+      "2.5",
+      "3.3"
+    ],
+    "answer": "3.5",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 7.3 + 3.8?",
+    "options": [
+      "11.1",
+      "13.1",
+      "9.1",
+      "10.9"
+    ],
+    "answer": "11.1",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 9.9 − 2.9?",
+    "options": [
+      "10",
+      "7",
+      "7.2",
+      "6"
+    ],
+    "answer": "7",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 3.5 + 1.1?",
+    "options": [
+      "4.6",
+      "4.8",
+      "7.6",
+      "1.5999999999999996"
+    ],
+    "answer": "4.6",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 11.6 − 1.5?",
+    "options": [
+      "12.1",
+      "10.1",
+      "9.9",
+      "9.1"
+    ],
+    "answer": "10.1",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 13.5 + 7.0?",
+    "options": [
+      "20.5",
+      "23.5",
+      "22.5",
+      "18.5"
+    ],
+    "answer": "20.5",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 11.0 − 3.1?",
+    "options": [
+      "4.9",
+      "7.9",
+      "6.9",
+      "8.9"
+    ],
+    "answer": "7.9",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 4.0 + 7.4?",
+    "options": [
+      "11.4",
+      "13.4",
+      "10.4",
+      "8.4"
+    ],
+    "answer": "11.4",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 10.0 − 3.0?",
+    "options": [
+      "10",
+      "7.2",
+      "7",
+      "8"
+    ],
+    "answer": "7",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 8.0 + 0.6?",
+    "options": [
+      "6.6",
+      "9.6",
+      "8.6",
+      "11.6"
+    ],
+    "answer": "8.6",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 13.1 − 5.9?",
+    "options": [
+      "7.2",
+      "5.2",
+      "8.2",
+      "6.2"
+    ],
+    "answer": "7.2",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 2.8 + 6.6?",
+    "options": [
+      "9.2",
+      "8.4",
+      "9.4",
+      "7.4"
+    ],
+    "answer": "9.4",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 9.5 − 2.6?",
+    "options": [
+      "6.9",
+      "9.9",
+      "6.7",
+      "4.9"
+    ],
+    "answer": "6.9",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 2.9 + 2.9?",
+    "options": [
+      "2.8",
+      "5.8",
+      "3.8",
+      "5.6"
+    ],
+    "answer": "5.8",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 12.9 − 7.4?",
+    "options": [
+      "5.5",
+      "5.7",
+      "7.5",
+      "2.5"
+    ],
+    "answer": "5.5",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is 2.8 + 3.6?",
+    "options": [
+      "6.4",
+      "8.4",
+      "9.4",
+      "7.4"
+    ],
+    "answer": "6.4",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 4 hours 20 minutes?",
+    "options": [
+      "262",
+      "275",
+      "260",
+      "259"
+    ],
+    "answer": "260",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 5 hours 30 minutes?",
+    "options": [
+      "330",
+      "333",
+      "331",
+      "328"
+    ],
+    "answer": "330",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 5 hours 20 minutes?",
+    "options": [
+      "305",
+      "321",
+      "320",
+      "323"
+    ],
+    "answer": "320",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 4 hours 15 minutes?",
+    "options": [
+      "252",
+      "255",
+      "258",
+      "257"
+    ],
+    "answer": "255",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 6 hours 30 minutes?",
+    "options": [
+      "405",
+      "390",
+      "392",
+      "389"
+    ],
+    "answer": "390",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 5 hours 20 minutes?",
+    "options": [
+      "320",
+      "323",
+      "318",
+      "317"
+    ],
+    "answer": "320",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 3 hours 15 minutes?",
+    "options": [
+      "192",
+      "180",
+      "195",
+      "196"
+    ],
+    "answer": "195",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 6 hours 30 minutes?",
+    "options": [
+      "390",
+      "405",
+      "391",
+      "389"
+    ],
+    "answer": "390",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 4 hours 10 minutes?",
+    "options": [
+      "250",
+      "247",
+      "265",
+      "253"
+    ],
+    "answer": "250",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 2 hours 20 minutes?",
+    "options": [
+      "140",
+      "139",
+      "137",
+      "143"
+    ],
+    "answer": "140",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 3 hours 30 minutes?",
+    "options": [
+      "195",
+      "210",
+      "211",
+      "209"
+    ],
+    "answer": "210",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 6 hours 10 minutes?",
+    "options": [
+      "369",
+      "373",
+      "370",
+      "371"
+    ],
+    "answer": "370",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 3 hours 30 minutes?",
+    "options": [
+      "225",
+      "210",
+      "212",
+      "207"
+    ],
+    "answer": "210",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 2 hours 45 minutes?",
+    "options": [
+      "167",
+      "163",
+      "168",
+      "165"
+    ],
+    "answer": "165",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 5 hours 15 minutes?",
+    "options": [
+      "314",
+      "318",
+      "315",
+      "330"
+    ],
+    "answer": "315",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 4 hours 20 minutes?",
+    "options": [
+      "275",
+      "262",
+      "260",
+      "257"
+    ],
+    "answer": "260",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 4 hours 30 minutes?",
+    "options": [
+      "272",
+      "269",
+      "285",
+      "270"
+    ],
+    "answer": "270",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 3 hours 30 minutes?",
+    "options": [
+      "212",
+      "210",
+      "208",
+      "213"
+    ],
+    "answer": "210",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 5 hours 45 minutes?",
+    "options": [
+      "360",
+      "345",
+      "348",
+      "343"
+    ],
+    "answer": "345",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 3 hours 45 minutes?",
+    "options": [
+      "240",
+      "222",
+      "225",
+      "226"
+    ],
+    "answer": "225",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 2 hours 30 minutes?",
+    "options": [
+      "153",
+      "149",
+      "150",
+      "147"
+    ],
+    "answer": "150",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 6 hours 20 minutes?",
+    "options": [
+      "380",
+      "395",
+      "382",
+      "378"
+    ],
+    "answer": "380",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 4 hours 10 minutes?",
+    "options": [
+      "247",
+      "250",
+      "252",
+      "248"
+    ],
+    "answer": "250",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 5 hours 20 minutes?",
+    "options": [
+      "335",
+      "317",
+      "320",
+      "322"
+    ],
+    "answer": "320",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "How many minutes are in 6 hours 45 minutes?",
+    "options": [
+      "402",
+      "405",
+      "408",
+      "420"
+    ],
+    "answer": "405",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 7:00 and lasts 1 hours 50 minutes. When does it end?",
+    "options": [
+      "8:00",
+      "8:50",
+      "7:50",
+      "9:50"
+    ],
+    "answer": "8:50",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 3:00 and lasts 3 hours 50 minutes. When does it end?",
+    "options": [
+      "7:50",
+      "6:50",
+      "5:50",
+      "6:00"
+    ],
+    "answer": "6:50",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 8:00 and lasts 2 hours 10 minutes. When does it end?",
+    "options": [
+      "9:10",
+      "10:20",
+      "10:10",
+      "11:10"
+    ],
+    "answer": "10:10",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 9:00 and lasts 2 hours 40 minutes. When does it end?",
+    "options": [
+      "10:40",
+      "11:40",
+      "12:40",
+      "11:50"
+    ],
+    "answer": "11:40",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 4:00 and lasts 3 hours 30 minutes. When does it end?",
+    "options": [
+      "6:30",
+      "8:30",
+      "7:30",
+      "7:40"
+    ],
+    "answer": "7:30",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 2:00 and lasts 1 hours 50 minutes. When does it end?",
+    "options": [
+      "3:50",
+      "2:50",
+      "4:50",
+      "3:00"
+    ],
+    "answer": "3:50",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 8:00 and lasts 3 hours 20 minutes. When does it end?",
+    "options": [
+      "11:20",
+      "11:30",
+      "10:20",
+      "12:20"
+    ],
+    "answer": "11:20",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 9:00 and lasts 3 hours 50 minutes. When does it end?",
+    "options": [
+      "13:50",
+      "12:50",
+      "11:50",
+      "12:00"
+    ],
+    "answer": "12:50",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 5:00 and lasts 3 hours 30 minutes. When does it end?",
+    "options": [
+      "8:30",
+      "9:30",
+      "7:30",
+      "8:40"
+    ],
+    "answer": "8:30",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 6:00 and lasts 2 hours 40 minutes. When does it end?",
+    "options": [
+      "9:40",
+      "8:40",
+      "7:40",
+      "8:50"
+    ],
+    "answer": "8:40",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 9:00 and lasts 2 hours 50 minutes. When does it end?",
+    "options": [
+      "11:00",
+      "11:50",
+      "10:50",
+      "12:50"
+    ],
+    "answer": "11:50",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 7:00 and lasts 2 hours 10 minutes. When does it end?",
+    "options": [
+      "10:10",
+      "9:20",
+      "8:10",
+      "9:10"
+    ],
+    "answer": "9:10",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 4:00 and lasts 2 hours 40 minutes. When does it end?",
+    "options": [
+      "6:40",
+      "6:50",
+      "5:40",
+      "7:40"
+    ],
+    "answer": "6:40",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 2:00 and lasts 3 hours 50 minutes. When does it end?",
+    "options": [
+      "4:50",
+      "6:50",
+      "5:00",
+      "5:50"
+    ],
+    "answer": "5:50",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 8:00 and lasts 3 hours 20 minutes. When does it end?",
+    "options": [
+      "11:20",
+      "11:30",
+      "12:20",
+      "10:20"
+    ],
+    "answer": "11:20",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 5:00 and lasts 1 hours 10 minutes. When does it end?",
+    "options": [
+      "5:10",
+      "7:10",
+      "6:10",
+      "6:20"
+    ],
+    "answer": "6:10",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 3:00 and lasts 3 hours 50 minutes. When does it end?",
+    "options": [
+      "7:50",
+      "6:50",
+      "5:50",
+      "6:00"
+    ],
+    "answer": "6:50",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 8:00 and lasts 1 hours 50 minutes. When does it end?",
+    "options": [
+      "10:50",
+      "9:50",
+      "8:50",
+      "9:00"
+    ],
+    "answer": "9:50",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 8:00 and lasts 1 hours 30 minutes. When does it end?",
+    "options": [
+      "9:30",
+      "8:30",
+      "9:40",
+      "10:30"
+    ],
+    "answer": "9:30",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 2:00 and lasts 3 hours 50 minutes. When does it end?",
+    "options": [
+      "5:00",
+      "5:50",
+      "6:50",
+      "4:50"
+    ],
+    "answer": "5:50",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 7:00 and lasts 2 hours 20 minutes. When does it end?",
+    "options": [
+      "8:20",
+      "9:20",
+      "9:30",
+      "10:20"
+    ],
+    "answer": "9:20",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 4:00 and lasts 2 hours 30 minutes. When does it end?",
+    "options": [
+      "5:30",
+      "6:30",
+      "6:40",
+      "7:30"
+    ],
+    "answer": "6:30",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 8:00 and lasts 1 hours 20 minutes. When does it end?",
+    "options": [
+      "10:20",
+      "9:30",
+      "9:20",
+      "8:20"
+    ],
+    "answer": "9:20",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 6:00 and lasts 3 hours 30 minutes. When does it end?",
+    "options": [
+      "9:30",
+      "9:40",
+      "10:30",
+      "8:30"
+    ],
+    "answer": "9:30",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "A movie starts at 3:00 and lasts 1 hours 50 minutes. When does it end?",
+    "options": [
+      "4:50",
+      "3:50",
+      "4:00",
+      "5:50"
+    ],
+    "answer": "4:50",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 19 and 19.",
+    "options": [
+      "73",
+      "76",
+      "77",
+      "75"
+    ],
+    "answer": "76",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 22 and 23.",
+    "options": [
+      "93",
+      "86",
+      "90",
+      "88"
+    ],
+    "answer": "90",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 14 and 6.",
+    "options": [
+      "37",
+      "41",
+      "40",
+      "44"
+    ],
+    "answer": "40",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 21 and 21.",
+    "options": [
+      "87",
+      "84",
+      "82",
+      "88"
+    ],
+    "answer": "84",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 19 and 19.",
+    "options": [
+      "72",
+      "77",
+      "76",
+      "74"
+    ],
+    "answer": "76",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 7 and 11.",
+    "options": [
+      "34",
+      "39",
+      "36",
+      "35"
+    ],
+    "answer": "36",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 21 and 20.",
+    "options": [
+      "84",
+      "82",
+      "86",
+      "79"
+    ],
+    "answer": "82",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 12 and 14.",
+    "options": [
+      "48",
+      "52",
+      "56",
+      "54"
+    ],
+    "answer": "52",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 6 and 9.",
+    "options": [
+      "30",
+      "31",
+      "32",
+      "29"
+    ],
+    "answer": "30",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 14 and 6.",
+    "options": [
+      "44",
+      "37",
+      "41",
+      "40"
+    ],
+    "answer": "40",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 18 and 13.",
+    "options": [
+      "59",
+      "63",
+      "62",
+      "65"
+    ],
+    "answer": "62",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 16 and 22.",
+    "options": [
+      "76",
+      "72",
+      "77",
+      "73"
+    ],
+    "answer": "76",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 21 and 8.",
+    "options": [
+      "60",
+      "61",
+      "57",
+      "58"
+    ],
+    "answer": "58",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 17 and 6.",
+    "options": [
+      "47",
+      "48",
+      "43",
+      "46"
+    ],
+    "answer": "46",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 20 and 22.",
+    "options": [
+      "84",
+      "87",
+      "85",
+      "88"
+    ],
+    "answer": "84",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 20 and 19.",
+    "options": [
+      "74",
+      "79",
+      "75",
+      "78"
+    ],
+    "answer": "78",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 13 and 10.",
+    "options": [
+      "42",
+      "49",
+      "43",
+      "46"
+    ],
+    "answer": "46",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 20 and 16.",
+    "options": [
+      "72",
+      "69",
+      "70",
+      "74"
+    ],
+    "answer": "72",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 22 and 15.",
+    "options": [
+      "71",
+      "70",
+      "74",
+      "78"
+    ],
+    "answer": "74",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 14 and 21.",
+    "options": [
+      "71",
+      "70",
+      "69",
+      "67"
+    ],
+    "answer": "70",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 22 and 11.",
+    "options": [
+      "64",
+      "68",
+      "69",
+      "66"
+    ],
+    "answer": "66",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 7 and 24.",
+    "options": [
+      "65",
+      "63",
+      "66",
+      "62"
+    ],
+    "answer": "62",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 21 and 7.",
+    "options": [
+      "56",
+      "55",
+      "60",
+      "54"
+    ],
+    "answer": "56",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 13 and 20.",
+    "options": [
+      "66",
+      "65",
+      "63",
+      "62"
+    ],
+    "answer": "66",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the perimeter of a rectangle with sides 6 and 22.",
+    "options": [
+      "56",
+      "57",
+      "54",
+      "55"
+    ],
+    "answer": "56",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 19.",
+    "options": [
+      "361",
+      "358",
+      "359",
+      "360"
+    ],
+    "answer": "361",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 13.",
+    "options": [
+      "170",
+      "169",
+      "166",
+      "167"
+    ],
+    "answer": "169",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 12.",
+    "options": [
+      "144",
+      "146",
+      "147",
+      "132"
+    ],
+    "answer": "144",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 14.",
+    "options": [
+      "194",
+      "197",
+      "196",
+      "198"
+    ],
+    "answer": "196",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 20.",
+    "options": [
+      "400",
+      "398",
+      "380",
+      "397"
+    ],
+    "answer": "400",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 14.",
+    "options": [
+      "198",
+      "194",
+      "196",
+      "182"
+    ],
+    "answer": "196",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 21.",
+    "options": [
+      "438",
+      "441",
+      "439",
+      "440"
+    ],
+    "answer": "441",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 10.",
+    "options": [
+      "90",
+      "100",
+      "110",
+      "98"
+    ],
+    "answer": "100",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 9.",
+    "options": [
+      "84",
+      "72",
+      "83",
+      "81"
+    ],
+    "answer": "81",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 19.",
+    "options": [
+      "361",
+      "360",
+      "363",
+      "342"
+    ],
+    "answer": "361",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 16.",
+    "options": [
+      "240",
+      "255",
+      "253",
+      "256"
+    ],
+    "answer": "256",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 8.",
+    "options": [
+      "63",
+      "64",
+      "66",
+      "62"
+    ],
+    "answer": "64",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 13.",
+    "options": [
+      "171",
+      "170",
+      "167",
+      "169"
+    ],
+    "answer": "169",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 17.",
+    "options": [
+      "289",
+      "292",
+      "286",
+      "291"
+    ],
+    "answer": "289",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 11.",
+    "options": [
+      "121",
+      "119",
+      "118",
+      "122"
+    ],
+    "answer": "121",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 20.",
+    "options": [
+      "398",
+      "380",
+      "402",
+      "400"
+    ],
+    "answer": "400",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 9.",
+    "options": [
+      "82",
+      "81",
+      "80",
+      "78"
+    ],
+    "answer": "81",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 21.",
+    "options": [
+      "443",
+      "444",
+      "440",
+      "441"
+    ],
+    "answer": "441",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 15.",
+    "options": [
+      "210",
+      "227",
+      "228",
+      "225"
+    ],
+    "answer": "225",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 18.",
+    "options": [
+      "324",
+      "322",
+      "321",
+      "325"
+    ],
+    "answer": "324",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 19.",
+    "options": [
+      "364",
+      "361",
+      "359",
+      "342"
+    ],
+    "answer": "361",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 18.",
+    "options": [
+      "324",
+      "326",
+      "323",
+      "325"
+    ],
+    "answer": "324",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 8.",
+    "options": [
+      "63",
+      "64",
+      "62",
+      "67"
+    ],
+    "answer": "64",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 9.",
+    "options": [
+      "83",
+      "90",
+      "81",
+      "82"
+    ],
+    "answer": "81",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Find the area of a square with side 14.",
+    "options": [
+      "199",
+      "193",
+      "194",
+      "196"
+    ],
+    "answer": "196",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What comes next: 16, 19, 22, 25, 28, __?",
+    "options": [
+      "31",
+      "32",
+      "33",
+      "30"
+    ],
+    "answer": "31",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What comes next: 18, 25, 32, 39, 46, __?",
+    "options": [
+      "55",
+      "53",
+      "52",
+      "54"
+    ],
+    "answer": "53",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What comes next: 11, 17, 23, 29, 35, __?",
+    "options": [
+      "44",
+      "39",
+      "41",
+      "38"
+    ],
+    "answer": "41",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What comes next: 12, 16, 20, 24, 28, __?",
+    "options": [
+      "32",
+      "30",
+      "28",
+      "35"
+    ],
+    "answer": "32",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What comes next: 7, 16, 25, 34, 43, __?",
+    "options": [
+      "51",
+      "52",
+      "54",
+      "50"
+    ],
+    "answer": "52",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What comes next: 8, 16, 24, 32, 40, __?",
+    "options": [
+      "51",
+      "48",
+      "49",
+      "50"
+    ],
+    "answer": "48",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What comes next: 5, 14, 23, 32, 41, __?",
+    "options": [
+      "47",
+      "59",
+      "50",
+      "48"
+    ],
+    "answer": "50",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What comes next: 11, 14, 17, 20, 23, __?",
+    "options": [
+      "26",
+      "29",
+      "27",
+      "24"
+    ],
+    "answer": "26",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What comes next: 11, 16, 21, 26, 31, __?",
+    "options": [
+      "37",
+      "41",
+      "36",
+      "34"
+    ],
+    "answer": "36",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What comes next: 13, 17, 21, 25, 29, __?",
+    "options": [
+      "30",
+      "33",
+      "32",
+      "37"
+    ],
+    "answer": "33",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What comes next: 11, 20, 29, 38, 47, __?",
+    "options": [
+      "47",
+      "65",
+      "56",
+      "58"
+    ],
+    "answer": "56",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What comes next: 4, 14, 24, 34, 44, __?",
+    "options": [
+      "54",
+      "53",
+      "64",
+      "56"
+    ],
+    "answer": "54",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What comes next: 6, 9, 12, 15, 18, __?",
+    "options": [
+      "21",
+      "24",
+      "19",
+      "18"
+    ],
+    "answer": "21",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What comes next: 11, 18, 25, 32, 39, __?",
+    "options": [
+      "47",
+      "46",
+      "43",
+      "49"
+    ],
+    "answer": "46",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What comes next: 5, 14, 23, 32, 41, __?",
+    "options": [
+      "48",
+      "53",
+      "50",
+      "47"
+    ],
+    "answer": "50",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What comes next: 14, 19, 24, 29, 34, __?",
+    "options": [
+      "44",
+      "39",
+      "42",
+      "37"
+    ],
+    "answer": "39",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What comes next: 16, 23, 30, 37, 44, __?",
+    "options": [
+      "52",
+      "44",
+      "51",
+      "53"
+    ],
+    "answer": "51",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What comes next: 13, 23, 33, 43, 53, __?",
+    "options": [
+      "60",
+      "63",
+      "61",
+      "64"
+    ],
+    "answer": "63",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What comes next: 8, 12, 16, 20, 24, __?",
+    "options": [
+      "24",
+      "28",
+      "25",
+      "27"
+    ],
+    "answer": "28",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What comes next: 16, 26, 36, 46, 56, __?",
+    "options": [
+      "65",
+      "56",
+      "66",
+      "68"
+    ],
+    "answer": "66",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is the average of 19, 9, 15, and 28?",
+    "options": [
+      "17.75",
+      "19.75",
+      "18.75",
+      "20.75"
+    ],
+    "answer": "17.75",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is the average of 29, 6, 28, and 21?",
+    "options": [
+      "19",
+      "21",
+      "18",
+      "20"
+    ],
+    "answer": "21",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is the average of 7, 22, 24, and 15?",
+    "options": [
+      "14",
+      "17",
+      "18",
+      "20"
+    ],
+    "answer": "17",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is the average of 21, 27, 29, and 21?",
+    "options": [
+      "24.5",
+      "27.5",
+      "26.5",
+      "22.5"
+    ],
+    "answer": "24.5",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is the average of 28, 33, 35, and 19?",
+    "options": [
+      "29.75",
+      "28.75",
+      "25.75",
+      "31.75"
+    ],
+    "answer": "28.75",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is the average of 25, 21, 34, and 34?",
+    "options": [
+      "27.5",
+      "25.5",
+      "29.5",
+      "28.5"
+    ],
+    "answer": "28.5",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is the average of 30, 21, 15, and 22?",
+    "options": [
+      "22",
+      "19",
+      "23",
+      "24"
+    ],
+    "answer": "22",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is the average of 36, 22, 29, and 30?",
+    "options": [
+      "26.25",
+      "29.25",
+      "30.25",
+      "28.25"
+    ],
+    "answer": "29.25",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is the average of 7, 8, 18, and 27?",
+    "options": [
+      "14",
+      "16",
+      "17",
+      "15"
+    ],
+    "answer": "15",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is the average of 6, 29, 33, and 23?",
+    "options": [
+      "19.75",
+      "20.75",
+      "22.75",
+      "24.75"
+    ],
+    "answer": "22.75",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is the average of 23, 12, 20, and 7?",
+    "options": [
+      "15.5",
+      "14.5",
+      "17.5",
+      "12.5"
+    ],
+    "answer": "15.5",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is the average of 29, 28, 8, and 34?",
+    "options": [
+      "22.75",
+      "26.75",
+      "24.75",
+      "25.75"
+    ],
+    "answer": "24.75",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is the average of 6, 26, 8, and 36?",
+    "options": [
+      "17",
+      "16",
+      "18",
+      "19"
+    ],
+    "answer": "19",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is the average of 36, 27, 10, and 13?",
+    "options": [
+      "22.5",
+      "23.5",
+      "24.5",
+      "21.5"
+    ],
+    "answer": "21.5",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "What is the average of 9, 14, 13, and 22?",
+    "options": [
+      "15.5",
+      "13.5",
+      "14.5",
+      "12.5"
+    ],
+    "answer": "14.5",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Split 55 equally among 6 people. How much does each get?",
+    "options": [
+      "12.166666666666666",
+      "9.166666666666666",
+      "7.166666666666666",
+      "8.166666666666666"
+    ],
+    "answer": "9.166666666666666",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Split 78 equally among 6 people. How much does each get?",
+    "options": [
+      "14",
+      "12",
+      "13",
+      "15"
+    ],
+    "answer": "13",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Split 126 equally among 5 people. How much does each get?",
+    "options": [
+      "24.2",
+      "28.2",
+      "25.2",
+      "27.2"
+    ],
+    "answer": "25.2",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Split 74 equally among 6 people. How much does each get?",
+    "options": [
+      "10.333333333333334",
+      "12.333333333333334",
+      "14.333333333333334",
+      "13.333333333333334"
+    ],
+    "answer": "12.333333333333334",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Split 53 equally among 5 people. How much does each get?",
+    "options": [
+      "11.6",
+      "12.6",
+      "10.6",
+      "7.6"
+    ],
+    "answer": "10.6",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Split 48 equally among 6 people. How much does each get?",
+    "options": [
+      "5",
+      "7",
+      "6",
+      "8"
+    ],
+    "answer": "8",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Split 71 equally among 7 people. How much does each get?",
+    "options": [
+      "12.142857142857142",
+      "11.142857142857142",
+      "10.142857142857142",
+      "8.142857142857142"
+    ],
+    "answer": "10.142857142857142",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Split 100 equally among 6 people. How much does each get?",
+    "options": [
+      "19.666666666666668",
+      "16.666666666666668",
+      "18.666666666666668",
+      "15.666666666666668"
+    ],
+    "answer": "16.666666666666668",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Split 144 equally among 5 people. How much does each get?",
+    "options": [
+      "31.8",
+      "29.8",
+      "28.8",
+      "30.8"
+    ],
+    "answer": "28.8",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Split 110 equally among 6 people. How much does each get?",
+    "options": [
+      "17.333333333333332",
+      "15.333333333333332",
+      "20.333333333333332",
+      "18.333333333333332"
+    ],
+    "answer": "18.333333333333332",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Split 132 equally among 6 people. How much does each get?",
+    "options": [
+      "22",
+      "20",
+      "23",
+      "21"
+    ],
+    "answer": "22",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Split 98 equally among 8 people. How much does each get?",
+    "options": [
+      "12.25",
+      "11.25",
+      "13.25",
+      "9.25"
+    ],
+    "answer": "12.25",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Split 140 equally among 7 people. How much does each get?",
+    "options": [
+      "17",
+      "21",
+      "19",
+      "20"
+    ],
+    "answer": "20",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Split 122 equally among 8 people. How much does each get?",
+    "options": [
+      "17.25",
+      "15.25",
+      "18.25",
+      "14.25"
+    ],
+    "answer": "15.25",
+    "difficulty": "medium",
+    "category": "math"
+  },
+  {
+    "question": "Split 149 equally among 6 people. How much does each get?",
+    "options": [
+      "27.833333333333332",
+      "26.833333333333332",
+      "24.833333333333332",
+      "21.833333333333332"
+    ],
+    "answer": "24.833333333333332",
+    "difficulty": "medium",
+    "category": "math"
+  }
+]

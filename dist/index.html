@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>BrainDash – Free Play & Cash Play</title>
+  <style>
+    :root{--bg:#0a0b0f;--card:#111425;--txt:#e7eaf6;--muted:#9aa3b2;--dim:#6b7280;--line:#1f2937;--accent:#39ff88;--accent2:#00eaff;--brand:#2563eb}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{margin:0;background:radial-gradient(1200px 800px at 10% -10%,rgba(0,234,255,.12),transparent),radial-gradient(1000px 700px at 110% 10%,rgba(57,255,136,.08),transparent),var(--bg);color:var(--txt);font-family:Inter,system-ui,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh;padding-top:73px}
+    .wrap{max-width:960px;margin:0 auto;padding:32px 24px;min-height:calc(100vh - 73px);display:flex;flex-direction:column;justify-content:center}
+    .header{text-align:center;margin-bottom:48px}
+    .h1{font-size:3rem;margin:0 0 12px;font-weight:900;background:linear-gradient(135deg,var(--accent2),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-.02em}
+    .tagline{color:var(--muted);font-size:1.125rem;margin:0}
+    .modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-bottom:32px}
+    .mode-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:32px;cursor:pointer;transition:all .3s ease;position:relative;overflow:hidden}
+    .mode-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--accent2),var(--accent));opacity:0;transition:opacity .3s ease}
+    .mode-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.3);border-color:var(--accent2)}
+    .mode-card:hover::before{opacity:1}
+    .mode-card.cash{border-color:rgba(0,234,255,.3)}
+    .mode-card.cash::before{background:linear-gradient(90deg,var(--accent2),#0af)}
+    .mode-icon{font-size:3rem;margin-bottom:16px}
+    .mode-title{font-size:1.5rem;font-weight:700;margin-bottom:8px;color:var(--txt)}
+    .mode-desc{color:var(--muted);font-size:.9375rem;line-height:1.5;margin-bottom:16px}
+    .mode-meta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+    .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;background:rgba(0,234,255,.1);border:1px solid rgba(0,234,255,.3);border-radius:6px;color:var(--accent2);font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+    .badge.free{background:rgba(57,255,136,.1);border-color:rgba(57,255,136,.3);color:var(--accent)}
+    .btn{display:block;width:100%;padding:12px 20px;background:linear-gradient(135deg,var(--accent2),#0af);color:#000;border:none;border-radius:10px;font-size:1rem;font-weight:600;cursor:pointer;transition:all .2s ease;font-family:inherit}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,234,255,.3)}
+    .btn.secondary{background:rgba(255,255,255,.05);color:var(--txt);border:1px solid var(--line)}
+    .btn.secondary:hover{background:rgba(255,255,255,.08);box-shadow:0 4px 12px rgba(0,0,0,.3)}
+    .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+    .footer{text-align:center;margin-top:48px;color:var(--dim);font-size:.875rem}
+    .footer a{color:var(--accent2);text-decoration:none}
+    .footer a:hover{text-decoration:underline}
+    .sheet{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);z-index:50;animation:fadeIn .2s ease}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .modal{width:min(480px,92vw);background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,.6);position:relative;max-height:90vh;overflow-y:auto}
+    .modal-title{margin:0 0 8px;font-size:1.5rem;font-weight:700}
+    .modal-sub{margin:0 0 20px;color:var(--muted);font-size:.875rem;line-height:1.5}
+    .provider{width:100%;margin:8px 0;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.03);color:#fff;cursor:pointer;font-size:.9375rem;font-weight:600;transition:all .2s ease;display:flex;align-items:center;justify-content:center;gap:10px;font-family:inherit}
+    .provider:hover{background:rgba(255,255,255,.06);border-color:var(--accent2);transform:translateY(-1px)}
+    .provider:disabled{opacity:.5;cursor:not-allowed;transform:none}
+    .provider.guest{background:rgba(57,255,136,.1);border-color:rgba(57,255,136,.3);color:var(--accent)}
+    .provider.guest:hover{background:rgba(57,255,136,.15);border-color:var(--accent)}
+    .oauth-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px;border-radius:10px;border:1px solid var(--line);text-decoration:none;color:var(--txt);background:rgba(255,255,255,.03);cursor:pointer;transition:all .2s ease;font-size:.9375rem;font-weight:500;flex:1;font-family:inherit}
+    .oauth-btn:hover{background:rgba(255,255,255,.06);border-color:var(--accent2);transform:translateY(-1px)}
+    .oauth-btn .icon{width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+    .oauth-google{border-color:rgba(234,67,53,.3);background:rgba(234,67,53,.05)}
+    .oauth-google:hover{border-color:rgba(234,67,53,.6);background:rgba(234,67,53,.1)}
+    .oauth-apple{background:#000;color:#fff;border-color:#333}
+    .oauth-apple:hover{background:#111;border-color:#555}
+    .sep{display:flex;align-items:center;gap:12px;color:#666;margin:16px 0;font-size:.8125rem}
+    .sep::before,.sep::after{content:"";flex:1;height:1px;background:var(--line)}
+    .form{display:grid;gap:12px;margin:10px 0}
+    label{font-size:.8125rem;color:var(--muted);font-weight:500;margin-bottom:4px}
+    input{padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:#fff;font-size:.9375rem;width:100%;font-family:inherit;transition:border-color .2s ease}
+    input:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 0 3px rgba(0,234,255,.1)}
+    input::placeholder{color:#555}
+    details{margin-top:12px;border:1px solid var(--line);border-radius:10px;padding:12px;background:rgba(0,0,0,.2)}
+    details[open]{padding-bottom:16px}
+    details summary{cursor:pointer;color:var(--muted);font-weight:600;user-select:none;padding:4px}
+    details summary:hover{color:var(--txt)}
+    .hint{color:var(--dim);font-size:.75rem;line-height:1.4}
+    .terms{font-size:.75rem;color:var(--dim);margin-top:16px;line-height:1.5;text-align:center}
+    .close{position:absolute;top:16px;right:16px;background:transparent;border:0;color:#999;font-size:28px;cursor:pointer;line-height:1;padding:4px 8px;transition:color .2s ease}
+    .close:hover{color:#fff}
+    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(17,20,37,.95);border:1px solid var(--line);border-radius:12px;padding:14px 20px;color:var(--txt);display:none;box-shadow:0 8px 24px rgba(0,0,0,.5);max-width:90vw;z-index:100;animation:slideUp .3s ease;backdrop-filter:blur(10px)}
+    @keyframes slideUp{from{opacity:0;transform:translate(-50%,20px)}to{opacity:1;transform:translate(-50%,0)}}
+    .spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.1);opacity:0.8}}
+    .form-group{display:grid;gap:6px}
+    .choices{display:grid;gap:12px}
+    @media(max-width:640px){.h1{font-size:2.25rem}.modes{grid-template-columns:1fr}.mode-card{padding:24px}}
+    .tile{border:1px solid var(--line);border-radius:12px;background:var(--card);transition:all .2s ease}
+    .tile.selectable{cursor:pointer}
+    .tile.selectable:hover{background:rgba(255,255,255,.05);border-color:var(--accent2)}
+    .tile.selectable.selected{outline:3px solid var(--accent2);outline-offset:-3px}
+    .chip{display:inline-flex;padding:8px 16px;background:rgba(0,234,255,.08);border:1px solid rgba(0,234,255,.3);border-radius:8px;color:var(--accent2);font-size:.875rem;font-weight:600}
+    .hidden{display:none!important}
+    .auth-tab{padding:10px 16px;background:transparent;border:none;border-bottom:2px solid transparent;color:var(--muted);font-size:.9375rem;font-weight:600;cursor:pointer;transition:all .2s ease;font-family:inherit}
+    .auth-tab:hover{color:var(--txt)}
+    .auth-tab.active-tab{color:var(--accent2);border-bottom-color:var(--accent2)}
+    @media(max-width:768px){body{padding-top:61px}.wrap{min-height:calc(100vh - 61px)}}
+  </style>
+  <script type="module" crossorigin src="/assets/index-C4UT05h6.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-B0EyST_U.css">
+</head>
+<body>
+  <!-- Modern Header -->
+  <header id="appHeader">
+    <div class="header-content">
+      <!-- Logo -->
+      <div class="header-logo" onclick="window.location.href='/'">
+        <span class="header-logo-text">BrainDash</span>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="header-nav">
+        <button class="header-nav-link" id="headerRulesBtn">Rules</button>
+        <button class="header-nav-link" id="headerHelpBtn">Help</button>
+        <button class="header-nav-link" id="headerTermsBtn">Terms</button>
+      </nav>
+
+      <!-- Desktop Auth Controls -->
+      <div class="header-auth-controls">
+        <!-- Guest View -->
+        <div id="headerGuestControls" style="display:flex;gap:12px;align-items:center">
+          <button id="headerSignIn" class="header-btn">Sign In</button>
+          <button id="headerSignUp" class="header-btn header-btn-primary">Sign Up</button>
+        </div>
+
+        <!-- Authenticated View -->
+        <div id="headerAuthControls" style="display:none;gap:12px;align-items:center">
+          <!-- Wallet Pill -->
+          <div style="position:relative">
+            <button id="headerWalletPill" class="header-wallet-pill">
+              <span class="header-wallet-icon">💰</span>
+              <span id="headerWalletBalance">$0.00</span>
+            </button>
+            <div id="headerWalletMenu" class="header-wallet-menu">
+              <button class="header-menu-item" data-action="deposit">
+                <span>💵</span>
+                <span>Deposit</span>
+              </button>
+              <button class="header-menu-item" data-action="withdraw">
+                <span>💸</span>
+                <span>Withdraw</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- User Menu -->
+          <div class="header-user-section">
+            <button id="headerUserMenuBtn" class="header-user-menu-btn">
+              <div id="headerUserAvatar" class="header-user-avatar">U</div>
+              <div style="display:flex;flex-direction:column;align-items:flex-start;gap:2px">
+                <span id="headerUserName">User</span>
+                <span id="headerTierBadge" style="display:none;font-size:0.7rem"></span>
+              </div>
+            </button>
+            <div id="headerUserMenu" class="header-user-menu">
+              <button class="header-menu-item" onclick="window.location.href='/verification.html'">
+                <span>🔐</span>
+                <span>Verification & Limits</span>
+              </button>
+              <button class="header-menu-item" onclick="alert('Profile coming soon!')">
+                <span>👤</span>
+                <span>Profile</span>
+              </button>
+              <button class="header-menu-item" onclick="alert('Match history coming soon!')">
+                <span>📊</span>
+                <span>History</span>
+              </button>
+              <button id="headerSignOut" class="header-menu-item">
+                <span>🚪</span>
+                <span>Sign Out</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button id="headerMobileMenuBtn" class="header-mobile-menu-btn">
+        <span>☰</span>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="headerMobileMenu" class="header-mobile-menu">
+      <!-- Navigation -->
+      <div class="header-mobile-section">
+        <div class="header-mobile-title">Information</div>
+        <div class="header-mobile-nav">
+          <button class="header-mobile-nav-link" id="headerMobileRulesBtn">📋 Rules</button>
+          <button class="header-mobile-nav-link" id="headerMobileHelpBtn">❓ Help</button>
+          <button class="header-mobile-nav-link" id="headerMobileTermsBtn">📄 Terms & Conditions</button>
+        </div>
+      </div>
+
+      <!-- Guest Auth (mobile) -->
+      <div id="headerMobileGuestSection" class="header-mobile-section">
+        <div class="header-mobile-title">Account</div>
+        <div class="header-mobile-nav">
+          <button id="headerMobileSignIn" class="header-mobile-nav-link">🔑 Sign In</button>
+          <button id="headerMobileSignUp" class="header-mobile-nav-link" style="background:rgba(0,234,255,0.1);border-color:rgba(0,234,255,0.3);color:var(--accent2)">✨ Sign Up</button>
+        </div>
+      </div>
+
+      <!-- Authenticated (mobile) -->
+      <div id="headerMobileAuthSection" class="header-mobile-section" style="display:none">
+        <div class="header-mobile-title">Wallet</div>
+        <div class="header-mobile-wallet">
+          <div class="header-mobile-wallet-balance" id="headerMobileWalletBalance">$0.00</div>
+          <div class="header-mobile-wallet-actions">
+            <button class="header-btn" data-action="deposit">💵 Deposit</button>
+            <button class="header-btn" data-action="withdraw">💸 Withdraw</button>
+          </div>
+        </div>
+        <div class="header-mobile-nav">
+          <button class="header-mobile-nav-link" onclick="alert('Profile coming soon!')">👤 Profile</button>
+          <button class="header-mobile-nav-link" onclick="alert('Match history coming soon!')">📊 History</button>
+          <button id="headerMobileSignOut" class="header-mobile-nav-link" style="color:#ff6b6b">🚪 Sign Out</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="header">
+      <h1 class="h1">🧠 BrainDash Royale</h1>
+      <p class="tagline">Answer questions faster than your opponents. Compete for prizes.</p>
+      <div id="oldWalletStrip" style="margin-top:16px;display:none;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap">
+        <button id="openDeposit" class="btn secondary" style="font-size:0.875rem;padding:8px 16px">💵 Deposit</button>
+        <button id="openWithdraw" class="btn secondary" style="font-size:0.875rem;padding:8px 16px">💰 Withdraw</button>
+        <span id="walletBalance" class="chip">Balance: $0.00</span>
+        <button id="toggleBalance" class="btn secondary" style="font-size:0.75rem;padding:6px 12px">👁️</button>
+      </div>
+    </div>
+
+    <div class="modes">
+      <!-- Free Play Mode -->
+      <div class="mode-card" id="freeCard">
+        <div class="mode-icon">🎮</div>
+        <h3 class="mode-title">Free Play</h3>
+        <p class="mode-desc">Play stress-free matches with no stakes. Continue as guest or sign in to save progress.</p>
+        <div class="mode-meta">
+          <span class="badge free">Free</span>
+          <span class="badge free">Guest OK</span>
+        </div>
+        <button class="btn" id="freeBtn">Play Now</button>
+      </div>
+
+      <!-- Cash Challenge Test Mode -->
+      <div class="mode-card" id="testCashCard" style="border-color:rgba(245,158,11,.3)">
+        <div class="mode-icon">🧪</div>
+        <h3 class="mode-title">Cash Challenge (TEST MODE)</h3>
+        <p class="mode-desc">Test the complete cash match flow with mock KYC and virtual credits. No real money.</p>
+        <div class="mode-meta">
+          <span class="badge" style="background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3);color:#F59E0B">Test Mode</span>
+          <span class="badge free">No Real Money</span>
+        </div>
+        <button class="btn secondary" id="testCashBtn">Test Cash Flow</button>
+      </div>
+
+      <!-- Cash Play Mode -->
+      <div class="mode-card cash" id="cashCard">
+        <div class="mode-icon">💰</div>
+        <h3 class="mode-title">Cash Play</h3>
+        <p class="mode-desc">Put your knowledge to the test for real prizes. Identity verification required.</p>
+        <div class="mode-meta">
+          <span class="badge">Real Prizes</span>
+          <span class="badge">Verified Only</span>
+        </div>
+        <button class="btn" id="cashBtn">Enter Cash Play</button>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <p>By playing Cash Play, you agree to our <a href="/legal/terms.md" target="_blank">Terms</a> and <a href="/legal/privacy.md" target="_blank">Privacy Policy</a>.</p>
+    </div>
+  </div>
+
+  <!-- Test Cash Challenge Screen -->
+  <div id="cash-test-screen" class="hidden screen" style="position:fixed;inset:0;background:var(--bg);z-index:9999;display:none;overflow-y:auto;padding-top:73px">
+    <div style="max-width:1200px;margin:0 auto;padding:32px 24px">
+      <!-- Top Bar -->
+      <div style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:12px;padding:16px 24px;margin-bottom:24px">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+          <div>
+            <h1 style="font-size:1.5rem;font-weight:900;background:linear-gradient(135deg,#F59E0B,#FBBF24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:0 0 4px">🧪 Test Cash Challenge</h1>
+            <p style="font-size:0.875rem;color:var(--muted);margin:0">No Login · Fake Money · Bot Simulation</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.3);border:1px solid rgba(245,158,11,.4);border-radius:10px;padding:8px 16px">
+              <span style="font-size:0.875rem;color:#F59E0B;font-weight:600">Your Balance:</span>
+              <span id="testBalance" style="font-size:1.125rem;font-weight:700;color:#FBBF24">$100.00</span>
+            </div>
+            <button id="addTestFunds" style="background:linear-gradient(135deg,#10B981,#059669);color:#000;border:none;border-radius:10px;padding:8px 16px;font-size:0.875rem;font-weight:600;cursor:pointer;transition:all .2s ease">+ Add $20</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Back Button + Quick Cash -->
+      <div style="margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+        <button id="testCashBackBtn" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:10px;padding:10px 20px;color:var(--txt);cursor:pointer;font-size:0.9375rem;font-weight:600;transition:all .2s ease" aria-label="Back to Home">← Back to Home</button>
+        <button id="quickCashBtn" style="background:linear-gradient(135deg,#F59E0B,#FBBF24);color:#000;border:none;border-radius:10px;padding:12px 24px;font-size:0.9375rem;font-weight:700;cursor:pointer;transition:all .2s ease;box-shadow:0 4px 12px rgba(245,158,11,.3)">⚡ Quick Cash Match ($10)</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:24px;align-items:start">
+        <!-- Left: Create Lobby -->
+        <div style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;position:sticky;top:105px">
+          <h2 style="font-size:1.5rem;font-weight:700;margin:0 0 8px;color:var(--txt)">Create Lobby</h2>
+          <p style="color:var(--muted);font-size:0.875rem;margin:0 0 20px">Set up a new cash match</p>
+
+          <div style="display:grid;gap:16px">
+            <!-- Category -->
+            <div class="form-group">
+              <label style="display:block;font-size:0.875rem;font-weight:600;margin-bottom:6px;color:var(--txt)">Trivia Category</label>
+              <select id="testCategory" style="width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--txt);font-size:0.9375rem;cursor:pointer">
+                <option value="Politics">🏛️ Politics</option>
+                <option value="Business & Economics">💼 Business & Economics</option>
+                <option value="Sports">🏈 Sports</option>
+                <option value="Music">🎵 Music</option>
+                <option value="Movies">🎬 Movies</option>
+                <option value="History">📜 History</option>
+                <option value="Geography">🗺️ Geography</option>
+                <option value="Science">🔬 Science</option>
+                <option value="Pop Culture">⭐ Pop Culture</option>
+              </select>
+            </div>
+
+            <!-- Stake -->
+            <div class="form-group">
+              <label style="display:block;font-size:0.875rem;font-weight:600;margin-bottom:6px;color:var(--txt)">Entry Stake</label>
+              <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px">
+                <button class="stake-quick-btn" data-stake="1">$1</button>
+                <button class="stake-quick-btn active" data-stake="10">$10</button>
+                <button class="stake-quick-btn" data-stake="20">$20</button>
+                <button class="stake-quick-btn" data-stake="50">$50</button>
+                <button class="stake-quick-btn" data-stake="100">$100</button>
+              </div>
+              <input id="testStake" type="number" min="1" step="1" value="10" placeholder="Selected stake" readonly style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:rgba(0,0,0,.2);color:var(--txt);font-size:0.875rem;text-align:center;margin-top:8px;cursor:default" />
+            </div>
+
+            <!-- Max Players -->
+            <div class="form-group">
+              <label style="display:block;font-size:0.875rem;font-weight:600;margin-bottom:6px;color:var(--txt)">Max Players</label>
+              <select id="testMaxPlayers" style="width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--txt);font-size:0.9375rem;cursor:pointer">
+                <option value="2">2 Players</option>
+                <option value="4">4 Players</option>
+                <option value="8">8 Players</option>
+              </select>
+            </div>
+
+            <button id="testCreateLobby" class="btn" style="width:100%;background:linear-gradient(135deg,#F59E0B,#FBBF24);color:#000;margin-top:8px">Create Lobby (Test)</button>
+          </div>
+        </div>
+
+        <!-- Right: Lobby List -->
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+            <h2 style="font-size:1.5rem;font-weight:700;margin:0;color:var(--txt)">Open Lobbies</h2>
+            <span id="lobbyCount" style="background:rgba(0,234,255,.1);border:1px solid rgba(0,234,255,.3);border-radius:8px;padding:4px 12px;color:var(--accent2);font-size:0.875rem;font-weight:600">0 lobbies</span>
+          </div>
+
+          <!-- Filters -->
+          <div style="background:rgba(0,234,255,.05);border:1px solid rgba(0,234,255,.2);border-radius:12px;padding:16px;margin-bottom:16px">
+            <!-- Category Filter -->
+            <div style="margin-bottom:16px">
+              <label style="display:block;font-size:0.75rem;font-weight:600;color:var(--accent2);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px">Categories</label>
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                <button class="filter-pill" data-type="category" data-value="Politics">Politics</button>
+                <button class="filter-pill" data-type="category" data-value="Business & Economics">Business</button>
+                <button class="filter-pill" data-type="category" data-value="Sports">Sports</button>
+                <button class="filter-pill" data-type="category" data-value="Music">Music</button>
+                <button class="filter-pill" data-type="category" data-value="Movies">Movies</button>
+                <button class="filter-pill" data-type="category" data-value="History">History</button>
+                <button class="filter-pill" data-type="category" data-value="Geography">Geography</button>
+                <button class="filter-pill" data-type="category" data-value="Science">Science</button>
+                <button class="filter-pill" data-type="category" data-value="Pop Culture">Pop Culture</button>
+              </div>
+            </div>
+
+            <!-- Stake Filter -->
+            <div style="margin-bottom:16px">
+              <label style="display:block;font-size:0.75rem;font-weight:600;color:var(--accent2);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px">Stakes</label>
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                <button class="filter-pill" data-type="stake" data-value="1">$1</button>
+                <button class="filter-pill" data-type="stake" data-value="10">$10</button>
+                <button class="filter-pill" data-type="stake" data-value="20">$20</button>
+                <button class="filter-pill" data-type="stake" data-value="50">$50</button>
+                <button class="filter-pill" data-type="stake" data-value="100">$100</button>
+              </div>
+            </div>
+
+            <!-- Lobby Size Filter -->
+            <div>
+              <label style="display:block;font-size:0.75rem;font-weight:600;color:var(--accent2);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px">Lobby Size</label>
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                <button class="filter-pill" data-type="size" data-value="2">2 Players</button>
+                <button class="filter-pill" data-type="size" data-value="4">4 Players</button>
+                <button class="filter-pill" data-type="size" data-value="8">8 Players</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="testLobbyList" style="display:grid;gap:12px">
+            <!-- Empty state -->
+            <div id="emptyState" style="background:var(--card);border:1px dashed var(--line);border-radius:16px;padding:48px 24px;text-align:center">
+              <div style="font-size:3rem;margin-bottom:12px;opacity:0.5">🎮</div>
+              <div style="font-size:1.125rem;font-weight:600;color:var(--muted);margin-bottom:8px">No lobbies yet</div>
+              <div style="font-size:0.875rem;color:var(--dim)">Create your first lobby to get started</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lobby Details / Waiting Room Screen -->
+  <div id="lobby-details-screen" class="hidden screen" style="position:fixed;inset:0;background:var(--bg);z-index:9999;display:none;overflow-y:auto;padding-top:73px">
+    <div style="max-width:900px;margin:0 auto;padding:32px 24px">
+      <!-- Back Button -->
+      <button id="lobbyDetailsBackBtn" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:10px;padding:10px 20px;color:var(--txt);cursor:pointer;font-size:0.9375rem;font-weight:600;transition:all .2s ease;margin-bottom:24px">← Back to Lobbies</button>
+
+      <!-- Lobby Info Card -->
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:32px;margin-bottom:24px">
+        <div style="display:flex;align-items:start;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:16px">
+          <div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+              <span id="lobbyDetailsIcon" style="font-size:2.5rem">🎯</span>
+              <div>
+                <h1 id="lobbyDetailsCategory" style="font-size:2rem;font-weight:900;color:var(--txt);margin:0 0 4px">Category</h1>
+                <p id="lobbyDetailsHost" style="font-size:0.875rem;color:var(--muted);margin:0">Host: Username</p>
+              </div>
+            </div>
+            <div id="lobbyDetailsStatus" style="font-size:0.9375rem;color:var(--muted);margin-bottom:8px">Waiting for more players to join...</div>
+          </div>
+          <div style="text-align:right">
+            <div id="lobbyDetailsStake" style="font-size:2rem;font-weight:900;color:var(--accent2);margin-bottom:4px">$10</div>
+            <div style="font-size:0.875rem;color:var(--muted)">entry fee</div>
+          </div>
+        </div>
+
+        <!-- Players List -->
+        <div style="border-top:1px solid var(--line);padding-top:24px;margin-bottom:24px">
+          <h3 style="font-size:1.125rem;font-weight:700;color:var(--txt);margin:0 0 16px">Players <span id="lobbyDetailsPlayerCount" style="color:var(--accent2)">(0/2)</span></h3>
+          <div id="lobbyDetailsPlayersList" style="display:grid;gap:8px">
+            <!-- Players will be inserted here -->
+          </div>
+        </div>
+
+        <!-- Join Button -->
+        <div id="lobbyDetailsJoinSection" style="border-top:1px solid var(--line);padding-top:24px">
+          <div style="background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:16px;margin-bottom:16px;text-align:center">
+            <p style="font-size:0.875rem;color:var(--muted);margin:0;line-height:1.6">
+              Join this lobby to participate in the match. You'll need to accept terms and ready up before the match starts.
+              <br><br>
+              <strong style="color:#F59E0B">(This is TEST MODE: fake money only for UX testing.)</strong>
+            </p>
+          </div>
+          <button id="lobbyDetailsJoinBtn" class="btn" style="width:100%;background:linear-gradient(135deg,var(--accent2),#0af);color:#000;font-size:1rem;font-weight:700;padding:14px">Join Lobby</button>
+        </div>
+
+        <!-- Already Joined - Terms & Ready Section -->
+        <div id="lobbyDetailsAlreadyJoined" style="display:none;border-top:1px solid var(--line);padding-top:24px">
+          <!-- Terms Acceptance Phase -->
+          <div id="lobby-terms-phase" style="display:none">
+            <div style="background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:20px;margin-bottom:16px">
+              <h3 style="font-size:1.125rem;font-weight:700;color:var(--txt);margin:0 0 12px">Terms & Conditions</h3>
+              <p style="font-size:0.875rem;color:var(--muted);margin:0 0 16px;line-height:1.6">
+                Before you can ready up, please review and accept the Cash Challenge terms and conditions. By participating you agree that all wagers are final and results are based on skill-based trivia outcomes.
+                <br><br>
+                <strong style="color:#F59E0B">(This is TEST MODE: fake money only for UX testing.)</strong>
+              </p>
+              <button id="lobby-accept-terms-btn" class="btn" style="width:100%;background:linear-gradient(135deg,#F59E0B,#FBBF24);color:#000">Accept Terms & Conditions</button>
+            </div>
+          </div>
+
+          <!-- Ready Up Phase -->
+          <div id="lobby-ready-phase" style="display:none">
+            <div style="background:rgba(57,255,136,.05);border:1px solid rgba(57,255,136,.2);border-radius:12px;padding:20px;margin-bottom:16px;text-align:center">
+              <div style="font-size:1.125rem;font-weight:700;color:var(--accent);margin-bottom:8px">✓ You're in this lobby!</div>
+              <div id="lobby-ready-status" style="font-size:0.875rem;color:var(--muted);margin-bottom:16px">0/2 players ready</div>
+              <button id="lobby-ready-btn" class="btn" style="width:100%;background:linear-gradient(135deg,var(--accent),#10B981);color:#000;font-weight:700;padding:14px">Ready Up!</button>
+            </div>
+          </div>
+
+          <!-- Waiting for Match Start -->
+          <div id="lobby-waiting-phase" style="display:none">
+            <div style="background:rgba(57,255,136,.05);border:1px solid rgba(57,255,136,.2);border-radius:12px;padding:20px;text-align:center">
+              <div style="font-size:1.125rem;font-weight:700;color:var(--accent);margin-bottom:4px">✓ Ready!</div>
+              <div style="font-size:0.875rem;color:var(--muted)">Waiting for all players to ready up...</div>
+              <div id="lobby-ready-status-waiting" style="font-size:0.875rem;color:var(--accent2);margin-top:8px;font-weight:600">0/2 players ready</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lobby Full Message -->
+        <div id="lobbyDetailsFull" style="display:none;border-top:1px solid var(--line);padding-top:24px">
+          <div style="background:rgba(255,193,7,.05);border:1px solid rgba(255,193,7,.2);border-radius:12px;padding:20px;text-align:center">
+            <div style="font-size:1.125rem;font-weight:700;color:#FFC107;margin-bottom:4px">🔒 Lobby Full</div>
+            <div style="font-size:0.875rem;color:var(--muted)">This lobby has reached maximum capacity</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leave Lobby Confirmation Modal -->
+  <div id="leave-lobby-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);z-index:10002;align-items:center;justify-content:center">
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:16px;padding:32px;max-width:500px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,0.5)">
+      <h2 style="font-size:1.5rem;font-weight:900;color:var(--txt);margin:0 0 12px">Leave lobby?</h2>
+      <p style="font-size:0.9375rem;color:var(--muted);line-height:1.6;margin:0 0 24px">
+        If you leave now, you'll be removed from this match and will not participate when it starts. Your stake will be refunded.
+      </p>
+      <div style="display:flex;gap:12px">
+        <button id="confirmLeaveLobby" class="btn" style="flex:1;background:linear-gradient(135deg,#EF4444,#DC2626);color:#fff">Yes, leave lobby</button>
+        <button id="cancelLeaveLobby" class="btn secondary" style="flex:1">Stay in lobby</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="match-end-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);z-index:10003;align-items:center;justify-content:center">
+    <div style="background:var(--card);border:2px solid var(--line);border-radius:20px;padding:48px 32px;max-width:550px;width:90%;box-shadow:0 16px 48px rgba(0,0,0,0.6);text-align:center">
+      <div id="match-end-icon" style="font-size:5rem;margin-bottom:24px"></div>
+      <h2 id="match-end-title" style="font-size:2rem;font-weight:900;color:var(--txt);margin:0 0 16px"></h2>
+      <div id="match-end-message" style="font-size:1.125rem;color:var(--muted);line-height:1.6;margin:0 0 32px"></div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <button id="match-end-home-btn" class="btn" style="width:100%;background:linear-gradient(135deg,var(--accent2),#0af);color:#000;font-size:1rem;font-weight:700;padding:14px">Go to Home</button>
+        <button id="match-end-rematch-btn" class="btn secondary" style="width:100%;font-size:1rem;padding:14px">Request Rematch</button>
+        <button id="match-end-deposit-btn" class="btn secondary" style="width:100%;font-size:1rem;padding:14px">Add Funds</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .stake-quick-btn {
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--txt);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s ease;
+    }
+    .stake-quick-btn:hover {
+      background: rgba(255,255,255,.08);
+      border-color: var(--accent2);
+    }
+    .stake-quick-btn.active {
+      background: linear-gradient(135deg, var(--accent2), #0af);
+      border-color: var(--accent2);
+      color: #000;
+    }
+    .filter-pill {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--txt);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s ease;
+      white-space: nowrap;
+    }
+    .filter-pill:hover {
+      background: rgba(255,255,255,.08);
+      border-color: var(--accent2);
+      box-shadow: 0 0 8px rgba(0,234,255,.2);
+    }
+    .filter-pill.active {
+      background: linear-gradient(135deg, var(--accent2), #0af);
+      border-color: var(--accent2);
+      color: #000;
+      box-shadow: 0 0 12px rgba(0,234,255,.4);
+    }
+    .lobby-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px;
+      transition: all .2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .lobby-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      opacity: 0;
+      transition: opacity .2s ease;
+    }
+    .lobby-card:hover::before {
+      opacity: 1;
+    }
+    .lobby-card:hover {
+      border-color: var(--accent2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,.3);
+    }
+    .lobby-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .lobby-badge.open {
+      background: rgba(57,255,136,.1);
+      border: 1px solid rgba(57,255,136,.3);
+      color: var(--accent);
+    }
+    .lobby-badge.in-progress {
+      background: rgba(255,193,7,.1);
+      border: 1px solid rgba(255,193,7,.3);
+      color: #FFC107;
+    }
+    .lobby-badge.finished {
+      background: rgba(156,163,175,.1);
+      border: 1px solid rgba(156,163,175,.3);
+      color: #9CA3AF;
+    }
+    @media (max-width: 768px) {
+      #cash-test-screen > div:first-child > div:first-child {
+        flex-direction: column;
+        gap: 16px;
+      }
+      #cash-test-screen > div:first-child > div:first-child > button:first-child {
+        font-size: 0.875rem;
+        padding: 8px 16px;
+      }
+      #cash-test-screen > div:first-child > div:first-child > h1 {
+        font-size: 1.5rem;
+      }
+      #cash-test-screen > div:first-child > div:nth-child(2) {
+        grid-template-columns: 1fr !important;
+      }
+      #cash-test-screen > div:first-child > div:nth-child(2) > div:first-child {
+        position: static !important;
+      }
+    }
+  </style>
+
+  <!-- Free Play choice sheet -->
+  <div id="freeSheet" class="sheet" aria-hidden="true">
+    <div class="modal">
+      <button class="close" data-close="freeSheet" aria-label="Close">&times;</button>
+      <h2 class="modal-title">Free Play</h2>
+      <p class="modal-sub">Play instantly as a guest, or sign in to save progress.</p>
+      <div class="choices">
+        <button id="guestBtn" class="provider guest">🚀 Continue as Guest</button>
+        <button id="freeSignInBtn" class="provider">🔑 Sign in (optional)</button>
+      </div>
+      <p class="terms">Guest mode: No account, no storage. Just instant play!</p>
+    </div>
+  </div>
+
+  <!-- Free Play Setup Screen -->
+  <div id="freeplaySetup" class="sheet" aria-hidden="true">
+    <div class="modal">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <button id="btnBackSetup" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--txt);cursor:pointer;font-size:18px" aria-label="Back">←</button>
+        <h2 class="modal-title" style="margin:0;flex:1;text-align:center">Free Play Setup</h2>
+        <button id="btnHomeSetup" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--txt);cursor:pointer;font-size:18px" aria-label="Home">🏠</button>
+      </div>
+
+      <p class="modal-sub">Customize your game settings</p>
+
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:16px 0">
+        <div style="display:grid;gap:16px">
+          <!-- Bots -->
+          <label style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+            <span style="color:var(--muted);font-size:.9375rem">Bots</span>
+            <input id="fpBots" type="number" min="0" max="7" step="1" value="3" style="width:80px;padding:8px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--txt);text-align:center" />
+          </label>
+
+          <!-- Difficulty -->
+          <label style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+            <span style="color:var(--muted);font-size:.9375rem">Difficulty</span>
+            <select id="fpDifficulty" style="width:120px;padding:8px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--txt)">
+              <option value="easy">Easy</option>
+              <option value="normal" selected>Normal</option>
+              <option value="hard">Hard</option>
+            </select>
+          </label>
+
+          <!-- Total Rounds -->
+          <label style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+            <span style="color:var(--muted);font-size:.9375rem">Total Rounds</span>
+            <input id="fpRounds" type="number" min="3" max="12" step="1" value="5" style="width:80px;padding:8px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--txt);text-align:center" />
+          </label>
+
+          <!-- Elimination Start -->
+          <label style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+            <span style="color:var(--muted);font-size:.9375rem">Elimination Starts Round</span>
+            <input id="fpElimStart" type="number" min="2" max="11" step="1" value="3" style="width:80px;padding:8px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--txt);text-align:center" />
+          </label>
+
+          <!-- Category -->
+          <label style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+            <span style="color:var(--muted);font-size:.9375rem">Category</span>
+            <select id="fpCategory" style="width:150px;padding:8px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--txt)">
+              <option value="">Any</option>
+              <option value="general">General Knowledge</option>
+              <option value="science">Science</option>
+              <option value="history">History</option>
+              <option value="geography">Geography</option>
+              <option value="sports">Sports</option>
+              <option value="entertainment">Entertainment</option>
+              <option value="arts">Arts & Literature</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <button id="startFreePlay" class="btn" style="width:100%;margin-top:8px">Start Game</button>
+      <p class="terms" style="margin-top:12px">Settings are saved for your next game</p>
+    </div>
+  </div>
+
+  <!-- Offline Wizard: Step 1 - Bots -->
+  <div id="offlineStepBots" class="sheet" aria-hidden="true">
+    <div class="modal">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <button id="offBackBots" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--txt);cursor:pointer;font-size:18px" aria-label="Back">←</button>
+        <h2 class="modal-title" style="margin:0;flex:1;text-align:center">Choose Bots</h2>
+        <button id="offHomeBots" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--txt);cursor:pointer;font-size:18px" aria-label="Home">🏠</button>
+      </div>
+
+      <p class="modal-sub">Select 1-15 opponents</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:12px;margin:16px 0">
+        <div class="wizard-tile" data-val="1">1</div>
+        <div class="wizard-tile" data-val="3">3</div>
+        <div class="wizard-tile" data-val="5">5</div>
+        <div class="wizard-tile" data-val="7">7</div>
+        <div class="wizard-tile" data-val="10">10</div>
+        <div class="wizard-tile" data-val="12">12</div>
+        <div class="wizard-tile" data-val="15">15</div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin:16px 0;display:flex;align-items:center;gap:12px">
+        <label style="color:var(--muted)">Custom:</label>
+        <input id="botsInput" type="number" min="1" max="15" value="3" style="flex:1;padding:8px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--txt);text-align:center" />
+      </div>
+
+      <button id="nextFromBots" class="btn" style="width:100%">Next: Rounds</button>
+    </div>
+  </div>
+
+  <!-- Offline Wizard: Step 2 - Rounds -->
+  <div id="offlineStepRounds" class="sheet" aria-hidden="true">
+    <div class="modal">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <button id="offBackRounds" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--txt);cursor:pointer;font-size:18px" aria-label="Back">←</button>
+        <h2 class="modal-title" style="margin:0;flex:1;text-align:center">Total Rounds</h2>
+        <button id="offHomeRounds" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--txt);cursor:pointer;font-size:18px" aria-label="Home">🏠</button>
+      </div>
+
+      <p class="modal-sub">Select 3-20 rounds</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:12px;margin:16px 0">
+        <div class="wizard-tile" data-val="3">3</div>
+        <div class="wizard-tile" data-val="5">5</div>
+        <div class="wizard-tile" data-val="7">7</div>
+        <div class="wizard-tile" data-val="10">10</div>
+        <div class="wizard-tile" data-val="12">12</div>
+        <div class="wizard-tile" data-val="15">15</div>
+        <div class="wizard-tile" data-val="20">20</div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin:16px 0;display:flex;align-items:center;gap:12px">
+        <label style="color:var(--muted)">Custom:</label>
+        <input id="roundsInput" type="number" min="3" max="20" value="5" style="flex:1;padding:8px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--txt);text-align:center" />
+      </div>
+
+      <button id="nextFromRounds" class="btn" style="width:100%">Next: Difficulty</button>
+    </div>
+  </div>
+
+  <!-- Offline Wizard: Step 3 - Difficulty & Elimination -->
+  <div id="offlineStepDifficulty" class="sheet" aria-hidden="true">
+    <div class="modal">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <button id="offBackDiff" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--txt);cursor:pointer;font-size:18px" aria-label="Back">←</button>
+        <h2 class="modal-title" style="margin:0;flex:1;text-align:center">Difficulty</h2>
+        <button id="offHomeDiff" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--txt);cursor:pointer;font-size:18px" aria-label="Home">🏠</button>
+      </div>
+
+      <p class="modal-sub">Choose AI difficulty and elimination settings</p>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0">
+        <div class="wizard-tile" data-diff="easy">Easy</div>
+        <div class="wizard-tile wizard-tile-selected" data-diff="normal">Medium</div>
+        <div class="wizard-tile" data-diff="hard">Hard</div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:16px 0">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px">
+          <label style="color:var(--txt);font-weight:600">Enable Elimination Rounds</label>
+          <button id="elimToggle" class="toggle-btn toggle-on">ON</button>
+        </div>
+
+        <div id="elimPreview" style="display:flex;flex-direction:column;gap:8px">
+          <strong style="color:var(--txt)">Elimination starts at Round <span id="elimStartPreview">3</span></strong>
+          <small style="color:var(--muted);font-size:.8125rem;line-height:1.4">Lowest scorer eliminated each round until 2 finalists remain. After the final round, the top 2 face off in a championship match (Best of 3).</small>
+        </div>
+      </div>
+
+      <button id="nextFromDiff" class="btn" style="width:100%">Next: Categories</button>
+    </div>
+  </div>
+
+  <!-- Offline Wizard: Step 4 - Categories -->
+  <div id="offlineStepCategories" class="sheet" aria-hidden="true">
+    <div class="modal">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <button id="offBackCats" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--txt);cursor:pointer;font-size:18px" aria-label="Back">←</button>
+        <h2 class="modal-title" style="margin:0;flex:1;text-align:center">Categories</h2>
+        <button id="offHomeCats" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--txt);cursor:pointer;font-size:18px" aria-label="Home">🏠</button>
+      </div>
+
+      <p class="modal-sub">Select one or more, or choose Any</p>
+
+      <div id="catsGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px;margin:16px 0">
+        <!-- Categories will be dynamically rendered from TRIVIA_CATEGORIES -->
+      </div>
+
+      <button id="startOfflineWizard" class="btn" style="width:100%">Start Game</button>
+    </div>
+  </div>
+
+  <style>
+    .wizard-tile {
+      background: var(--card);
+      border: 2px solid var(--line);
+      border-radius: 12px;
+      padding: 16px 8px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .wizard-tile:hover {
+      background: rgba(255,255,255,.08);
+      border-color: var(--accent);
+    }
+    .wizard-tile.wizard-tile-selected {
+      background: linear-gradient(135deg, var(--accent), #0af);
+      border-color: var(--accent);
+      color: #000;
+      box-shadow: 0 4px 12px rgba(0,234,255,.3);
+    }
+    .toggle-btn {
+      padding: 8px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.875rem;
+      transition: all 0.2s ease;
+      min-width: 60px;
+    }
+    .toggle-btn.toggle-on {
+      background: linear-gradient(135deg, var(--accent), #0af);
+      color: #000;
+      border-color: var(--accent);
+    }
+    .toggle-btn.toggle-off {
+      background: rgba(255,255,255,.05);
+      color: var(--muted);
+      border-color: var(--line);
+    }
+    .cat-icon {
+      font-size: 32px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .cat-title {
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+  </style>
+
+  <!-- Universal Auth Sheet -->
+  <div id="authSheet" class="sheet" aria-hidden="true">
+    <div class="modal">
+      <button class="close" data-close="authSheet" aria-label="Close">&times;</button>
+      <h2 class="modal-title">Sign in to BrainDash</h2>
+      <p class="modal-sub">Choose your preferred sign-in method</p>
+
+      <!-- Magic Link (Passwordless) -->
+      <form id="magicForm" class="form">
+        <div class="form-group">
+          <label for="magicEmail">Email (Magic Link)</label>
+          <input id="magicEmail" type="email" placeholder="you@example.com" required />
+        </div>
+        <button id="magicSendBtn" type="submit" class="btn">Send sign-in link</button>
+        <small id="magicMsg" class="hint"></small>
+      </form>
+
+      <div class="sep"><span>or</span></div>
+
+      <!-- Sign Up -->
+      <details>
+        <summary>Create new account</summary>
+        <form id="signupForm" class="form" style="margin-top:12px">
+          <div class="form-group">
+            <label for="suEmail">Email</label>
+            <input id="suEmail" type="email" placeholder="you@example.com" required />
+          </div>
+          <div class="form-group">
+            <label for="suUsername">Username (optional)</label>
+            <input id="suUsername" placeholder="gamer_handle" />
+          </div>
+          <div class="form-group">
+            <label for="suPassword">Password (min 8 chars)</label>
+            <input id="suPassword" type="password" placeholder="••••••••" minlength="8" required />
+          </div>
+          <button id="suBtn" type="submit" class="btn secondary">Create account</button>
+          <small id="suMsg" class="hint"></small>
+        </form>
+      </details>
+
+      <!-- Sign In -->
+      <details>
+        <summary>Sign in with password</summary>
+        <form id="signinForm" class="form" style="margin-top:12px">
+          <div class="form-group">
+            <label for="siEmail">Email</label>
+            <input id="siEmail" type="email" placeholder="you@example.com" required />
+          </div>
+          <div class="form-group">
+            <label for="siPassword">Password</label>
+            <input id="siPassword" type="password" placeholder="••••••••" required />
+          </div>
+          <button id="siBtn" type="submit" class="btn secondary">Sign in</button>
+          <small id="siMsg" class="hint"></small>
+        </form>
+      </details>
+
+      <!-- OAuth (HIDDEN - Enable in Supabase dashboard first to avoid connection errors) -->
+      <!-- To enable: Remove class="hidden" after configuring providers in Supabase -->
+      <div id="oauthRow" class="hidden" style="margin-top:16px">
+        <div class="sep"><span>or continue with</span></div>
+        <div class="row" style="margin-top:12px;gap:12px">
+          <a id="googleBtn" href="#" target="_top" rel="noopener" class="oauth-btn oauth-google">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" width="18" height="18">
+                <path fill="#EA4335" d="M24 9.5c3.5 0 6.7 1.2 9.2 3.6l-3.7 3.6c-1.5-1.4-3.5-2.2-5.6-2.2-4.7 0-8.7 3.4-9.8 7.8l-4.1-3.2C12 13 17.6 9.5 24 9.5z"/>
+                <path fill="#34A853" d="M14.2 25.3c-.2-.7-.3-1.5-.3-2.3s.1-1.6.3-2.3l-4.1-3.2C9.4 19.7 9 21.8 9 24s.4 4.3 1.1 6.5l4.1-3.2z"/>
+                <path fill="#FBBC05" d="M24 38.5c-6.4 0-12-3.5-14.8-8.9l4.1-3.2c1.1 4.4 5.1 7.8 9.8 7.8 2.4 0 4.6-.8 6.3-2.1l3.8 3.7c-2.8 2.4-6.3 3.7-10 3.7z"/>
+                <path fill="#4285F4" d="M41 24c0-1-.1-1.9-.3-2.8H24v5.6h9.6c-.4 2.3-1.7 4.2-3.6 5.5l3.8 3.7C37.6 33 41 28 41 24z"/>
+              </svg>
+            </span>
+            <span>Continue with Google</span>
+          </a>
+
+          <a id="appleBtn" href="#" target="_top" rel="noopener" class="oauth-btn oauth-apple">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M16.365 2.43c0 1.105-.45 2.147-1.18 2.902-.76.78-1.96 1.38-3.08 1.3-.14-1.03.41-2.15 1.13-2.9.76-.79 2.1-1.36 3.13-1.302zM20.5 17.1c-.37.86-.81 1.66-1.33 2.4-.71 1.02-1.28 1.73-2.14 1.75-.83.02-1.1-.52-2.3-.52-1.2 0-1.51.5-2.33.53-.95.03-1.67-.93-2.39-1.95-1.3-1.87-2.3-5.27-.96-7.58.66-1.14 1.84-1.86 3.13-1.88 1.02-.02 1.99.57 2.33.57.33 0 1.61-.7 2.72-.6.46.02 1.75.18 2.58 1.44-.07.04-1.54.9-1.52 2.69.03 2.14 1.96 2.85 1.98 2.86z"/>
+              </svg>
+            </span>
+            <span>Continue with Apple</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Top-level hint -->
+      <div id="topLevelHint" class="hidden" style="margin-top:12px;padding:10px;background:rgba(255,200,0,.1);border-radius:8px;font-size:.8125rem">
+        For OAuth, <a href="/" target="_top" style="color:var(--accent)">open this in a new tab</a>.
+      </div>
+
+      <p class="terms">By continuing you agree to our <a href="/legal/terms.md" target="_blank">Terms</a>. Cash Play requires identity verification.</p>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <!-- Sign Up Modal -->
+  <div id="signUpSheet" class="sheet" aria-hidden="true">
+    <div class="modal">
+      <button class="close" onclick="document.getElementById('signUpSheet').style.display='none'" aria-label="Close">&times;</button>
+      <h2 class="modal-title">Create your BrainDash account</h2>
+      <p class="modal-sub">Sign up to save progress and play Cash Challenges</p>
+
+      <!-- OAuth Sign Up -->
+      <div style="display:grid;gap:12px;margin:16px 0">
+        <button class="oauth-btn oauth-google" data-oauth="google">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" width="18" height="18">
+              <path fill="#EA4335" d="M24 9.5c3.5 0 6.7 1.2 9.2 3.6l-3.7 3.6c-1.5-1.4-3.5-2.2-5.6-2.2-4.7 0-8.7 3.4-9.8 7.8l-4.1-3.2C12 13 17.6 9.5 24 9.5z"/>
+              <path fill="#34A853" d="M14.2 25.3c-.2-.7-.3-1.5-.3-2.3s.1-1.6.3-2.3l-4.1-3.2C9.4 19.7 9 21.8 9 24s.4 4.3 1.1 6.5l4.1-3.2z"/>
+              <path fill="#FBBC05" d="M24 38.5c-6.4 0-12-3.5-14.8-8.9l4.1-3.2c1.1 4.4 5.1 7.8 9.8 7.8 2.4 0 4.6-.8 6.3-2.1l3.8 3.7c-2.8 2.4-6.3 3.7-10 3.7z"/>
+              <path fill="#4285F4" d="M41 24c0-1-.1-1.9-.3-2.8H24v5.6h9.6c-.4 2.3-1.7 4.2-3.6 5.5l3.8 3.7C37.6 33 41 28 41 24z"/>
+            </svg>
+          </span>
+          <span>Continue with Google</span>
+        </button>
+
+        <button class="oauth-btn oauth-apple" data-oauth="apple">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+              <path d="M16.365 2.43c0 1.105-.45 2.147-1.18 2.902-.76.78-1.96 1.38-3.08 1.3-.14-1.03.41-2.15 1.13-2.9.76-.79 2.1-1.36 3.13-1.302zM20.5 17.1c-.37.86-.81 1.66-1.33 2.4-.71 1.02-1.28 1.73-2.14 1.75-.83.02-1.1-.52-2.3-.52-1.2 0-1.51.5-2.33.53-.95.03-1.67-.93-2.39-1.95-1.3-1.87-2.3-5.27-.96-7.58.66-1.14 1.84-1.86 3.13-1.88 1.02-.02 1.99.57 2.33.57.33 0 1.61-.7 2.72-.6.46.02 1.75.18 2.58 1.44-.07.04-1.54.9-1.52 2.69.03 2.14 1.96 2.85 1.98 2.86z"/>
+            </svg>
+          </span>
+          <span>Continue with Apple</span>
+        </button>
+      </div>
+
+      <div class="sep"><span>or sign up with</span></div>
+
+      <!-- Tab Navigation -->
+      <div style="display:flex;gap:8px;margin:16px 0;border-bottom:1px solid var(--line)">
+        <button id="signUpTabEmail" class="auth-tab active-tab">Email</button>
+        <button id="signUpTabPhone" class="auth-tab">Phone</button>
+      </div>
+
+      <!-- Email Sign Up -->
+      <div id="emailSignUpSection">
+        <form id="emailSignUpForm" class="form">
+          <div class="form-group">
+            <label for="signUpName">Name (optional)</label>
+            <input id="signUpName" type="text" placeholder="Your name" />
+          </div>
+          <div class="form-group">
+            <label for="signUpEmail">Email</label>
+            <input id="signUpEmail" type="email" placeholder="you@example.com" required />
+          </div>
+          <div class="form-group">
+            <label for="signUpPassword">Password (min 8 characters)</label>
+            <input id="signUpPassword" type="password" placeholder="••••••••" minlength="8" required />
+          </div>
+          <button type="submit" class="btn">Create Account</button>
+          <small id="emailSignUpMessage" class="hint" style="display:none"></small>
+        </form>
+      </div>
+
+      <!-- Phone Sign Up -->
+      <div id="phoneSignUpSection" class="hidden">
+        <form id="phoneSignUpForm" class="form">
+          <div class="form-group">
+            <label for="signUpPhoneName">Name (optional)</label>
+            <input id="signUpPhoneName" type="text" placeholder="Your name" />
+          </div>
+          <div class="form-group">
+            <label for="signUpPhone">Phone Number</label>
+            <input id="signUpPhone" type="tel" placeholder="+1234567890" required />
+          </div>
+          <div class="form-group">
+            <label for="signUpPhonePassword">Password (min 8 characters)</label>
+            <input id="signUpPhonePassword" type="password" placeholder="••••••••" minlength="8" required />
+          </div>
+          <button type="submit" class="btn">Create Account</button>
+          <small id="phoneSignUpMessage" class="hint" style="display:none"></small>
+        </form>
+      </div>
+
+      <p class="terms" style="margin-top:16px">
+        Already have an account? <a href="#" data-switch="signin" style="color:var(--accent2);text-decoration:none;font-weight:600">Sign In</a>
+      </p>
+
+      <p class="terms">By continuing you agree to our <a href="/legal/terms.md" target="_blank">Terms</a>. Cash Play requires identity verification.</p>
+    </div>
+  </div>
+
+  <!-- Sign In Modal -->
+  <div id="signInSheet" class="sheet" aria-hidden="true">
+    <div class="modal">
+      <button class="close" onclick="document.getElementById('signInSheet').style.display='none'" aria-label="Close">&times;</button>
+      <h2 class="modal-title">Welcome back</h2>
+      <p class="modal-sub">Sign in to continue where you left off</p>
+
+      <!-- OAuth Sign In -->
+      <div style="display:grid;gap:12px;margin:16px 0">
+        <button class="oauth-btn oauth-google" data-oauth="google">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" width="18" height="18">
+              <path fill="#EA4335" d="M24 9.5c3.5 0 6.7 1.2 9.2 3.6l-3.7 3.6c-1.5-1.4-3.5-2.2-5.6-2.2-4.7 0-8.7 3.4-9.8 7.8l-4.1-3.2C12 13 17.6 9.5 24 9.5z"/>
+              <path fill="#34A853" d="M14.2 25.3c-.2-.7-.3-1.5-.3-2.3s.1-1.6.3-2.3l-4.1-3.2C9.4 19.7 9 21.8 9 24s.4 4.3 1.1 6.5l4.1-3.2z"/>
+              <path fill="#FBBC05" d="M24 38.5c-6.4 0-12-3.5-14.8-8.9l4.1-3.2c1.1 4.4 5.1 7.8 9.8 7.8 2.4 0 4.6-.8 6.3-2.1l3.8 3.7c-2.8 2.4-6.3 3.7-10 3.7z"/>
+              <path fill="#4285F4" d="M41 24c0-1-.1-1.9-.3-2.8H24v5.6h9.6c-.4 2.3-1.7 4.2-3.6 5.5l3.8 3.7C37.6 33 41 28 41 24z"/>
+            </svg>
+          </span>
+          <span>Continue with Google</span>
+        </button>
+
+        <button class="oauth-btn oauth-apple" data-oauth="apple">
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+              <path d="M16.365 2.43c0 1.105-.45 2.147-1.18 2.902-.76.78-1.96 1.38-3.08 1.3-.14-1.03.41-2.15 1.13-2.9.76-.79 2.1-1.36 3.13-1.302zM20.5 17.1c-.37.86-.81 1.66-1.33 2.4-.71 1.02-1.28 1.73-2.14 1.75-.83.02-1.1-.52-2.3-.52-1.2 0-1.51.5-2.33.53-.95.03-1.67-.93-2.39-1.95-1.3-1.87-2.3-5.27-.96-7.58.66-1.14 1.84-1.86 3.13-1.88 1.02-.02 1.99.57 2.33.57.33 0 1.61-.7 2.72-.6.46.02 1.75.18 2.58 1.44-.07.04-1.54.9-1.52 2.69.03 2.14 1.96 2.85 1.98 2.86z"/>
+            </svg>
+          </span>
+          <span>Continue with Apple</span>
+        </button>
+      </div>
+
+      <!-- Biometric Login (Coming Soon) -->
+      <button id="biometricSignIn" class="oauth-btn" style="background:linear-gradient(135deg,rgba(0,234,255,.15),rgba(57,255,136,.15));border:1px solid rgba(0,234,255,.3);position:relative">
+        <span class="icon" aria-hidden="true" style="font-size:20px">🔐</span>
+        <span>Sign in with Biometrics</span>
+        <span style="position:absolute;top:4px;right:8px;font-size:10px;background:rgba(255,193,7,.2);color:#ffc107;padding:2px 6px;border-radius:4px;font-weight:600">SOON</span>
+      </button>
+
+      <div class="sep"><span>or sign in with</span></div>
+
+      <!-- Tab Navigation -->
+      <div style="display:flex;gap:8px;margin:16px 0;border-bottom:1px solid var(--line)">
+        <button id="signInTabEmail" class="auth-tab active-tab">Email</button>
+        <button id="signInTabPhone" class="auth-tab">Phone</button>
+      </div>
+
+      <!-- Email Sign In -->
+      <div id="emailSignInSection">
+        <form id="emailSignInForm" class="form">
+          <div class="form-group">
+            <label for="signInEmail">Email</label>
+            <input id="signInEmail" type="email" placeholder="you@example.com" required />
+          </div>
+          <div class="form-group">
+            <label for="signInPassword">Password</label>
+            <input id="signInPassword" type="password" placeholder="••••••••" required />
+          </div>
+          <button type="submit" class="btn">Sign In</button>
+          <small id="emailSignInMessage" class="hint" style="display:none"></small>
+        </form>
+      </div>
+
+      <!-- Phone Sign In -->
+      <div id="phoneSignInSection" class="hidden">
+        <form id="phoneSignInForm" class="form">
+          <div class="form-group">
+            <label for="signInPhone">Phone Number</label>
+            <input id="signInPhone" type="tel" placeholder="+1234567890" required />
+          </div>
+          <div class="form-group">
+            <label for="signInPhonePassword">Password</label>
+            <input id="signInPhonePassword" type="password" placeholder="••••••••" required />
+          </div>
+          <button type="submit" class="btn">Sign In</button>
+          <small id="phoneSignInMessage" class="hint" style="display:none"></small>
+        </form>
+      </div>
+
+      <p class="terms" style="margin-top:16px">
+        New here? <a href="#" data-switch="signup" style="color:var(--accent2);text-decoration:none;font-weight:600">Sign Up</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Offline Game Screen - Full Screen View -->
+  <section id="offlineGame" class="hidden" style="position:fixed;inset:0;background:var(--bg);z-index:10000;display:none;flex-direction:column;overflow:hidden">
+    <header style="display:flex;align-items:center;justify-content:space-between;padding:20px 32px;border-bottom:1px solid var(--line);background:rgba(17,20,37,0.8);backdrop-filter:blur(10px)">
+      <button id="ogBackToMenu" style="background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:8px;padding:10px 16px;color:var(--txt);cursor:pointer;font-size:16px;font-weight:600;transition:all .2s" aria-label="Home">← Exit</button>
+      <div style="display:flex;gap:20px;align-items:center">
+        <strong id="ogRoundLabel" style="font-size:20px;color:var(--accent2)">Round 1</strong>
+        <span id="ogCategoryLabel" style="opacity:.7;font-size:16px">Any</span>
+      </div>
+      <div style="width:80px"></div>
+    </header>
+
+    <div id="ogQuestionView" style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;overflow-y:auto">
+      <div style="max-width:900px;width:100%">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding:0 20px">
+          <div id="ogScoreDisplay" style="font-size:20px;font-weight:700;color:var(--accent2)">Score: 0</div>
+          <div id="ogStreakDisplay" style="font-size:18px;font-weight:600;color:var(--accent)">Streak: 0 🔥</div>
+        </div>
+        <div id="ogTimerBar" style="width:100%;height:8px;background:rgba(255,255,255,0.1);border-radius:4px;margin-bottom:32px;overflow:hidden">
+          <div id="ogTimerProgress" style="width:100%;height:100%;background:linear-gradient(90deg, #39ff88, #ffd700);transition:width 0.1s linear"></div>
+        </div>
+        <div id="ogPrompt" style="font-weight:700;font-size:32px;line-height:1.4;margin-bottom:24px;text-align:center;color:var(--txt)">Question will appear…</div>
+        <div id="ogScoringBreakdown" style="margin-bottom:24px"></div>
+        <div id="ogChoices" style="display:grid;gap:16px;max-width:700px;margin:0 auto"></div>
+      </div>
+    </div>
+
+    <div id="ogLeaderboardView" style="flex:1;display:none;align-items:center;justify-content:center;padding:40px 20px;overflow-y:auto;background:rgba(0,0,0,0.3)">
+      <div style="max-width:600px;width:100%">
+        <h2 style="font-size:28px;font-weight:700;text-align:center;margin-bottom:32px;color:var(--accent2)">🏆 Current Standings</h2>
+        <div id="ogLeaderboard" style="display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+    </div>
+
+    <style>
+      #offlineGame.hidden {
+        display: none !important;
+      }
+      #offlineGame:not(.hidden) {
+        display: flex !important;
+      }
+      #ogChoices .btn {
+        width: 100%;
+        text-align: center;
+        padding: 20px 24px;
+        font-size: 18px;
+        font-weight: 600;
+        border-radius: 12px;
+        background: var(--card);
+        border: 2px solid var(--line);
+        color: var(--txt);
+        cursor: pointer;
+        transition: all .2s ease;
+      }
+      #ogChoices .btn:hover:not(:disabled) {
+        background: rgba(255,255,255,.08);
+        border-color: var(--accent2);
+        transform: translateY(-2px);
+      }
+      #ogChoices .btn:disabled {
+        cursor: default;
+        opacity: 0.8;
+      }
+      @media (max-width: 640px) {
+        #ogPrompt {
+          font-size: 24px !important;
+          margin-bottom: 32px !important;
+        }
+        #ogChoices .btn {
+          padding: 16px 20px !important;
+          font-size: 16px !important;
+        }
+      }
+    </style>
+  </section>
+
+  <!-- Dev Mode Toggle - Only active in development -->
+  <script>
+    window.__DEV_MODE__ = true;
+    window.VITE_SUPABASE_URL = 'https://uimxwujknpuespwvipbi.supabase.co';
+    window.VITE_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVpbXh3dWprbnB1ZXNwd3ZpcGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIwMjc2NDcsImV4cCI6MjA3NzYwMzY0N30.ZKXbrtYr47DqESnoOXgxjvS0pjEHpzuQ0BHAM8QpzWw';
+  </script>
+  <script src="/src/questions.js"></script>
+  <script src="/src/ui/banner.js"></script>
+  <script src="/src/ui/countdown.js"></script>
+  <script src="/src/ui/question-timer.js"></script>
+  <script src="/src/ui/elimination-banner.js"></script>
+
+
+  <!-- Cash Challenge Wizard -->
+  <section id="cashStepMode" class="sheet hidden" aria-hidden="true">
+    <div class="modal">
+      <button class="close" id="cashModeBack" aria-label="Close">&times;</button>
+      <h2 class="modal-title">⚔️ Cash Challenge</h2>
+      <p class="modal-sub">Choose your match type</p>
+      <div style="display:grid;grid-template-columns:1fr;gap:12px;margin-top:16px">
+        <div class="tile selectable" id="cashTile1v1" style="padding:24px;text-align:center;cursor:pointer">
+          <div style="font-size:2rem;margin-bottom:8px">🎯</div>
+          <div style="font-weight:700;font-size:1.125rem">1 v 1</div>
+          <div style="font-size:0.8125rem;color:var(--muted);margin-top:4px">Challenge a friend</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cashStepRounds" class="sheet hidden" aria-hidden="true">
+    <div class="modal">
+      <button class="close" id="cashRoundsBack" aria-label="Close">&times;</button>
+      <h2 class="modal-title">1v1 — Rounds</h2>
+      <p class="modal-sub">How many questions?</p>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:16px">
+        <div class="tile selectable" data-val="3" style="padding:20px;text-align:center;cursor:pointer">3</div>
+        <div class="tile selectable" data-val="5" style="padding:20px;text-align:center;cursor:pointer">5</div>
+        <div class="tile selectable" data-val="7" style="padding:20px;text-align:center;cursor:pointer">7</div>
+        <div class="tile selectable" data-val="10" style="padding:20px;text-align:center;cursor:pointer">10</div>
+      </div>
+      <div class="form-group" style="margin-top:16px">
+        <label for="cashRoundsInput">Custom</label>
+        <input id="cashRoundsInput" type="number" min="1" max="20" value="5" />
+      </div>
+      <button id="cashRoundsNext" class="btn" style="width:100%;margin-top:16px">Next</button>
+    </div>
+  </section>
+
+  <section id="cashStepStake" class="sheet hidden" aria-hidden="true">
+    <div class="modal">
+      <button class="close" id="cashStakeBack" aria-label="Close">&times;</button>
+      <h2 class="modal-title">1v1 — Stake</h2>
+      <p class="modal-sub">Set the entry fee (per player)</p>
+      <div class="form-group" style="margin-top:16px">
+        <label for="cashStakeInput">Stake Amount (USD)</label>
+        <input id="cashStakeInput" type="number" min="1" step="1" value="5" />
+      </div>
+      <p style="margin-top:12px;font-size:0.8125rem;color:var(--muted)">
+        Both players must have sufficient balance. Funds are locked in escrow upon consent.
+      </p>
+      <button id="cashStakeNext" class="btn" style="width:100%;margin-top:16px">Next</button>
+    </div>
+  </section>
+
+  <section id="cashStepCatsDiff" class="sheet hidden" aria-hidden="true">
+    <div class="modal" style="max-height:90vh;overflow-y:auto">
+      <button class="close" id="cashCatsBack" aria-label="Close">&times;</button>
+      <h2 class="modal-title">1v1 — Categories & Difficulty</h2>
+      <p class="modal-sub">Choose question topics and difficulty</p>
+      <div style="margin-top:16px">
+        <label style="font-weight:600;margin-bottom:8px;display:block">Categories</label>
+        <div id="cashCatsGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
+          <div class="tile selectable selected" data-cat="" style="padding:16px;text-align:center;cursor:pointer">
+            <div style="font-size:1.5rem">🎲</div>
+            <div style="font-size:0.875rem;margin-top:4px">Any</div>
+          </div>
+          <div class="tile selectable" data-cat="sports" style="padding:16px;text-align:center;cursor:pointer">
+            <div style="font-size:1.5rem">🏈</div>
+            <div style="font-size:0.875rem;margin-top:4px">Sports</div>
+          </div>
+          <div class="tile selectable" data-cat="history" style="padding:16px;text-align:center;cursor:pointer">
+            <div style="font-size:1.5rem">🏛️</div>
+            <div style="font-size:0.875rem;margin-top:4px">History</div>
+          </div>
+          <div class="tile selectable" data-cat="music" style="padding:16px;text-align:center;cursor:pointer">
+            <div style="font-size:1.5rem">🎵</div>
+            <div style="font-size:0.875rem;margin-top:4px">Music</div>
+          </div>
+          <div class="tile selectable" data-cat="science" style="padding:16px;text-align:center;cursor:pointer">
+            <div style="font-size:1.5rem">🔬</div>
+            <div style="font-size:0.875rem;margin-top:4px">Science</div>
+          </div>
+          <div class="tile selectable" data-cat="movies" style="padding:16px;text-align:center;cursor:pointer">
+            <div style="font-size:1.5rem">🎬</div>
+            <div style="font-size:0.875rem;margin-top:4px">Movies</div>
+          </div>
+          <div class="tile selectable" data-cat="geography" style="padding:16px;text-align:center;cursor:pointer">
+            <div style="font-size:1.5rem">🗺️</div>
+            <div style="font-size:0.875rem;margin-top:4px">Geography</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:20px">
+        <label style="font-weight:600;margin-bottom:8px;display:block">Difficulty</label>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+          <div class="tile selectable" data-diff="easy" style="padding:16px;text-align:center;cursor:pointer">Easy</div>
+          <div class="tile selectable selected" data-diff="normal" style="padding:16px;text-align:center;cursor:pointer">Medium</div>
+          <div class="tile selectable" data-diff="hard" style="padding:16px;text-align:center;cursor:pointer">Hard</div>
+        </div>
+      </div>
+      <button id="cashCreateInvite" class="btn" style="width:100%;margin-top:20px">Create & Get Invite Link</button>
+    </div>
+  </section>
+
+  <section id="cashStepInvite" class="sheet hidden" aria-hidden="true">
+    <div class="modal">
+      <button class="close" id="cashInviteBack" aria-label="Close">&times;</button>
+      <h2 class="modal-title">1v1 — Invite & Consent</h2>
+      <p class="modal-sub">Share this link with your opponent</p>
+
+      <div style="background:rgba(0,234,255,0.05);border:1px solid rgba(0,234,255,0.2);border-radius:12px;padding:16px;margin:16px 0">
+        <div style="display:grid;grid-template-columns:auto 1fr;gap:8px;font-size:0.875rem">
+          <strong>Rounds:</strong><span id="ciRounds">-</span>
+          <strong>Stake:</strong><span>$<span id="ciStake">-</span></span>
+          <strong>Difficulty:</strong><span id="ciDiff">-</span>
+          <strong>Categories:</strong><span id="ciCats">-</span>
+        </div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:16px 0">
+        <label style="font-weight:600;margin-bottom:8px;display:block">Invite Link</label>
+        <input id="ciLink" readonly style="width:100%;padding:10px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,0.2);color:var(--txt);font-size:0.8125rem;margin-bottom:8px" />
+        <button id="ciCopy" class="btn secondary" style="width:100%">📋 Copy Link</button>
+      </div>
+
+      <div style="background:rgba(57,255,136,0.05);border:1px solid rgba(57,255,136,0.2);border-radius:12px;padding:16px;margin:16px 0">
+        <label style="font-weight:600;margin-bottom:8px;display:block">Status</label>
+        <div id="ciStatus" style="font-size:0.875rem">Waiting for opponent to join…</div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:16px 0">
+        <label style="display:flex;align-items:start;gap:8px;cursor:pointer;margin-bottom:12px">
+          <input type="checkbox" id="ciAgree" style="margin-top:2px" />
+          <span style="font-size:0.875rem">I agree to the number of rounds and stake, and to the <a href="/legal/terms.md" target="_blank" style="color:var(--accent2)">terms</a>.</span>
+        </label>
+        <div style="display:grid;grid-template-columns:1fr auto;gap:12px">
+          <button id="ciConsent" class="btn" disabled style="width:100%">Agree & Lock Funds</button>
+          <button id="ciCancel" class="btn secondary">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Deposit Modal -->
+  <div id="depositModal" class="sheet hidden" aria-hidden="true">
+    <div class="modal">
+      <button class="close" id="closeDeposit" aria-label="Close">&times;</button>
+      <h2 class="modal-title">💵 Deposit Funds</h2>
+      <p class="modal-sub">Add funds to your wallet to play Cash Challenges</p>
+      <div class="form-group">
+        <label for="depAmount">Amount (USD)</label>
+        <input id="depAmount" type="number" min="1" step="1" value="10" placeholder="Enter amount" />
+      </div>
+      <div style="margin-top:16px">
+        <button id="payStripeLink" class="btn" style="width:100%">Pay with Card / Apple Pay / Google Pay</button>
+      </div>
+      <p style="margin-top:12px;font-size:0.75rem;color:var(--dim);text-align:center">
+        Secure payment powered by Stripe. Funds appear instantly.
+      </p>
+    </div>
+  </div>
+
+  <!-- Withdraw Modal -->
+  <div id="withdrawModal" class="sheet hidden" aria-hidden="true">
+    <div class="modal">
+      <button class="close" id="closeWithdraw" aria-label="Close">&times;</button>
+      <h2 class="modal-title">💰 Withdraw Funds</h2>
+      <p class="modal-sub">Cash out your winnings instantly</p>
+      <div class="form-group">
+        <label for="wdAmount">Amount (USD)</label>
+        <input id="wdAmount" type="number" min="1" step="1" value="10" placeholder="Enter amount" />
+      </div>
+      <p style="margin-top:12px;font-size:0.8125rem;color:var(--muted)">
+        ⚠️ Identity verification required for withdrawals
+      </p>
+      <div style="margin-top:16px">
+        <button id="doWithdraw" class="btn" style="width:100%">Instant Payout to Debit</button>
+      </div>
+      <p style="margin-top:12px;font-size:0.75rem;color:var(--dim);text-align:center">
+        Funds typically arrive within minutes
+      </p>
+    </div>
+  </div>
+
+
+
+</body>
+</html>

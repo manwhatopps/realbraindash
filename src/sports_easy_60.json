@@ -1,0 +1,782 @@
+[
+  {
+    "id": 1,
+    "difficulty": "easy",
+    "topic": "Soccer",
+    "question": "How many goals is a hat-trick in soccer?",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "answer": "3"
+  },
+  {
+    "id": 2,
+    "difficulty": "easy",
+    "topic": "Basketball",
+    "question": "How many points is a shot made behind the arc worth?",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "1"
+    ],
+    "answer": "3"
+  },
+  {
+    "id": 3,
+    "difficulty": "easy",
+    "topic": "Baseball",
+    "question": "How many strikes result in a strikeout in baseball?",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "answer": "3"
+  },
+  {
+    "id": 4,
+    "difficulty": "easy",
+    "topic": "American Football",
+    "question": "How many points is a touchdown worth?",
+    "options": [
+      "3",
+      "6",
+      "1",
+      "7"
+    ],
+    "answer": "6"
+  },
+  {
+    "id": 5,
+    "difficulty": "easy",
+    "topic": "Tennis",
+    "question": "What is the term for a score of zero in tennis?",
+    "options": [
+      "Zero",
+      "Love",
+      "Nil",
+      "Blank"
+    ],
+    "answer": "Love"
+  },
+  {
+    "id": 6,
+    "difficulty": "easy",
+    "topic": "Golf",
+    "question": "What do golfers call a score of one under par on a hole?",
+    "options": [
+      "Bogey",
+      "Birdie",
+      "Eagle",
+      "Par"
+    ],
+    "answer": "Birdie"
+  },
+  {
+    "id": 7,
+    "difficulty": "easy",
+    "topic": "Hockey",
+    "question": "What surface is ice hockey played on?",
+    "options": [
+      "Grass",
+      "Clay",
+      "Ice",
+      "Concrete"
+    ],
+    "answer": "Ice"
+  },
+  {
+    "id": 8,
+    "difficulty": "easy",
+    "topic": "Volleyball",
+    "question": "What is the maximum number of touches per side before the ball must go over in volleyball?",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "answer": "3"
+  },
+  {
+    "id": 9,
+    "difficulty": "easy",
+    "topic": "Soccer",
+    "question": "What is the name of the position that guards the net?",
+    "options": [
+      "Midfielder",
+      "Forward",
+      "Goalkeeper",
+      "Sweeper"
+    ],
+    "answer": "Goalkeeper"
+  },
+  {
+    "id": 10,
+    "difficulty": "easy",
+    "topic": "Basketball",
+    "question": "How many players are on the court per team in basketball?",
+    "options": [
+      "4",
+      "5",
+      "6",
+      "7"
+    ],
+    "answer": "5"
+  },
+  {
+    "id": 11,
+    "difficulty": "easy",
+    "topic": "Baseball",
+    "question": "How many bases are on a baseball field?",
+    "options": [
+      "3",
+      "4",
+      "5",
+      "6"
+    ],
+    "answer": "4"
+  },
+  {
+    "id": 12,
+    "difficulty": "easy",
+    "topic": "American Football",
+    "question": "What is the term for passing the ball to a teammate in the backfield to start a play?",
+    "options": [
+      "Pitch",
+      "Kickoff",
+      "Snap",
+      "Punt"
+    ],
+    "answer": "Snap"
+  },
+  {
+    "id": 13,
+    "difficulty": "easy",
+    "topic": "Tennis",
+    "question": "How many sets does a player usually need to win to take a women's Grand Slam match?",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "answer": "2"
+  },
+  {
+    "id": 14,
+    "difficulty": "easy",
+    "topic": "Golf",
+    "question": "What do you call the area of short grass around the hole?",
+    "options": [
+      "Fairway",
+      "Green",
+      "Rough",
+      "Tee box"
+    ],
+    "answer": "Green"
+  },
+  {
+    "id": 15,
+    "difficulty": "easy",
+    "topic": "Hockey",
+    "question": "What piece of equipment do hockey players use to move the puck?",
+    "options": [
+      "Bat",
+      "Racket",
+      "Stick",
+      "Club"
+    ],
+    "answer": "Stick"
+  },
+  {
+    "id": 16,
+    "difficulty": "easy",
+    "topic": "Volleyball",
+    "question": "What is it called when a player stops a spike at the net in volleyball?",
+    "options": [
+      "Dig",
+      "Block",
+      "Serve",
+      "Set"
+    ],
+    "answer": "Block"
+  },
+  {
+    "id": 17,
+    "difficulty": "easy",
+    "topic": "Soccer",
+    "question": "How many minutes are in a standard soccer match (regulation time)?",
+    "options": [
+      "60",
+      "80",
+      "90",
+      "100"
+    ],
+    "answer": "90"
+  },
+  {
+    "id": 18,
+    "difficulty": "easy",
+    "topic": "Basketball",
+    "question": "What is it called when a player grabs the ball after a missed shot?",
+    "options": [
+      "Assist",
+      "Rebound",
+      "Steal",
+      "Block"
+    ],
+    "answer": "Rebound"
+  },
+  {
+    "id": 19,
+    "difficulty": "easy",
+    "topic": "Baseball",
+    "question": "What is the term for hitting the ball out of the park in fair territory?",
+    "options": [
+      "Double",
+      "Triple",
+      "Home run",
+      "Bunt"
+    ],
+    "answer": "Home run"
+  },
+  {
+    "id": 20,
+    "difficulty": "easy",
+    "topic": "American Football",
+    "question": "What is the term for losing possession by dropping the ball?",
+    "options": [
+      "Interception",
+      "Fumble",
+      "Offside",
+      "Holding"
+    ],
+    "answer": "Fumble"
+  },
+  {
+    "id": 21,
+    "difficulty": "easy",
+    "topic": "Tennis",
+    "question": "What do you call a serve that the opponent can't touch?",
+    "options": [
+      "Fault",
+      "Let",
+      "Ace",
+      "Volley"
+    ],
+    "answer": "Ace"
+  },
+  {
+    "id": 22,
+    "difficulty": "easy",
+    "topic": "Golf",
+    "question": "What do you call two under par on a hole?",
+    "options": [
+      "Birdie",
+      "Bogey",
+      "Eagle",
+      "Par"
+    ],
+    "answer": "Eagle"
+  },
+  {
+    "id": 23,
+    "difficulty": "easy",
+    "topic": "Hockey",
+    "question": "What is the object players try to shoot into the net in ice hockey?",
+    "options": [
+      "Ball",
+      "Puck",
+      "Shuttle",
+      "Disk"
+    ],
+    "answer": "Puck"
+  },
+  {
+    "id": 24,
+    "difficulty": "easy",
+    "topic": "Volleyball",
+    "question": "What skill is used to start play in volleyball?",
+    "options": [
+      "Spike",
+      "Serve",
+      "Set",
+      "Block"
+    ],
+    "answer": "Serve"
+  },
+  {
+    "id": 25,
+    "difficulty": "easy",
+    "topic": "Soccer",
+    "question": "What is it called when a player is nearer to the opponent's goal line than both the ball and the second-last defender?",
+    "options": [
+      "Offside",
+      "Corner",
+      "Throw-in",
+      "Foul"
+    ],
+    "answer": "Offside"
+  },
+  {
+    "id": 26,
+    "difficulty": "easy",
+    "topic": "Basketball",
+    "question": "What is the rectangular painted area near the hoop called?",
+    "options": [
+      "Arc",
+      "Key",
+      "Wing",
+      "Corner"
+    ],
+    "answer": "Key"
+  },
+  {
+    "id": 27,
+    "difficulty": "easy",
+    "topic": "Baseball",
+    "question": "What is the defensive position behind home plate called?",
+    "options": [
+      "Pitcher",
+      "Catcher",
+      "Shortstop",
+      "First baseman"
+    ],
+    "answer": "Catcher"
+  },
+  {
+    "id": 28,
+    "difficulty": "easy",
+    "topic": "American Football",
+    "question": "What is the term for a kick through the uprights during play for three points?",
+    "options": [
+      "Punt",
+      "Field goal",
+      "Kickoff",
+      "Extra point"
+    ],
+    "answer": "Field goal"
+  },
+  {
+    "id": 29,
+    "difficulty": "easy",
+    "topic": "Tennis",
+    "question": "What surface is the French Open played on?",
+    "options": [
+      "Grass",
+      "Clay",
+      "Hard court",
+      "Carpet"
+    ],
+    "answer": "Clay"
+  },
+  {
+    "id": 30,
+    "difficulty": "easy",
+    "topic": "Golf",
+    "question": "What is the starting area on each golf hole called?",
+    "options": [
+      "Green",
+      "Rough",
+      "Tee box",
+      "Bunker"
+    ],
+    "answer": "Tee box"
+  },
+  {
+    "id": 31,
+    "difficulty": "easy",
+    "topic": "Hockey",
+    "question": "How many players (including goalie) are on the ice per team in standard play?",
+    "options": [
+      "4",
+      "5",
+      "6",
+      "7"
+    ],
+    "answer": "6"
+  },
+  {
+    "id": 32,
+    "difficulty": "easy",
+    "topic": "Volleyball",
+    "question": "How many players are on the court per team in indoor volleyball?",
+    "options": [
+      "4",
+      "5",
+      "6",
+      "7"
+    ],
+    "answer": "6"
+  },
+  {
+    "id": 33,
+    "difficulty": "easy",
+    "topic": "Soccer",
+    "question": "What is the international governing body of soccer?",
+    "options": [
+      "UEFA",
+      "FIFA",
+      "CONMEBOL",
+      "MLS"
+    ],
+    "answer": "FIFA"
+  },
+  {
+    "id": 34,
+    "difficulty": "easy",
+    "topic": "Basketball",
+    "question": "What is the violation called when a player takes too many steps without dribbling?",
+    "options": [
+      "Double dribble",
+      "Traveling",
+      "Carrying",
+      "Backcourt"
+    ],
+    "answer": "Traveling"
+  },
+  {
+    "id": 35,
+    "difficulty": "easy",
+    "topic": "Baseball",
+    "question": "How many outs are there in a half-inning?",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "answer": "3"
+  },
+  {
+    "id": 36,
+    "difficulty": "easy",
+    "topic": "American Football",
+    "question": "What is the line called where the ball is placed to start a play?",
+    "options": [
+      "End line",
+      "Goal line",
+      "Line of scrimmage",
+      "Hash mark"
+    ],
+    "answer": "Line of scrimmage"
+  },
+  {
+    "id": 37,
+    "difficulty": "easy",
+    "topic": "Tennis",
+    "question": "Which Grand Slam is played on grass?",
+    "options": [
+      "Australian Open",
+      "French Open",
+      "Wimbledon",
+      "US Open"
+    ],
+    "answer": "Wimbledon"
+  },
+  {
+    "id": 38,
+    "difficulty": "easy",
+    "topic": "Golf",
+    "question": "What do you call sand-filled hazards on a golf course?",
+    "options": [
+      "Rough",
+      "Bunkers",
+      "Greens",
+      "Fairways"
+    ],
+    "answer": "Bunkers"
+  },
+  {
+    "id": 39,
+    "difficulty": "easy",
+    "topic": "Hockey",
+    "question": "What is the term for a two-minute penalty in hockey?",
+    "options": [
+      "Minor penalty",
+      "Major penalty",
+      "Match penalty",
+      "Game misconduct"
+    ],
+    "answer": "Minor penalty"
+  },
+  {
+    "id": 40,
+    "difficulty": "easy",
+    "topic": "Volleyball",
+    "question": "What is the soft, controlled pass used to handle a serve called?",
+    "options": [
+      "Set",
+      "Dig",
+      "Block",
+      "Spike"
+    ],
+    "answer": "Dig"
+  },
+  {
+    "id": 41,
+    "difficulty": "easy",
+    "topic": "Soccer",
+    "question": "What color card results in a player being sent off?",
+    "options": [
+      "Green",
+      "Yellow",
+      "Red",
+      "Blue"
+    ],
+    "answer": "Red"
+  },
+  {
+    "id": 42,
+    "difficulty": "easy",
+    "topic": "Basketball",
+    "question": "What is it called when a player passes the ball to a teammate who scores immediately?",
+    "options": [
+      "Steal",
+      "Assist",
+      "Block",
+      "Rebound"
+    ],
+    "answer": "Assist"
+  },
+  {
+    "id": 43,
+    "difficulty": "easy",
+    "topic": "Baseball",
+    "question": "What is it called when a batter reaches first base due to four balls?",
+    "options": [
+      "Hit by pitch",
+      "Walk",
+      "Single",
+      "Fielder's choice"
+    ],
+    "answer": "Walk"
+  },
+  {
+    "id": 44,
+    "difficulty": "easy",
+    "topic": "American Football",
+    "question": "Which position usually throws the ball to receivers?",
+    "options": [
+      "Running back",
+      "Quarterback",
+      "Linebacker",
+      "Kicker"
+    ],
+    "answer": "Quarterback"
+  },
+  {
+    "id": 45,
+    "difficulty": "easy",
+    "topic": "Tennis",
+    "question": "What is the shot called that is hit before the ball bounces?",
+    "options": [
+      "Lob",
+      "Volley",
+      "Slice",
+      "Drop shot"
+    ],
+    "answer": "Volley"
+  },
+  {
+    "id": 46,
+    "difficulty": "easy",
+    "topic": "Golf",
+    "question": "What do you call the closely mowed area between the tee and green?",
+    "options": [
+      "Rough",
+      "Fairway",
+      "Bunker",
+      "Fringe"
+    ],
+    "answer": "Fairway"
+  },
+  {
+    "id": 47,
+    "difficulty": "easy",
+    "topic": "Hockey",
+    "question": "What do players wear on their feet to move on ice?",
+    "options": [
+      "Cleats",
+      "Skates",
+      "Sneakers",
+      "Boots"
+    ],
+    "answer": "Skates"
+  },
+  {
+    "id": 48,
+    "difficulty": "easy",
+    "topic": "Volleyball",
+    "question": "What is it called when a team wins a rally and earns the right to serve?",
+    "options": [
+      "Side-out",
+      "Ace",
+      "Let",
+      "Fault"
+    ],
+    "answer": "Side-out"
+  },
+  {
+    "id": 49,
+    "difficulty": "easy",
+    "topic": "Soccer",
+    "question": "What part of the body (besides arms/hands) do field players primarily use to control the ball?",
+    "options": [
+      "Head",
+      "Chest",
+      "Feet",
+      "Knees"
+    ],
+    "answer": "Feet"
+  },
+  {
+    "id": 50,
+    "difficulty": "easy",
+    "topic": "Basketball",
+    "question": "What is the term for bouncing the ball while moving?",
+    "options": [
+      "Passing",
+      "Dribbling",
+      "Shooting",
+      "Traveling"
+    ],
+    "answer": "Dribbling"
+  },
+  {
+    "id": 51,
+    "difficulty": "easy",
+    "topic": "Baseball",
+    "question": "What is it called when a batter fails to swing at a pitch in the strike zone?",
+    "options": [
+      "Foul",
+      "Take",
+      "Strike looking",
+      "Check swing"
+    ],
+    "answer": "Strike looking"
+  },
+  {
+    "id": 52,
+    "difficulty": "easy",
+    "topic": "American Football",
+    "question": "What is it called when a defender catches a pass intended for an offensive player?",
+    "options": [
+      "Fumble",
+      "Interception",
+      "Sack",
+      "Safety"
+    ],
+    "answer": "Interception"
+  },
+  {
+    "id": 53,
+    "difficulty": "easy",
+    "topic": "Tennis",
+    "question": "What do you call it when the game score is 40–40?",
+    "options": [
+      "Love",
+      "Deuce",
+      "Advantage",
+      "Break"
+    ],
+    "answer": "Deuce"
+  },
+  {
+    "id": 54,
+    "difficulty": "easy",
+    "topic": "Golf",
+    "question": "What is a score of one over par on a hole called?",
+    "options": [
+      "Birdie",
+      "Bogey",
+      "Eagle",
+      "Albatross"
+    ],
+    "answer": "Bogey"
+  },
+  {
+    "id": 55,
+    "difficulty": "easy",
+    "topic": "Hockey",
+    "question": "What is the term for a face-off location in hockey?",
+    "options": [
+      "Circle",
+      "Spot",
+      "Dot",
+      "Mark"
+    ],
+    "answer": "Dot"
+  },
+  {
+    "id": 56,
+    "difficulty": "easy",
+    "topic": "Volleyball",
+    "question": "What is an unreturnable serve called?",
+    "options": [
+      "Ace",
+      "Block",
+      "Dig",
+      "Lift"
+    ],
+    "answer": "Ace"
+  },
+  {
+    "id": 57,
+    "difficulty": "easy",
+    "topic": "Soccer",
+    "question": "What is the name of the global tournament held every four years?",
+    "options": [
+      "Euro Cup",
+      "World Cup",
+      "Copa América",
+      "Gold Cup"
+    ],
+    "answer": "World Cup"
+  },
+  {
+    "id": 58,
+    "difficulty": "easy",
+    "topic": "Basketball",
+    "question": "What is the maximum value of a single made basket in basketball?",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "answer": "3"
+  },
+  {
+    "id": 59,
+    "difficulty": "easy",
+    "topic": "Baseball",
+    "question": "What base must a runner touch to score a run?",
+    "options": [
+      "First",
+      "Second",
+      "Third",
+      "Home plate"
+    ],
+    "answer": "Home plate"
+  },
+  {
+    "id": 60,
+    "difficulty": "easy",
+    "topic": "American Football",
+    "question": "How many points is a safety worth?",
+    "options": [
+      "2",
+      "3",
+      "6",
+      "1"
+    ],
+    "answer": "2"
+  }
+]

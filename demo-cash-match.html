@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Cash Match Demo - BrainDash</title>
+  <style>
+    :root{--bg:#0a0b0f;--card:#111425;--txt:#e7eaf6;--muted:#9aa3b2;--dim:#6b7280;--line:#1f2937;--accent:#39ff88;--accent2:#00eaff;--red:#ff6b6b}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{margin:0;background:radial-gradient(1200px 800px at 10% -10%,rgba(0,234,255,.12),transparent),radial-gradient(1000px 700px at 110% 10%,rgba(57,255,136,.08),transparent),var(--bg);color:var(--txt);font-family:Inter,system-ui,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh;padding:40px 20px}
+    .container{max-width:1200px;margin:0 auto}
+    .page-title{font-size:2.5rem;font-weight:900;margin-bottom:8px;background:linear-gradient(135deg,var(--accent2),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center}
+    .page-subtitle{color:var(--muted);font-size:1.125rem;margin-bottom:32px;text-align:center}
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin:32px 0}
+
+    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px}
+    .card-title{font-size:1.5rem;font-weight:700;margin-bottom:16px;color:var(--txt)}
+    .card-subtitle{color:var(--muted);font-size:0.9375rem;margin-bottom:20px}
+
+    .stat-box{background:rgba(0,234,255,.05);border:1px solid rgba(0,234,255,.2);border-radius:12px;padding:16px;margin:12px 0;text-align:center}
+    .stat-label{color:var(--muted);font-size:0.875rem;margin-bottom:4px}
+    .stat-value{color:var(--accent2);font-size:2rem;font-weight:700}
+
+    .badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:0.875rem;font-weight:600}
+    .badge-t0{background:rgba(156,163,175,.2);color:#9CA3AF;border:1px solid rgba(156,163,175,.3)}
+    .badge-t2{background:rgba(34,197,94,.2);color:#22C55E;border:1px solid rgba(34,197,94,.3);box-shadow:0 0 15px rgba(34,197,94,.2)}
+    .badge-t3{background:linear-gradient(135deg,rgba(168,85,247,.25),rgba(236,72,153,.25));color:#A855F7;border:1px solid rgba(168,85,247,.4);box-shadow:0 0 20px rgba(168,85,247,.3)}
+
+    .status-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:12px;font-size:0.8125rem;font-weight:600}
+    .status-unverified{background:rgba(156,163,175,.2);color:#9CA3AF}
+    .status-pending{background:rgba(245,158,11,.2);color:#F59E0B}
+    .status-verified{background:rgba(34,197,94,.2);color:#22C55E}
+    .status-rejected{background:rgba(239,68,68,.2);color:#EF4444}
+
+    .btn{padding:14px 28px;background:linear-gradient(135deg,var(--accent2),#0af);color:#000;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:inherit;width:100%;margin-top:8px}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,234,255,.3)}
+    .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+    .btn-secondary{background:rgba(255,255,255,.05);color:var(--txt);border:1px solid var(--line)}
+    .btn-secondary:hover{background:rgba(255,255,255,.08)}
+    .btn-danger{background:linear-gradient(135deg,#ff6b6b,#ff4757);color:#fff}
+    .btn-success{background:linear-gradient(135deg,var(--accent),#00d68f);color:#000}
+
+    .input-group{margin:12px 0}
+    .input-group label{display:block;color:var(--muted);font-size:0.9375rem;margin-bottom:6px}
+    .input-group input{width:100%;padding:12px 16px;background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:8px;color:var(--txt);font-size:1rem;font-family:inherit}
+    .input-group input:focus{outline:none;border-color:var(--accent2)}
+
+    .alert{padding:16px 20px;border-radius:12px;margin:16px 0;display:flex;align-items:center;gap:12px;border:1px solid}
+    .alert-info{background:rgba(0,234,255,.1);border-color:rgba(0,234,255,.3);color:var(--accent2)}
+    .alert-success{background:rgba(57,255,136,.1);border-color:rgba(57,255,136,.3);color:var(--accent)}
+    .alert-warning{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3);color:#F59E0B}
+    .alert-danger{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:#EF4444}
+
+    .match-history{margin-top:20px}
+    .match-item{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:8px;padding:12px 16px;margin:8px 0;display:flex;justify-content:space-between;align-items:center}
+    .match-result{font-weight:700}
+    .match-result.win{color:var(--accent)}
+    .match-result.loss{color:var(--red)}
+
+    .tier-actions{display:flex;gap:8px;margin-top:12px}
+    .tier-actions button{flex:1}
+
+    .demo-notice{background:rgba(245,158,11,.1);border:2px solid rgba(245,158,11,.3);border-radius:12px;padding:20px;margin-bottom:32px;text-align:center}
+    .demo-notice h3{color:#F59E0B;margin-bottom:8px}
+    .demo-notice p{color:var(--muted);font-size:0.9375rem}
+
+    .hidden{display:none!important}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="page-title">💰 Cash Match Demo</h1>
+    <p class="page-subtitle">Test the verification and wallet flow with mock data</p>
+
+    <div class="demo-notice">
+      <h3>⚠️ DEMO MODE</h3>
+      <p>This is a frontend-only mock for testing. No real KYC, no real payments. Data persists in localStorage.</p>
+    </div>
+
+    <div class="grid">
+      <!-- Verification Card -->
+      <div class="card">
+        <h2 class="card-title">🔐 Verification & Limits</h2>
+        <p class="card-subtitle">Your current tier status</p>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin:16px 0">
+          <div>
+            <div style="font-size:0.875rem;color:var(--muted);margin-bottom:4px">Current Tier</div>
+            <span id="currentTierBadge" class="badge badge-t0">👤 Tier 0 — Guest</span>
+          </div>
+          <div>
+            <div style="font-size:0.875rem;color:var(--muted);margin-bottom:4px">Status</div>
+            <span id="currentStatusChip" class="status-chip status-unverified">Unverified</span>
+          </div>
+        </div>
+
+        <div class="stat-box">
+          <div class="stat-label">Monthly Deposit Limit</div>
+          <div class="stat-value" id="depositLimit">$0</div>
+        </div>
+
+        <div class="stat-box">
+          <div class="stat-label">Monthly Withdrawal Limit</div>
+          <div class="stat-value" id="withdrawLimit">$0</div>
+        </div>
+
+        <div id="verificationActions"></div>
+      </div>
+
+      <!-- Wallet Card -->
+      <div class="card">
+        <h2 class="card-title">💵 Mock Wallet</h2>
+        <p class="card-subtitle">Test deposits and withdrawals</p>
+
+        <div class="stat-box">
+          <div class="stat-label">Current Balance</div>
+          <div class="stat-value" id="walletBalance">$0.00</div>
+        </div>
+
+        <div class="input-group">
+          <label for="depositAmount">Deposit Amount</label>
+          <input type="number" id="depositAmount" placeholder="Enter amount" value="100" min="1" max="10000" />
+        </div>
+        <button class="btn" id="depositBtn" onclick="handleDeposit()">Add Fake Credits</button>
+
+        <div class="input-group">
+          <label for="withdrawAmount">Withdraw Amount</label>
+          <input type="number" id="withdrawAmount" placeholder="Enter amount" value="50" min="1" />
+        </div>
+        <button class="btn btn-secondary" id="withdrawBtn" onclick="handleWithdraw()">Withdraw Credits</button>
+
+        <div id="walletMessage"></div>
+      </div>
+
+      <!-- Cash Match Card -->
+      <div class="card">
+        <h2 class="card-title">🎮 Cash Match</h2>
+        <p class="card-subtitle">Join a mock cash match</p>
+
+        <div class="alert alert-info">
+          <span style="font-size:20px">ℹ️</span>
+          <div style="font-size:0.875rem">Entry fee: $10 | Potential winnings: $18 (80% win rate mock)</div>
+        </div>
+
+        <div class="input-group">
+          <label for="entryFee">Entry Fee</label>
+          <input type="number" id="entryFee" value="10" min="5" max="100" step="5" />
+        </div>
+
+        <button class="btn btn-success" id="joinMatchBtn" onclick="handleJoinMatch()">Join Cash Match</button>
+
+        <div id="matchMessage"></div>
+
+        <div class="match-history">
+          <h3 style="font-size:1.125rem;font-weight:600;margin-bottom:12px;color:var(--txt)">Match History</h3>
+          <div id="matchHistoryList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const TIER_INFO = {
+      T0: {
+        name: 'Guest',
+        badge: '👤 Tier 0 — Guest',
+        color: '#9CA3AF',
+        depositLimit: 0,
+        withdrawLimit: 0,
+        canDeposit: false,
+        canWithdraw: false,
+        canCashMatch: false
+      },
+      T2: {
+        name: 'Verified Competitor',
+        badge: '✓ Tier 2 — Verified Competitor',
+        color: '#22C55E',
+        depositLimit: 2500,
+        withdrawLimit: 5000,
+        canDeposit: true,
+        canWithdraw: true,
+        canCashMatch: true
+      },
+      T3: {
+        name: 'Elite Competitor',
+        badge: '👑 Tier 3 — Elite Competitor',
+        color: '#A855F7',
+        depositLimit: 10000,
+        withdrawLimit: 20000,
+        canDeposit: true,
+        canWithdraw: true,
+        canCashMatch: true
+      }
+    };
+
+    const STATUS_INFO = {
+      unverified: { label: 'Unverified', color: '#9CA3AF' },
+      pending: { label: 'Pending Review', color: '#F59E0B' },
+      verified: { label: 'Verified', color: '#22C55E' },
+      rejected: { label: 'Rejected', color: '#EF4444' }
+    };
+
+    let currentUser = JSON.parse(localStorage.getItem('mockUser')) || {
+      id: 'demo-user-' + Date.now(),
+      verification_tier: 'T0',
+      verification_status: 'unverified',
+      balance: 0,
+      monthlyDeposits: 0,
+      monthlyWithdrawals: 0,
+      matchHistory: []
+    };
+
+    function saveUser() {
+      localStorage.setItem('mockUser', JSON.stringify(currentUser));
+      updateUI();
+    }
+
+    function updateUI() {
+      const tier = TIER_INFO[currentUser.verification_tier];
+      const status = STATUS_INFO[currentUser.verification_status];
+
+      document.getElementById('currentTierBadge').textContent = tier.badge;
+      document.getElementById('currentTierBadge').className = `badge badge-${currentUser.verification_tier.toLowerCase()}`;
+
+      document.getElementById('currentStatusChip').textContent = status.label;
+      document.getElementById('currentStatusChip').className = `status-chip status-${currentUser.verification_status}`;
+
+      document.getElementById('depositLimit').textContent = `$${tier.depositLimit.toLocaleString()}`;
+      document.getElementById('withdrawLimit').textContent = `$${tier.withdrawLimit.toLocaleString()}`;
+
+      document.getElementById('walletBalance').textContent = `$${currentUser.balance.toFixed(2)}`;
+
+      updateVerificationActions();
+      updateMatchHistory();
+    }
+
+    function updateVerificationActions() {
+      const tier = currentUser.verification_tier;
+      const status = currentUser.verification_status;
+      const actionsEl = document.getElementById('verificationActions');
+
+      if (tier === 'T0' && status === 'unverified') {
+        actionsEl.innerHTML = `
+          <div class="alert alert-warning" style="margin-top:16px">
+            <span style="font-size:20px">🔒</span>
+            <div style="font-size:0.875rem">Complete verification to unlock cash matches</div>
+          </div>
+          <button class="btn" onclick="startKYC()">Start Mock KYC (Upgrade to T2)</button>
+        `;
+      } else if (tier === 'T0' && status === 'pending') {
+        actionsEl.innerHTML = `
+          <div class="alert alert-info" style="margin-top:16px">
+            <span style="font-size:20px">⏳</span>
+            <div style="font-size:0.875rem">Your verification is being processed...</div>
+          </div>
+          <button class="btn btn-secondary" onclick="completeKYC()">Complete Mock KYC (Simulate Approval)</button>
+        `;
+      } else if (tier === 'T2' && status === 'verified') {
+        actionsEl.innerHTML = `
+          <div class="alert alert-success" style="margin-top:16px">
+            <span style="font-size:20px">✓</span>
+            <div style="font-size:0.875rem">You're verified! Cash matches unlocked.</div>
+          </div>
+          <button class="btn" onclick="upgradeToT3()">Upgrade to Elite (T3)</button>
+        `;
+      } else if (tier === 'T3' && status === 'verified') {
+        actionsEl.innerHTML = `
+          <div class="alert alert-success" style="margin-top:16px">
+            <span style="font-size:20px">👑</span>
+            <div style="font-size:0.875rem">Elite status active! All features unlocked.</div>
+          </div>
+          <button class="btn btn-danger" onclick="resetTier()">Reset to T0 (Testing)</button>
+        `;
+      }
+    }
+
+    function updateMatchHistory() {
+      const historyEl = document.getElementById('matchHistoryList');
+      if (currentUser.matchHistory.length === 0) {
+        historyEl.innerHTML = '<p style="color:var(--muted);text-align:center;padding:20px">No matches played yet</p>';
+        return;
+      }
+
+      historyEl.innerHTML = currentUser.matchHistory.slice(-10).reverse().map(match => `
+        <div class="match-item">
+          <div>
+            <div style="font-size:0.875rem;color:var(--muted)">Entry: $${match.entry}</div>
+            <div class="match-result ${match.result}">${match.result.toUpperCase()}</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:0.875rem;color:var(--muted)">${new Date(match.timestamp).toLocaleTimeString()}</div>
+            <div style="font-weight:700;color:${match.result === 'win' ? 'var(--accent)' : 'var(--red)'}">
+              ${match.result === 'win' ? '+' : ''}$${match.payout.toFixed(2)}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function canUser(actionType, amount = 0) {
+      const tier = TIER_INFO[currentUser.verification_tier];
+      const status = currentUser.verification_status;
+
+      if (actionType === 'deposit') {
+        if (!tier.canDeposit || status !== 'verified') {
+          return {
+            allowed: false,
+            reason: 'You must complete verification (T2+) before making deposits.'
+          };
+        }
+        if (currentUser.monthlyDeposits + amount > tier.depositLimit) {
+          return {
+            allowed: false,
+            reason: `You've reached your monthly deposit limit of $${tier.depositLimit}.`
+          };
+        }
+        return { allowed: true };
+      }
+
+      if (actionType === 'withdraw') {
+        if (!tier.canWithdraw || status !== 'verified') {
+          return {
+            allowed: false,
+            reason: 'You must complete verification (T2+) before withdrawing.'
+          };
+        }
+        if (amount > currentUser.balance) {
+          return {
+            allowed: false,
+            reason: 'Insufficient balance.'
+          };
+        }
+        if (currentUser.monthlyWithdrawals + amount > tier.withdrawLimit) {
+          return {
+            allowed: false,
+            reason: `You've reached your monthly withdrawal limit of $${tier.withdrawLimit}.`
+          };
+        }
+        return { allowed: true };
+      }
+
+      if (actionType === 'enter_match') {
+        if (!tier.canCashMatch || status !== 'verified') {
+          return {
+            allowed: false,
+            reason: 'You must complete verification (T2+) to join cash matches.'
+          };
+        }
+        if (amount > currentUser.balance) {
+          return {
+            allowed: false,
+            reason: 'Insufficient balance. Please deposit funds first.'
+          };
+        }
+        return { allowed: true };
+      }
+
+      return { allowed: false, reason: 'Unknown action type' };
+    }
+
+    function showMessage(elementId, message, type = 'info') {
+      const el = document.getElementById(elementId);
+      el.innerHTML = `
+        <div class="alert alert-${type}" style="margin-top:12px">
+          <span style="font-size:20px">${type === 'success' ? '✓' : type === 'danger' ? '⚠️' : 'ℹ️'}</span>
+          <div style="font-size:0.875rem">${message}</div>
+        </div>
+      `;
+      setTimeout(() => {
+        el.innerHTML = '';
+      }, 5000);
+    }
+
+    function startKYC() {
+      currentUser.verification_status = 'pending';
+      saveUser();
+      showMessage('verificationActions', 'Mock KYC started! Click "Complete Mock KYC" to approve.', 'info');
+    }
+
+    function completeKYC() {
+      currentUser.verification_tier = 'T2';
+      currentUser.verification_status = 'verified';
+      saveUser();
+      showMessage('verificationActions', 'Verification complete! You are now Tier 2.', 'success');
+    }
+
+    function upgradeToT3() {
+      if (confirm('Simulate T3 (Elite) upgrade? This requires enhanced verification.')) {
+        currentUser.verification_tier = 'T3';
+        currentUser.verification_status = 'verified';
+        saveUser();
+        showMessage('verificationActions', 'Upgraded to Elite (T3)! All features unlocked.', 'success');
+      }
+    }
+
+    function resetTier() {
+      if (confirm('Reset to T0 for testing?')) {
+        currentUser.verification_tier = 'T0';
+        currentUser.verification_status = 'unverified';
+        currentUser.monthlyDeposits = 0;
+        currentUser.monthlyWithdrawals = 0;
+        saveUser();
+      }
+    }
+
+    function handleDeposit() {
+      const amount = parseFloat(document.getElementById('depositAmount').value);
+      if (isNaN(amount) || amount <= 0) {
+        showMessage('walletMessage', 'Please enter a valid amount', 'danger');
+        return;
+      }
+
+      const check = canUser('deposit', amount);
+      if (!check.allowed) {
+        showMessage('walletMessage', check.reason, 'danger');
+        return;
+      }
+
+      currentUser.balance += amount;
+      currentUser.monthlyDeposits += amount;
+      saveUser();
+      showMessage('walletMessage', `Deposited $${amount.toFixed(2)} (mock)`, 'success');
+    }
+
+    function handleWithdraw() {
+      const amount = parseFloat(document.getElementById('withdrawAmount').value);
+      if (isNaN(amount) || amount <= 0) {
+        showMessage('walletMessage', 'Please enter a valid amount', 'danger');
+        return;
+      }
+
+      const check = canUser('withdraw', amount);
+      if (!check.allowed) {
+        showMessage('walletMessage', check.reason, 'danger');
+        return;
+      }
+
+      currentUser.balance -= amount;
+      currentUser.monthlyWithdrawals += amount;
+      saveUser();
+      showMessage('walletMessage', `Withdrew $${amount.toFixed(2)} (mock)`, 'success');
+    }
+
+    function handleJoinMatch() {
+      const entryFee = parseFloat(document.getElementById('entryFee').value);
+      if (isNaN(entryFee) || entryFee <= 0) {
+        showMessage('matchMessage', 'Please enter a valid entry fee', 'danger');
+        return;
+      }
+
+      const check = canUser('enter_match', entryFee);
+      if (!check.allowed) {
+        showMessage('matchMessage', check.reason, 'danger');
+        return;
+      }
+
+      currentUser.balance -= entryFee;
+
+      const didWin = Math.random() < 0.8;
+      const payout = didWin ? entryFee * 1.8 : -entryFee;
+
+      if (didWin) {
+        currentUser.balance += entryFee * 1.8;
+      }
+
+      currentUser.matchHistory.push({
+        entry: entryFee,
+        result: didWin ? 'win' : 'loss',
+        payout: payout,
+        timestamp: Date.now()
+      });
+
+      saveUser();
+
+      if (didWin) {
+        showMessage('matchMessage', `You won! +$${(entryFee * 0.8).toFixed(2)} profit`, 'success');
+      } else {
+        showMessage('matchMessage', `You lost. Better luck next time!`, 'danger');
+      }
+    }
+
+    updateUI();
+  </script>
+</body>
+</html>

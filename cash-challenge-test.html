@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Cash Challenge - TEST MODE - BrainDash</title>
+  <style>
+    :root{--bg:#0a0b0f;--card:#111425;--txt:#e7eaf6;--muted:#9aa3b2;--line:#1f2937;--accent:#39ff88;--accent2:#00eaff;--red:#ff6b6b;--orange:#F59E0B}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{margin:0;background:radial-gradient(1200px 800px at 10% -10%,rgba(0,234,255,.12),transparent),radial-gradient(1000px 700px at 110% 10%,rgba(57,255,136,.08),transparent),var(--bg);color:var(--txt);font-family:Inter,system-ui,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh;padding:0}
+
+    .test-mode-banner{background:linear-gradient(135deg,rgba(245,158,11,.2),rgba(245,158,11,.1));border-bottom:2px solid var(--orange);padding:12px 20px;text-align:center;font-weight:700;color:var(--orange);font-size:0.9375rem}
+
+    .container{max-width:800px;margin:0 auto;padding:40px 20px}
+    .page-title{font-size:2.5rem;font-weight:900;margin-bottom:8px;background:linear-gradient(135deg,var(--accent2),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center}
+    .page-subtitle{color:var(--muted);font-size:1.125rem;margin-bottom:32px;text-align:center}
+
+    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:32px;margin:24px 0}
+    .card-title{font-size:1.5rem;font-weight:700;margin-bottom:16px;color:var(--txt)}
+
+    .modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px}
+    .modal.active{display:flex}
+    .modal-content{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:32px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto}
+    .modal-title{font-size:1.75rem;font-weight:700;margin-bottom:16px;color:var(--txt)}
+
+    .btn{padding:14px 28px;background:linear-gradient(135deg,var(--accent2),#0af);color:#000;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:inherit;width:100%;margin-top:12px}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,234,255,.3)}
+    .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+    .btn-secondary{background:rgba(255,255,255,.05);color:var(--txt);border:1px solid var(--line)}
+    .btn-danger{background:linear-gradient(135deg,#ff6b6b,#ff4757);color:#fff}
+    .btn-success{background:linear-gradient(135deg,var(--accent),#00d68f);color:#000}
+
+    .fee-selector{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}
+    .fee-option{padding:20px;background:rgba(255,255,255,.02);border:2px solid var(--line);border-radius:12px;text-align:center;cursor:pointer;transition:all .2s}
+    .fee-option:hover{border-color:var(--accent2);background:rgba(0,234,255,.05)}
+    .fee-option.selected{border-color:var(--accent2);background:rgba(0,234,255,.1);box-shadow:0 0 20px rgba(0,234,255,.2)}
+    .fee-amount{font-size:2rem;font-weight:700;color:var(--accent2);margin-bottom:4px}
+    .fee-label{font-size:0.875rem;color:var(--muted)}
+
+    .checkbox-group{margin:20px 0;display:flex;align-items:start;gap:12px}
+    .checkbox-group input[type="checkbox"]{width:20px;height:20px;cursor:pointer;margin-top:2px}
+    .checkbox-group label{cursor:pointer;font-size:0.9375rem;line-height:1.5}
+
+    .input-group{margin:16px 0}
+    .input-group label{display:block;color:var(--muted);font-size:0.9375rem;margin-bottom:6px}
+    .input-group input{width:100%;padding:12px 16px;background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:8px;color:var(--txt);font-size:1rem;font-family:inherit}
+
+    .alert{padding:16px 20px;border-radius:12px;margin:16px 0;display:flex;align-items:center;gap:12px;border:1px solid}
+    .alert-warning{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3);color:var(--orange)}
+    .alert-success{background:rgba(57,255,136,.1);border-color:rgba(57,255,136,.3);color:var(--accent)}
+    .alert-info{background:rgba(0,234,255,.1);border-color:rgba(0,234,255,.3);color:var(--accent2)}
+
+    .lobby-code{font-size:3rem;font-weight:900;text-align:center;letter-spacing:0.5rem;color:var(--accent2);margin:20px 0;font-family:monospace}
+
+    .player-list{margin:20px 0}
+    .player-item{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:12px;padding:16px;margin:8px 0;display:flex;justify-content:space-between;align-items:center}
+    .player-name{font-weight:600;color:var(--txt)}
+    .player-status{font-size:0.875rem;padding:4px 12px;border-radius:8px}
+    .player-status.ready{background:rgba(57,255,136,.2);color:var(--accent)}
+    .player-status.waiting{background:rgba(156,163,175,.2);color:var(--muted)}
+
+    .game-area{text-align:center;padding:40px 20px}
+    .tap-target{width:200px;height:200px;background:linear-gradient(135deg,var(--accent2),var(--accent));border-radius:50%;margin:40px auto;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:3rem;transition:all .1s;box-shadow:0 0 40px rgba(0,234,255,.5)}
+    .tap-target:active{transform:scale(0.95)}
+
+    .score-display{font-size:3rem;font-weight:900;color:var(--accent2);margin:20px 0}
+    .timer-display{font-size:2rem;font-weight:700;color:var(--txt);margin:20px 0}
+
+    .results-table{width:100%;margin:20px 0}
+    .results-row{display:flex;justify-content:space-between;align-items:center;padding:16px;background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:8px;margin:8px 0}
+    .results-row.winner{background:rgba(57,255,136,.1);border-color:var(--accent)}
+    .placement{font-size:2rem;font-weight:900;width:60px;text-align:center}
+    .placement.first{color:var(--accent)}
+
+    .hidden{display:none!important}
+
+    .qr-placeholder{width:200px;height:200px;background:rgba(255,255,255,.1);border:2px dashed var(--line);border-radius:12px;margin:20px auto;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:0.875rem}
+  </style>
+</head>
+<body>
+  <div class="test-mode-banner">
+    ⚠️ TEST MODE ONLY - NO REAL MONEY - VIRTUAL CREDITS FOR DEMO PURPOSES ONLY ⚠️
+  </div>
+
+  <div class="container">
+    <div id="mainScreen">
+      <h1 class="page-title">💰 Cash Challenge</h1>
+      <p class="page-subtitle">Test Mode - Skill-Based Competition</p>
+
+      <div class="card">
+        <h2 class="card-title">Welcome to Cash Challenge (Test Mode)</h2>
+        <div class="alert alert-warning">
+          <span style="font-size:24px">⚠️</span>
+          <div>
+            <strong>Important:</strong> This is a test simulation only. No real money is used.
+            All credits are virtual test credits for demonstration purposes.
+          </div>
+        </div>
+        <p style="color:var(--muted);line-height:1.6;margin:16px 0">
+          Cash Challenge is a skill-based competitive mode where players compete in quick
+          reflex and trivia tests. This test mode allows you to experience the full flow
+          without any real money transactions.
+        </p>
+        <button class="btn" onclick="showConsentModal()">Start Cash Challenge</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Consent Modal -->
+  <div id="consentModal" class="modal">
+    <div class="modal-content">
+      <h2 class="modal-title">Cash Challenge Agreement</h2>
+
+      <div class="alert alert-info">
+        <span style="font-size:24px">ℹ️</span>
+        <div style="font-size:0.875rem">
+          <strong>Test Mode Notice:</strong> This is a simulation. No real money is used.
+        </div>
+      </div>
+
+      <div style="margin:20px 0">
+        <h3 style="font-size:1.125rem;font-weight:600;margin-bottom:12px">Important Information</h3>
+        <ul style="list-style:none;padding:0;color:var(--muted);font-size:0.9375rem;line-height:1.8">
+          <li>✓ This is a <strong>skill-based</strong> competition, not gambling</li>
+          <li>✓ All credits are <strong>virtual test credits</strong></li>
+          <li>✓ No real money deposits or withdrawals</li>
+          <li>✓ For demonstration and testing purposes only</li>
+          <li>✓ You must be 18+ to participate</li>
+        </ul>
+      </div>
+
+      <h3 style="font-size:1.125rem;font-weight:600;margin:20px 0 12px 0">Select Entry Fee (Test Credits)</h3>
+      <div class="fee-selector">
+        <div class="fee-option" onclick="selectFee(1)">
+          <div class="fee-amount">$1</div>
+          <div class="fee-label">Test Credits</div>
+        </div>
+        <div class="fee-option selected" onclick="selectFee(5)">
+          <div class="fee-amount">$5</div>
+          <div class="fee-label">Test Credits</div>
+        </div>
+        <div class="fee-option" onclick="selectFee(10)">
+          <div class="fee-amount">$10</div>
+          <div class="fee-label">Test Credits</div>
+        </div>
+      </div>
+
+      <div class="checkbox-group">
+        <input type="checkbox" id="agreeTerms" />
+        <label for="agreeTerms">
+          I agree to the Terms of Use and Cash Challenge Rules. I understand this is a
+          skill-based test mode with virtual credits only.
+        </label>
+      </div>
+
+      <button class="btn" onclick="proceedToKYC()" id="continueBtn" disabled>Continue to Mock KYC</button>
+      <button class="btn btn-secondary" onclick="closeConsentModal()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Mock KYC Modal -->
+  <div id="kycModal" class="modal">
+    <div class="modal-content">
+      <h2 class="modal-title">Mock KYC Verification</h2>
+
+      <div class="alert alert-warning">
+        <span style="font-size:24px">🔒</span>
+        <div style="font-size:0.875rem">
+          <strong>Mock Verification:</strong> This is a simulated KYC process.
+          No real data is collected or verified.
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="mockSSN">Last 4 digits of SSN (Mock)</label>
+        <input type="text" id="mockSSN" placeholder="1234" maxlength="4" pattern="[0-9]{4}" />
+        <small style="color:var(--muted);font-size:0.8125rem;display:block;margin-top:4px">
+          Enter any 4 digits - this is not validated
+        </small>
+      </div>
+
+      <div style="margin:20px 0">
+        <label style="display:block;color:var(--muted);font-size:0.9375rem;margin-bottom:8px">
+          Upload ID (Mock)
+        </label>
+        <button class="btn btn-secondary" onclick="mockUploadID()">
+          📷 Choose File (Mock Upload)
+        </button>
+        <div id="uploadStatus" style="margin-top:8px;color:var(--muted);font-size:0.875rem"></div>
+      </div>
+
+      <button class="btn btn-success" onclick="completeKYC()">Submit Mock KYC</button>
+      <button class="btn btn-secondary" onclick="closeKYCModal()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Loading Screen -->
+  <div id="loadingScreen" class="hidden">
+    <div class="container" style="text-align:center;padding-top:100px">
+      <div style="font-size:4rem;margin-bottom:20px">⏳</div>
+      <h2 style="font-size:2rem;font-weight:700;margin-bottom:16px" id="loadingText">Loading...</h2>
+      <p style="color:var(--muted)" id="loadingSubtext"></p>
+    </div>
+  </div>
+
+  <!-- Lobby Screen -->
+  <div id="lobbyScreen" class="hidden">
+    <div class="container">
+      <h1 class="page-title">Lobby</h1>
+      <p class="page-subtitle">Invite friends to join</p>
+
+      <div class="card">
+        <h2 class="card-title">Lobby Code</h2>
+        <div class="lobby-code" id="lobbyCode">------</div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px">
+          <button class="btn btn-secondary" onclick="copyInviteLink()">📋 Copy Invite Link</button>
+          <button class="btn btn-secondary" onclick="showQRCode()">📱 Show QR Code</button>
+        </div>
+
+        <div id="qrCodeArea" class="hidden">
+          <div class="qr-placeholder">QR Code Placeholder</div>
+          <p style="text-align:center;color:var(--muted);font-size:0.875rem">
+            Scan to join lobby
+          </p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">Players (<span id="playerCount">0</span>/<span id="maxPlayers">4</span>)</h2>
+        <div class="player-list" id="playerList"></div>
+
+        <div style="margin-top:20px">
+          <button class="btn btn-success" onclick="toggleReady()" id="readyBtn">Mark as Ready</button>
+          <p style="text-align:center;color:var(--muted);font-size:0.875rem;margin-top:12px" id="readyStatus">
+            Waiting for all players to be ready...
+          </p>
+        </div>
+      </div>
+
+      <button class="btn btn-danger" onclick="leaveLobby()">Leave Lobby</button>
+    </div>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="gameScreen" class="hidden">
+    <div class="container">
+      <h1 class="page-title">Reflex Test</h1>
+      <div class="timer-display" id="gameTimer">10s</div>
+
+      <div class="card">
+        <div class="game-area">
+          <h2 style="font-size:1.5rem;margin-bottom:20px">Tap as fast as you can!</h2>
+          <div class="tap-target" id="tapTarget" onclick="handleTap()">
+            <span>TAP</span>
+          </div>
+          <div class="score-display" id="gameScore">0</div>
+          <p style="color:var(--muted);font-size:0.875rem">taps</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results Screen -->
+  <div id="resultsScreen" class="hidden">
+    <div class="container">
+      <h1 class="page-title">Match Results</h1>
+      <p class="page-subtitle">Test credits distributed based on placement</p>
+
+      <div class="card">
+        <h2 class="card-title">Final Standings</h2>
+        <div id="resultsTable"></div>
+
+        <div class="alert alert-info" style="margin-top:20px">
+          <span style="font-size:24px">💰</span>
+          <div>
+            <strong>Reminder:</strong> All credits are virtual test credits.
+            No real money was won or lost.
+          </div>
+        </div>
+
+        <button class="btn" onclick="returnToMain()">Return to Main Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+    const supabase = createClient(
+      'https://uimxwujknpuespwvipbi.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVpbXh3dWprbnB1ZXNwd3ZpcGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIwMjc2NDcsImV4cCI6MjA3NzYwMzY0N30.ZKXbrtYr47DqESnoOXgxjvS0pjEHpzuQ0BHAM8QpzWw'
+    );
+
+    let currentUser = null;
+    let selectedFee = 5;
+    let mockKYCData = { ssn: '', idUploaded: false };
+    let currentLobby = null;
+    let myPlayerId = null;
+    let lobbySubscription = null;
+    let gameTimer = null;
+    let gameScore = 0;
+    let gameStartTime = null;
+
+    window.selectFee = (amount) => {
+      selectedFee = amount;
+      document.querySelectorAll('.fee-option').forEach(opt => opt.classList.remove('selected'));
+      event.target.closest('.fee-option').classList.add('selected');
+    };
+
+    window.showConsentModal = () => {
+      document.getElementById('consentModal').classList.add('active');
+    };
+
+    window.closeConsentModal = () => {
+      document.getElementById('consentModal').classList.remove('active');
+    };
+
+    document.getElementById('agreeTerms').addEventListener('change', (e) => {
+      document.getElementById('continueBtn').disabled = !e.target.checked;
+    });
+
+    window.proceedToKYC = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        alert('Please sign in first');
+        window.location.href = '/index.html';
+        return;
+      }
+      currentUser = user;
+      closeConsentModal();
+      document.getElementById('kycModal').classList.add('active');
+    };
+
+    window.closeKYCModal = () => {
+      document.getElementById('kycModal').classList.remove('active');
+    };
+
+    window.mockUploadID = () => {
+      mockKYCData.idUploaded = true;
+      document.getElementById('uploadStatus').innerHTML = '✓ Mock ID uploaded successfully';
+      document.getElementById('uploadStatus').style.color = 'var(--accent)';
+    };
+
+    window.completeKYC = async () => {
+      const ssn = document.getElementById('mockSSN').value;
+      if (ssn.length !== 4) {
+        alert('Please enter 4 digits for SSN');
+        return;
+      }
+      if (!mockKYCData.idUploaded) {
+        alert('Please upload mock ID');
+        return;
+      }
+
+      mockKYCData.ssn = ssn;
+      closeKYCModal();
+
+      showLoading('Creating Lobby...', 'Setting up your cash challenge');
+
+      await createLobby();
+    };
+
+    async function createLobby() {
+      try {
+        const { data: lobby, error } = await supabase.rpc('generate_lobby_code');
+        if (error) throw error;
+
+        const lobbyCode = lobby;
+
+        const { data: newLobby, error: lobbyError } = await supabase
+          .from('test_mode_lobbies')
+          .insert({
+            lobby_code: lobbyCode,
+            entry_fee: selectedFee,
+            created_by: currentUser.id,
+            status: 'waiting'
+          })
+          .select()
+          .single();
+
+        if (lobbyError) throw lobbyError;
+
+        currentLobby = newLobby;
+
+        const username = currentUser.email?.split('@')[0] || 'Player';
+        const { data: player, error: playerError } = await supabase
+          .from('test_mode_lobby_players')
+          .insert({
+            lobby_id: newLobby.id,
+            user_id: currentUser.id,
+            username: username,
+            has_accepted_terms: true,
+            mock_kyc_completed: true,
+            mock_kyc_ssn_last4: mockKYCData.ssn
+          })
+          .select()
+          .single();
+
+        if (playerError) throw playerError;
+
+        myPlayerId = player.id;
+
+        hideLoading();
+        showLobby();
+        subscribeToLobby();
+      } catch (error) {
+        console.error('Error creating lobby:', error);
+        alert('Failed to create lobby: ' + error.message);
+        hideLoading();
+      }
+    }
+
+    async function joinLobby(lobbyCode) {
+      try {
+        const { data: lobby, error: lobbyError } = await supabase
+          .from('test_mode_lobbies')
+          .select('*')
+          .eq('lobby_code', lobbyCode)
+          .single();
+
+        if (lobbyError) throw lobbyError;
+
+        if (!lobby) {
+          alert('Lobby not found');
+          return;
+        }
+
+        if (lobby.status !== 'waiting') {
+          alert('This lobby has already started or finished');
+          return;
+        }
+
+        currentLobby = lobby;
+
+        const username = currentUser.email?.split('@')[0] || 'Player';
+        const { data: player, error: playerError } = await supabase
+          .from('test_mode_lobby_players')
+          .insert({
+            lobby_id: lobby.id,
+            user_id: currentUser.id,
+            username: username,
+            has_accepted_terms: true,
+            mock_kyc_completed: true,
+            mock_kyc_ssn_last4: mockKYCData.ssn
+          })
+          .select()
+          .single();
+
+        if (playerError) {
+          if (playerError.code === '23505') {
+            alert('You are already in this lobby');
+            const { data: existingPlayer } = await supabase
+              .from('test_mode_lobby_players')
+              .select('*')
+              .eq('lobby_id', lobby.id)
+              .eq('user_id', currentUser.id)
+              .single();
+            myPlayerId = existingPlayer?.id;
+          } else {
+            throw playerError;
+          }
+        } else {
+          myPlayerId = player.id;
+        }
+
+        hideLoading();
+        showLobby();
+        subscribeToLobby();
+      } catch (error) {
+        console.error('Error joining lobby:', error);
+        alert('Failed to join lobby: ' + error.message);
+        hideLoading();
+      }
+    }
+
+    function showLoading(text, subtext = '') {
+      document.getElementById('mainScreen').classList.add('hidden');
+      document.getElementById('lobbyScreen').classList.add('hidden');
+      document.getElementById('gameScreen').classList.add('hidden');
+      document.getElementById('resultsScreen').classList.add('hidden');
+      document.getElementById('loadingScreen').classList.remove('hidden');
+      document.getElementById('loadingText').textContent = text;
+      document.getElementById('loadingSubtext').textContent = subtext;
+    }
+
+    function hideLoading() {
+      document.getElementById('loadingScreen').classList.add('hidden');
+    }
+
+    function showLobby() {
+      document.getElementById('mainScreen').classList.add('hidden');
+      document.getElementById('lobbyScreen').classList.remove('hidden');
+      document.getElementById('lobbyCode').textContent = currentLobby.lobby_code;
+      updatePlayerList();
+    }
+
+    async function updatePlayerList() {
+      const { data: players, error } = await supabase
+        .from('test_mode_lobby_players')
+        .select('*')
+        .eq('lobby_id', currentLobby.id)
+        .order('joined_at');
+
+      if (error) {
+        console.error('Error fetching players:', error);
+        return;
+      }
+
+      const playerListEl = document.getElementById('playerList');
+      playerListEl.innerHTML = players.map(p => `
+        <div class="player-item">
+          <div>
+            <div class="player-name">${p.username}${p.user_id === currentUser.id ? ' (You)' : ''}</div>
+          </div>
+          <div class="player-status ${p.is_ready ? 'ready' : 'waiting'}">
+            ${p.is_ready ? '✓ Ready' : 'Waiting...'}
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('playerCount').textContent = players.length;
+
+      const myPlayer = players.find(p => p.user_id === currentUser.id);
+      if (myPlayer) {
+        document.getElementById('readyBtn').textContent = myPlayer.is_ready ? 'Cancel Ready' : 'Mark as Ready';
+      }
+
+      const allReady = players.length > 0 && players.every(p => p.is_ready);
+      if (allReady) {
+        document.getElementById('readyStatus').textContent = 'All players ready! Starting match...';
+        document.getElementById('readyStatus').style.color = 'var(--accent)';
+
+        if (currentLobby.created_by === currentUser.id && currentLobby.status === 'waiting') {
+          setTimeout(() => startMatch(), 2000);
+        }
+      } else {
+        const readyCount = players.filter(p => p.is_ready).length;
+        document.getElementById('readyStatus').textContent = `${readyCount}/${players.length} players ready`;
+        document.getElementById('readyStatus').style.color = 'var(--muted)';
+      }
+    }
+
+    function subscribeToLobby() {
+      if (lobbySubscription) {
+        lobbySubscription.unsubscribe();
+      }
+
+      lobbySubscription = supabase
+        .channel(`lobby:${currentLobby.id}`)
+        .on('postgres_changes', {
+          event: '*',
+          schema: 'public',
+          table: 'test_mode_lobby_players',
+          filter: `lobby_id=eq.${currentLobby.id}`
+        }, () => {
+          updatePlayerList();
+        })
+        .on('postgres_changes', {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'test_mode_lobbies',
+          filter: `id=eq.${currentLobby.id}`
+        }, async (payload) => {
+          currentLobby = payload.new;
+          if (currentLobby.status === 'in_progress') {
+            if (lobbySubscription) lobbySubscription.unsubscribe();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            startGame();
+          } else if (currentLobby.status === 'completed') {
+            if (lobbySubscription) lobbySubscription.unsubscribe();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            showResults();
+          }
+        })
+        .subscribe();
+    }
+
+    window.toggleReady = async () => {
+      try {
+        const { data: player } = await supabase
+          .from('test_mode_lobby_players')
+          .select('is_ready')
+          .eq('id', myPlayerId)
+          .single();
+
+        await supabase
+          .from('test_mode_lobby_players')
+          .update({ is_ready: !player.is_ready })
+          .eq('id', myPlayerId);
+
+        updatePlayerList();
+      } catch (error) {
+        console.error('Error toggling ready:', error);
+      }
+    };
+
+    async function startMatch() {
+      try {
+        await supabase
+          .from('test_mode_lobbies')
+          .update({ status: 'in_progress', started_at: new Date().toISOString() })
+          .eq('id', currentLobby.id);
+      } catch (error) {
+        console.error('Error starting match:', error);
+      }
+    }
+
+    function startGame() {
+      document.getElementById('lobbyScreen').classList.add('hidden');
+      document.getElementById('gameScreen').classList.remove('hidden');
+
+      gameScore = 0;
+      gameStartTime = Date.now();
+      document.getElementById('gameScore').textContent = '0';
+
+      let timeLeft = 10;
+      document.getElementById('gameTimer').textContent = timeLeft + 's';
+
+      gameTimer = setInterval(() => {
+        timeLeft--;
+        document.getElementById('gameTimer').textContent = timeLeft + 's';
+
+        if (timeLeft <= 0) {
+          clearInterval(gameTimer);
+          endGame();
+        }
+      }, 1000);
+    }
+
+    window.handleTap = () => {
+      if (gameTimer) {
+        gameScore++;
+        document.getElementById('gameScore').textContent = gameScore;
+      }
+    };
+
+    async function endGame() {
+      document.getElementById('tapTarget').style.display = 'none';
+
+      try {
+        await supabase
+          .from('test_mode_lobby_players')
+          .update({ test_score: gameScore })
+          .eq('id', myPlayerId);
+
+        if (currentLobby.created_by === currentUser.id) {
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          await finalizeLobby();
+        } else {
+          showLoading('Waiting for results...', 'Other players finishing...');
+        }
+      } catch (error) {
+        console.error('Error submitting score:', error);
+      }
+    }
+
+    async function finalizeLobby() {
+      try {
+        const { data: players } = await supabase
+          .from('test_mode_lobby_players')
+          .select('*')
+          .eq('lobby_id', currentLobby.id)
+          .order('test_score', { ascending: false });
+
+        for (let i = 0; i < players.length; i++) {
+          await supabase
+            .from('test_mode_lobby_players')
+            .update({ placement: i + 1 })
+            .eq('id', players[i].id);
+        }
+
+        await supabase
+          .from('test_mode_lobbies')
+          .update({
+            status: 'completed',
+            completed_at: new Date().toISOString(),
+            winner_id: players[0].user_id
+          })
+          .eq('id', currentLobby.id);
+      } catch (error) {
+        console.error('Error finalizing lobby:', error);
+      }
+    }
+
+    async function showResults() {
+      hideLoading();
+      document.getElementById('gameScreen').classList.add('hidden');
+      document.getElementById('resultsScreen').classList.remove('hidden');
+
+      const { data: players } = await supabase
+        .from('test_mode_lobby_players')
+        .select('*')
+        .eq('lobby_id', currentLobby.id)
+        .order('placement');
+
+      const totalPot = selectedFee * players.length;
+      const resultsTable = document.getElementById('resultsTable');
+
+      resultsTable.innerHTML = players.map((p, idx) => {
+        const winnings = idx === 0 ? totalPot * 0.8 : 0;
+        return `
+          <div class="results-row ${idx === 0 ? 'winner' : ''}">
+            <div class="placement ${idx === 0 ? 'first' : ''}">${idx === 0 ? '🏆' : '#' + (idx + 1)}</div>
+            <div style="flex:1">
+              <div class="player-name">${p.username}${p.user_id === currentUser.id ? ' (You)' : ''}</div>
+              <div style="color:var(--muted);font-size:0.875rem">Score: ${p.test_score}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:700;color:${idx === 0 ? 'var(--accent)' : 'var(--muted)'}">
+                ${idx === 0 ? '+$' + winnings.toFixed(2) : '-$' + selectedFee}
+              </div>
+              <div style="font-size:0.875rem;color:var(--muted)">Test Credits</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.copyInviteLink = () => {
+      const link = `${window.location.origin}/cash-challenge-test.html?lobby=${currentLobby.lobby_code}`;
+      navigator.clipboard.writeText(link);
+      alert('Invite link copied to clipboard!');
+    };
+
+    window.showQRCode = () => {
+      const qrArea = document.getElementById('qrCodeArea');
+      qrArea.classList.toggle('hidden');
+    };
+
+    window.leaveLobby = async () => {
+      if (confirm('Are you sure you want to leave?')) {
+        if (lobbySubscription) lobbySubscription.unsubscribe();
+        window.location.reload();
+      }
+    };
+
+    window.returnToMain = () => {
+      window.location.href = '/index.html';
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const lobbyCode = urlParams.get('lobby');
+
+    if (lobbyCode) {
+      (async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
+          alert('Please sign in first');
+          window.location.href = '/index.html';
+          return;
+        }
+        currentUser = user;
+
+        showConsentModal();
+
+        const originalProceed = window.proceedToKYC;
+        window.proceedToKYC = async () => {
+          closeConsentModal();
+          document.getElementById('kycModal').classList.add('active');
+
+          const originalComplete = window.completeKYC;
+          window.completeKYC = async () => {
+            const ssn = document.getElementById('mockSSN').value;
+            if (ssn.length !== 4) {
+              alert('Please enter 4 digits for SSN');
+              return;
+            }
+            if (!mockKYCData.idUploaded) {
+              alert('Please upload mock ID');
+              return;
+            }
+
+            mockKYCData.ssn = ssn;
+            closeKYCModal();
+            showLoading('Joining Lobby...', 'Connecting to ' + lobbyCode);
+            await joinLobby(lobbyCode);
+          };
+        };
+      })();
+    }
+  </script>
+</body>
+</html>

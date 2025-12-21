@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Verify Identity - BrainDash</title>
+  <link rel="stylesheet" href="/src/header/header-styles.css">
+  <style>
+    :root{--bg:#0a0b0f;--card:#111425;--txt:#e7eaf6;--muted:#9aa3b2;--dim:#6b7280;--line:#1f2937;--accent:#39ff88;--accent2:#00eaff;--brand:#2563eb}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{margin:0;background:radial-gradient(1200px 800px at 10% -10%,rgba(0,234,255,.12),transparent),radial-gradient(1000px 700px at 110% 10%,rgba(57,255,136,.08),transparent),var(--bg);color:var(--txt);font-family:Inter,system-ui,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh;padding-top:73px}
+    .container{max-width:800px;margin:0 auto;padding:48px 24px}
+    .verify-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:48px;box-shadow:0 8px 32px rgba(0,0,0,.3)}
+    .verify-title{font-size:2.5rem;font-weight:900;margin-bottom:16px;background:linear-gradient(135deg,var(--accent2),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .verify-subtitle{color:var(--muted);font-size:1.125rem;line-height:1.6;margin-bottom:32px}
+    .info-box{background:rgba(0,234,255,.05);border:1px solid rgba(0,234,255,.2);border-radius:12px;padding:24px;margin-bottom:32px}
+    .info-box ul{margin-left:20px;line-height:1.8;color:var(--txt)}
+    .status-badge{display:inline-flex;align-items:center;gap:10px;padding:12px 24px;border-radius:12px;font-weight:600;font-size:1rem;margin-bottom:24px}
+    .status-verified{background:rgba(57,255,136,.15);border:2px solid var(--accent);color:var(--accent)}
+    .status-pending{background:rgba(255,193,7,.15);border:2px solid #ffc107;color:#ffc107}
+    .status-failed{background:rgba(255,107,107,.15);border:2px solid #ff6b6b;color:#ff6b6b}
+    .status-not-started{background:rgba(0,234,255,.15);border:2px solid var(--accent2);color:var(--accent2)}
+    .btn{display:inline-block;padding:16px 32px;background:linear-gradient(135deg,var(--accent2),#0af);color:#000;border:none;border-radius:12px;font-size:1.125rem;font-weight:700;cursor:pointer;transition:all .2s ease;text-decoration:none;font-family:inherit}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,234,255,.3)}
+    .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+    .btn-secondary{background:rgba(255,255,255,.05);color:var(--txt);border:1px solid var(--line)}
+    .btn-secondary:hover{background:rgba(255,255,255,.08);box-shadow:0 4px 12px rgba(0,0,0,.3)}
+    .spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;margin-right:8px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .hidden{display:none!important}
+    @media(max-width:768px){body{padding-top:61px}.verify-card{padding:32px 24px}.verify-title{font-size:2rem}}
+  </style>
+</head>
+<body>
+  <!-- Modern Header -->
+  <header id="appHeader">
+    <div class="header-content">
+      <div class="header-logo" onclick="window.location.href='/'">
+        <span class="header-logo-text">BrainDash</span>
+      </div>
+
+      <nav class="header-nav">
+        <button class="header-nav-link" id="headerRulesBtn">Rules</button>
+        <button class="header-nav-link" id="headerHelpBtn">Help</button>
+        <button class="header-nav-link" id="headerTermsBtn">Terms</button>
+      </nav>
+
+      <div class="header-auth-controls">
+        <div id="headerGuestControls" style="display:flex;gap:12px;align-items:center">
+          <button id="headerSignIn" class="header-btn">Sign In</button>
+          <button id="headerSignUp" class="header-btn header-btn-primary">Sign Up</button>
+        </div>
+
+        <div id="headerAuthControls" style="display:none;gap:12px;align-items:center">
+          <div style="position:relative">
+            <button id="headerWalletPill" class="header-wallet-pill">
+              <span class="header-wallet-icon">💰</span>
+              <span id="headerWalletBalance">$0.00</span>
+            </button>
+            <div id="headerWalletMenu" class="header-wallet-menu">
+              <button class="header-menu-item" data-action="deposit">
+                <span>💵</span>
+                <span>Deposit</span>
+              </button>
+              <button class="header-menu-item" data-action="withdraw">
+                <span>💸</span>
+                <span>Withdraw</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="header-user-section">
+            <button id="headerUserMenuBtn" class="header-user-menu-btn">
+              <div id="headerUserAvatar" class="header-user-avatar">U</div>
+              <span id="headerUserName">User</span>
+            </button>
+            <div id="headerUserMenu" class="header-user-menu">
+              <button class="header-menu-item" onclick="alert('Profile coming soon!')">
+                <span>👤</span>
+                <span>Profile</span>
+              </button>
+              <button class="header-menu-item" onclick="alert('Match history coming soon!')">
+                <span>📊</span>
+                <span>History</span>
+              </button>
+              <button id="headerSignOut" class="header-menu-item">
+                <span>🚪</span>
+                <span>Sign Out</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button id="headerMobileMenuBtn" class="header-mobile-menu-btn">
+        <span>☰</span>
+      </button>
+    </div>
+
+    <div id="headerMobileMenu" class="header-mobile-menu">
+      <div class="header-mobile-section">
+        <div class="header-mobile-title">Information</div>
+        <div class="header-mobile-nav">
+          <button class="header-mobile-nav-link" id="headerMobileRulesBtn">📋 Rules</button>
+          <button class="header-mobile-nav-link" id="headerMobileHelpBtn">❓ Help</button>
+          <button class="header-mobile-nav-link" id="headerMobileTermsBtn">📄 Terms & Conditions</button>
+        </div>
+      </div>
+
+      <div id="headerMobileGuestSection" class="header-mobile-section">
+        <div class="header-mobile-title">Account</div>
+        <div class="header-mobile-nav">
+          <button id="headerMobileSignIn" class="header-mobile-nav-link">🔑 Sign In</button>
+          <button id="headerMobileSignUp" class="header-mobile-nav-link" style="background:rgba(0,234,255,0.1);border-color:rgba(0,234,255,0.3);color:var(--accent2)">✨ Sign Up</button>
+        </div>
+      </div>
+
+      <div id="headerMobileAuthSection" class="header-mobile-section" style="display:none">
+        <div class="header-mobile-title">Wallet</div>
+        <div class="header-mobile-wallet">
+          <div class="header-mobile-wallet-balance" id="headerMobileWalletBalance">$0.00</div>
+          <div class="header-mobile-wallet-actions">
+            <button class="header-btn" data-action="deposit">💵 Deposit</button>
+            <button class="header-btn" data-action="withdraw">💸 Withdraw</button>
+          </div>
+        </div>
+        <div class="header-mobile-nav">
+          <button class="header-mobile-nav-link" onclick="alert('Profile coming soon!')">👤 Profile</button>
+          <button class="header-mobile-nav-link" onclick="alert('Match history coming soon!')">📊 History</button>
+          <button id="headerMobileSignOut" class="header-mobile-nav-link" style="color:#ff6b6b">🚪 Sign Out</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="verify-card">
+      <h1 class="verify-title">Verify your identity</h1>
+      <p class="verify-subtitle">To play Cash Challenges for real money, we're required to verify your identity.</p>
+
+      <div class="info-box">
+        <h3 style="color:var(--accent2);margin-bottom:12px;font-size:1.125rem">What you need to know:</h3>
+        <ul>
+          <li>We use a regulated third-party provider for verification</li>
+          <li>We do NOT store your ID documents on BrainDash servers</li>
+          <li>We only keep a yes/no status and a reference ID</li>
+          <li>The process typically takes 1-2 minutes</li>
+        </ul>
+      </div>
+
+      <div id="statusContainer">
+        <!-- Status will be dynamically inserted here -->
+      </div>
+
+      <div id="actionContainer">
+        <!-- Action buttons will be dynamically inserted here -->
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    const SUPABASE_URL = import.meta.env?.VITE_SUPABASE_URL || window.VITE_SUPABASE_URL;
+    const SUPABASE_ANON = import.meta.env?.VITE_SUPABASE_ANON_KEY || window.VITE_SUPABASE_ANON_KEY;
+
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    import { initHeader } from '/src/header/header.js';
+    initHeader();
+
+    let currentUser = null;
+    let currentSession = null;
+
+    async function init() {
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (!session) {
+        window.location.href = '/?redirect=/verify-identity';
+        return;
+      }
+
+      currentSession = session;
+      currentUser = session.user;
+
+      await loadKycStatus();
+    }
+
+    async function loadKycStatus() {
+      try {
+        const { data, error } = await supabase
+          .from('user_kyc_status')
+          .select('*')
+          .eq('user_id', currentUser.id)
+          .maybeSingle();
+
+        if (error && error.code !== 'PGRST116') {
+          console.error('Error loading KYC status:', error);
+          showError('Failed to load verification status. Please refresh the page.');
+          return;
+        }
+
+        const kycStatus = data?.kyc_status || 'not_started';
+        renderStatus(kycStatus, data);
+      } catch (error) {
+        console.error('Error:', error);
+        showError('An unexpected error occurred.');
+      }
+    }
+
+    function renderStatus(status, kycData) {
+      const statusContainer = document.getElementById('statusContainer');
+      const actionContainer = document.getElementById('actionContainer');
+
+      statusContainer.innerHTML = '';
+      actionContainer.innerHTML = '';
+
+      switch (status) {
+        case 'verified':
+          statusContainer.innerHTML = `
+            <div class="status-badge status-verified">
+              ✅ Verified - You're ready for Cash Play
+            </div>
+            <p style="color:var(--muted);margin-bottom:24px">Your identity has been successfully verified.</p>
+          `;
+          actionContainer.innerHTML = `
+            <button class="btn" onclick="window.location.href='/'">Continue to Cash Play</button>
+            <button class="btn btn-secondary" onclick="window.location.href='/'" style="margin-left:12px">Back to Home</button>
+          `;
+          break;
+
+        case 'pending':
+          statusContainer.innerHTML = `
+            <div class="status-badge status-pending">
+              ⏳ Verification in progress
+            </div>
+            <p style="color:var(--muted);margin-bottom:24px">
+              Your verification is being processed. This typically takes a few minutes.
+              Please refresh this page or check back shortly.
+            </p>
+          `;
+          actionContainer.innerHTML = `
+            <button class="btn" onclick="location.reload()">Refresh Status</button>
+            <button class="btn btn-secondary" onclick="window.location.href='/'" style="margin-left:12px">Back to Home</button>
+          `;
+          break;
+
+        case 'failed':
+          statusContainer.innerHTML = `
+            <div class="status-badge status-failed">
+              ❌ Verification failed
+            </div>
+            <p style="color:var(--muted);margin-bottom:24px">
+              We couldn't verify your identity. Please contact support or try again.
+            </p>
+          `;
+          actionContainer.innerHTML = `
+            <button class="btn" onclick="beginVerification()" id="beginVerifyBtn">Try Again</button>
+            <button class="btn btn-secondary" onclick="window.location.href='/'" style="margin-left:12px">Back to Home</button>
+          `;
+          break;
+
+        case 'not_started':
+        default:
+          statusContainer.innerHTML = `
+            <div class="status-badge status-not-started">
+              🔒 Verification required
+            </div>
+            <p style="color:var(--muted);margin-bottom:24px">
+              Click the button below to begin the identity verification process.
+            </p>
+          `;
+          actionContainer.innerHTML = `
+            <button class="btn" onclick="beginVerification()" id="beginVerifyBtn">Begin Verification</button>
+            <button class="btn btn-secondary" onclick="window.location.href='/'" style="margin-left:12px">Back to Home</button>
+          `;
+          break;
+      }
+    }
+
+    window.beginVerification = async function() {
+      const btn = document.getElementById('beginVerifyBtn');
+      if (!btn) return;
+
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span>Creating verification session...';
+
+      try {
+        const response = await fetch(
+          `${SUPABASE_URL}/functions/v1/create-kyc-session`,
+          {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${currentSession.access_token}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to create verification session');
+        }
+
+        window.location.href = data.verification_url;
+      } catch (error) {
+        console.error('Error creating KYC session:', error);
+        btn.disabled = false;
+        btn.textContent = 'Begin Verification';
+        showError(error.message || 'Failed to start verification. Please try again.');
+      }
+    };
+
+    function showError(message) {
+      const actionContainer = document.getElementById('actionContainer');
+      const errorDiv = document.createElement('div');
+      errorDiv.style.cssText = 'background:rgba(255,107,107,.15);border:1px solid #ff6b6b;color:#ff6b6b;padding:16px;border-radius:12px;margin-bottom:16px';
+      errorDiv.textContent = message;
+      actionContainer.insertBefore(errorDiv, actionContainer.firstChild);
+    }
+
+    init();
+  </script>
+
+  <script>
+    window.__DEV_MODE__ = true;
+    window.VITE_SUPABASE_URL = 'https://uimxwujknpuespwvipbi.supabase.co';
+    window.VITE_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVpbXh3dWprbnB1ZXNwd3ZpcGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIwMjc2NDcsImV4cCI6MjA3NzYwMzY0N30.ZKXbrtYr47DqESnoOXgxjvS0pjEHpzuQ0BHAM8QpzWw';
+  </script>
+</body>
+</html>
