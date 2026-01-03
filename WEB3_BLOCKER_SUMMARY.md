@@ -1,7 +1,7 @@
 # Web3 Wallet Injection Blocker
 
 **Date**: January 3, 2026
-**Status**: ✅ FIXED - Web3 Injections Blocked
+**Status**: ✅ FIXED - Web3 Injections Blocked (Restorable)
 
 ---
 
@@ -26,11 +26,11 @@ Browser extensions like MetaMask, Bybit Wallet, and other Web3 wallets inject co
 
 ## Solution
 
-Added a **Web3 injection blocker** that runs before any other scripts. This prevents wallet extensions from interfering with OAuth.
+Added a **configurable Web3 injection blocker** that runs before any other scripts. This prevents wallet extensions from interfering with OAuth, while allowing wallets to be restored later for deposit features.
 
 ### Implementation
 
-Location: `index.html` (lines 11-41)
+Location: `index.html` (lines 11-52)
 
 ```javascript
 <script>
@@ -40,11 +40,11 @@ Location: `index.html` (lines 11-41)
       window.__ORIGINAL_OPEN__ = window.open;
       window.__ORIGINAL_LOCATION__ = window.location;
 
-      // Block Web3 wallet injections
+      // Block Web3 wallet injections (configurable for future restoration)
       Object.defineProperty(window, 'ethereum', {
         get: function() { return undefined; },
         set: function() { },
-        configurable: false
+        configurable: true  // Can be restored later
       });
 
       Object.defineProperty(window, 'solana', {
@@ -84,6 +84,34 @@ Location: `index.html` (lines 11-41)
 - Stores original `window.open` for OAuth popups
 - Stores original `window.location` for redirects
 - OAuth flows work normally
+
+### 4. Restorable for Deposits
+- Wallets are `configurable: true` (not permanently locked)
+- Helper function `window.__RESTORE_WALLET__()` provided
+- Can be restored later when deposit features are added
+- Example: `window.__RESTORE_WALLET__('ethereum')`
+
+---
+
+## Restoring Wallets (Future Deposits)
+
+When you're ready to add crypto deposit functionality:
+
+```javascript
+// On deposit page initialization
+window.__RESTORE_WALLET__('ethereum');  // Restore MetaMask
+window.__RESTORE_WALLET__('solana');    // Restore Phantom
+
+// Wait for wallet extensions to re-inject
+setTimeout(() => {
+  if (window.ethereum) {
+    // Connect to MetaMask
+    await window.ethereum.request({ method: 'eth_requestAccounts' });
+  }
+}, 500);
+```
+
+See `WALLET_RESTORE_GUIDE.md` for complete implementation examples.
 
 ---
 
