@@ -7,6 +7,39 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
   <meta http-equiv="X-Frame-Options" content="DENY"/>
   <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin"/>
+
+  <!-- Block Web3 wallet injections that interfere with OAuth -->
+  <script>
+    (function() {
+      if (typeof window !== 'undefined') {
+        // Store original OAuth methods before Web3 extensions can override them
+        window.__ORIGINAL_OPEN__ = window.open;
+        window.__ORIGINAL_LOCATION__ = window.location;
+
+        // Prevent Web3 wallet extensions from interfering
+        Object.defineProperty(window, 'ethereum', {
+          get: function() { return undefined; },
+          set: function() { },
+          configurable: false
+        });
+
+        Object.defineProperty(window, 'solana', {
+          get: function() { return undefined; },
+          set: function() { },
+          configurable: false
+        });
+
+        Object.defineProperty(window, 'bybitWallet', {
+          get: function() { return undefined; },
+          set: function() { },
+          configurable: false
+        });
+
+        console.log('[BrainDash] Web3 wallet injections blocked to prevent OAuth conflicts');
+      }
+    })();
+  </script>
+
   <link rel="stylesheet" href="/src/header/header-styles.css">
   <style>
     :root{--bg:#0a0b0f;--card:#111425;--txt:#e7eaf6;--muted:#9aa3b2;--dim:#6b7280;--line:#1f2937;--accent:#39ff88;--accent2:#00eaff;--brand:#2563eb}
