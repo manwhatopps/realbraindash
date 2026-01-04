@@ -1548,6 +1548,10 @@
       }
     });
 
+    // Check if we just returned from OAuth (URL has code/state params)
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasOAuthParams = urlParams.has('code') && urlParams.has('state');
+
     supabase.auth.onAuthStateChange((event, session) => {
       console.log('[OAuth Test] ========================================');
       console.log('[OAuth Test] Auth state changed:', event);
@@ -1563,14 +1567,34 @@
         console.log('[OAuth Test] Full session object:', session);
         console.log('[OAuth Test] ========================================');
 
-        alert('✅ Google OAuth Success!\n\n' +
-          'User: ' + session.user.email + '\n' +
-          'Provider: ' + session.user.app_metadata?.provider + '\n\n' +
-          'Check console for full token details.');
+        // Only show success popup if:
+        // 1. We just returned from OAuth (URL has OAuth params)
+        // 2. Haven't shown it yet this session (sessionStorage guard)
+        const oauthSuccessShown = sessionStorage.getItem('bd_oauth_success_shown');
+
+        if (hasOAuthParams && !oauthSuccessShown) {
+          sessionStorage.setItem('bd_oauth_success_shown', 'true');
+
+          alert('✅ Google OAuth Success!\n\n' +
+            'User: ' + session.user.email + '\n' +
+            'Provider: ' + session.user.app_metadata?.provider + '\n\n' +
+            'Check console for full token details.');
+
+          // Clean up URL to remove OAuth params
+          const cleanUrl = window.location.pathname + window.location.hash;
+          window.history.replaceState({}, document.title, cleanUrl);
+          console.log('[OAuth Test] URL cleaned, popup shown once');
+        } else if (oauthSuccessShown) {
+          console.log('[OAuth Test] Popup already shown this OAuth session, skipping');
+        } else {
+          console.log('[OAuth Test] No OAuth params detected, skipping popup (normal sign-in or session restore)');
+        }
       }
 
       if (event === 'SIGNED_OUT') {
         console.log('[OAuth Test] ℹ️ User signed out');
+        // Clear the flag when user signs out
+        sessionStorage.removeItem('bd_oauth_success_shown');
       }
 
       if (event === 'TOKEN_REFRESHED') {
