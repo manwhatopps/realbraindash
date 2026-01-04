@@ -1710,20 +1710,92 @@ function waitForAuthChange(){
   });
 }
 
-// ===== INIT - Handle auth redirects =====
+// ===== PRODUCTION AUTH GUARD - Handle OAuth returns and session restoration =====
 (async () => {
-  const params = new URLSearchParams(window.location.search);
-  if (params.has('code') || params.has('access_token')) {
-    console.log('[Init] OAuth redirect detected');
-    showToast('✓ Signed in successfully!');
-    window.history.replaceState({}, document.title, window.location.pathname);
+  console.log('[Auth Guard] Initializing production auth guard...');
 
-    // Check if we should redirect based on previous context
-    const session = (await sb.auth.getSession()).data.session;
-    if (session && authContext === 'free') {
-      console.log('[Init] Redirecting to free play after auth');
-      setTimeout(() => { window.location.href = '/offline.html'; }, 1000);
+  const params = new URLSearchParams(window.location.search);
+  const hasOAuthParams = params.has('code') || params.has('access_token') || params.has('error');
+
+  if (hasOAuthParams) {
+    console.log('[Auth Guard] ========================================');
+    console.log('[Auth Guard] OAuth redirect detected');
+    console.log('[Auth Guard] URL params:', {
+      hasCode: params.has('code'),
+      hasAccessToken: params.has('access_token'),
+      hasError: params.has('error'),
+      error: params.get('error'),
+      errorDescription: params.get('error_description')
+    });
+    console.log('[Auth Guard] ========================================');
+
+    // Check for OAuth errors
+    if (params.has('error')) {
+      const error = params.get('error');
+      const description = params.get('error_description');
+      console.error('[Auth Guard] ❌ OAuth error:', error, description);
+      showToast('⚠️ Sign in failed: ' + (description || error));
+      window.history.replaceState({}, document.title, window.location.pathname);
+      return;
     }
-    // If authContext was 'cash', startCashGate will handle the flow
+
+    // OAuth success - let Supabase handle the session
+    try {
+      console.log('[Auth Guard] Waiting for session to be established...');
+
+      // Give Supabase time to process the OAuth callback
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      const { data: { session }, error } = await sb.auth.getSession();
+
+      if (error) {
+        console.error('[Auth Guard] ❌ Error getting session:', error);
+        showToast('⚠️ Authentication error. Please try again.');
+      } else if (session) {
+        console.log('[Auth Guard] ✅ Session established successfully!');
+        console.log('[Auth Guard] User:', session.user.email);
+        console.log('[Auth Guard] Provider:', session.user.app_metadata?.provider);
+        showToast('✓ Signed in as ' + session.user.email);
+      } else {
+        console.warn('[Auth Guard] ⚠️ No session found after OAuth redirect');
+        showToast('⚠️ Sign in incomplete. Please try again.');
+      }
+
+      // Clean up URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+
+      // Handle context-based redirects
+      if (session && authContext === 'free') {
+        console.log('[Auth Guard] Redirecting to free play after auth');
+        setTimeout(() => { window.location.href = '/offline.html'; }, 1000);
+      }
+      // If authContext was 'cash', startCashGate will handle the flow
+
+    } catch (err) {
+      console.error('[Auth Guard] ❌ Exception during session handling:', err);
+      showToast('⚠️ Authentication error. Please try again.');
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  } else {
+    // Normal page load - check for existing session
+    console.log('[Auth Guard] Normal page load - checking for existing session');
+
+    try {
+      const { data: { session }, error } = await sb.auth.getSession();
+
+      if (error) {
+        console.error('[Auth Guard] Error checking session:', error);
+      } else if (session) {
+        console.log('[Auth Guard] ✅ Existing session found');
+        console.log('[Auth Guard] User:', session.user.email);
+        console.log('[Auth Guard] Session valid until:', new Date(session.expires_at * 1000).toLocaleString());
+      } else {
+        console.log('[Auth Guard] No existing session (user not logged in)');
+      }
+    } catch (err) {
+      console.error('[Auth Guard] Exception checking session:', err);
+    }
   }
+
+  console.log('[Auth Guard] Initialization complete');
 })();

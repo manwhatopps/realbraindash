@@ -1503,25 +1503,27 @@
     initCashDuelUI();
   </script>
 
-  <!-- TEMPORARY: Google OAuth Test Script -->
+  <!-- Google OAuth Test Script - Production-Ready -->
   <script type="module">
     import { supabase } from '/src/supabase-client.js';
 
-    console.log('[OAuth Test] Initializing Google OAuth test...');
-    console.log('[OAuth Test] Wallet blocker active:', {
-      ethereum: window.ethereum,
-      solana: window.solana,
-      bybitWallet: window.bybitWallet
+    console.log('[OAuth Test] Initializing Google OAuth test (production-safe)...');
+    console.log('[OAuth Test] Current origin:', window.location.origin);
+    console.log('[OAuth Test] Wallet blocker status:', {
+      ethereum: typeof window.ethereum,
+      solana: typeof window.solana,
+      bybitWallet: typeof window.bybitWallet
     });
 
     document.getElementById('testGoogleLogin')?.addEventListener('click', async () => {
       try {
         console.log('[OAuth Test] ========================================');
-        console.log('[OAuth Test] Starting Google OAuth flow...');
-        console.log('[OAuth Test] Client ID: 184979617710-i9rcsvn3etaklq35ng3srofoiatj6v03.apps.googleusercontent.com');
-        console.log('[OAuth Test] Expected callback:', 'https://dguhvsjrqnpeonfhotty.supabase.co/auth/v1/callback');
+        console.log('[OAuth Test] Starting Google OAuth flow (REDIRECT-ONLY)');
+        console.log('[OAuth Test] Redirect destination:', window.location.origin);
+        console.log('[OAuth Test] Flow type: PKCE (most secure)');
         console.log('[OAuth Test] ========================================');
 
+        // PRODUCTION-SAFE: Redirect-only OAuth (NO popups, NO iframes)
         const { data, error } = await supabase.auth.signInWithOAuth({
           provider: 'google',
           options: {
@@ -1542,9 +1544,9 @@
           });
           alert('OAuth Error: ' + error.message + '\n\nCheck console for details.');
         } else {
-          console.log('[OAuth Test] ✅ OAuth flow initiated successfully!');
-          console.log('[OAuth Test] Response data:', data);
-          console.log('[OAuth Test] Redirecting to Google...');
+          console.log('[OAuth Test] ✅ OAuth initiated! Browser will redirect to Google...');
+          console.log('[OAuth Test] After Google login, you will return to:', window.location.origin);
+          console.log('[OAuth Test] Response:', data);
         }
       } catch (err) {
         console.error('[OAuth Test] ❌ Exception during OAuth:', err);
