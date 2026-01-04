@@ -1518,21 +1518,14 @@
     document.getElementById('testGoogleLogin')?.addEventListener('click', async () => {
       try {
         console.log('[OAuth Test] ========================================');
-        console.log('[OAuth Test] Starting Google OAuth flow (REDIRECT-ONLY)');
-        console.log('[OAuth Test] Redirect destination:', window.location.origin);
+        console.log('[OAuth Test] ✅ Google OAuth started');
+        console.log('[OAuth Test] Using Supabase Site URL (auto redirect)');
         console.log('[OAuth Test] Flow type: PKCE (most secure)');
         console.log('[OAuth Test] ========================================');
 
-        // PRODUCTION-SAFE: Redirect-only OAuth (NO popups, NO iframes)
+        // Let Supabase handle redirects automatically via Site URL config
         const { data, error } = await supabase.auth.signInWithOAuth({
-          provider: 'google',
-          options: {
-            redirectTo: window.location.origin,
-            queryParams: {
-              access_type: 'offline',
-              prompt: 'consent',
-            },
-          },
+          provider: 'google'
         });
 
         if (error) {
@@ -1544,9 +1537,8 @@
           });
           alert('OAuth Error: ' + error.message + '\n\nCheck console for details.');
         } else {
-          console.log('[OAuth Test] ✅ OAuth initiated! Browser will redirect to Google...');
-          console.log('[OAuth Test] After Google login, you will return to:', window.location.origin);
-          console.log('[OAuth Test] Response:', data);
+          console.log('[OAuth Test] ✅ Redirected to Google');
+          console.log('[OAuth Test] Will return to Supabase Site URL after login');
         }
       } catch (err) {
         console.error('[OAuth Test] ❌ Exception during OAuth:', err);

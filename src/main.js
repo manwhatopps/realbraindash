@@ -1741,6 +1741,7 @@ function waitForAuthChange(){
 
     // OAuth success - let Supabase handle the session
     try {
+      console.log('[Auth Guard] ✅ Returned from Google');
       console.log('[Auth Guard] Waiting for session to be established...');
 
       // Give Supabase time to process the OAuth callback
@@ -1752,7 +1753,7 @@ function waitForAuthChange(){
         console.error('[Auth Guard] ❌ Error getting session:', error);
         showToast('⚠️ Authentication error. Please try again.');
       } else if (session) {
-        console.log('[Auth Guard] ✅ Session established successfully!');
+        console.log('[Auth Guard] ✅ Supabase session created');
         console.log('[Auth Guard] User:', session.user.email);
         console.log('[Auth Guard] Provider:', session.user.app_metadata?.provider);
         showToast('✓ Signed in as ' + session.user.email);

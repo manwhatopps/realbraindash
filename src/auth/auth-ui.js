@@ -163,8 +163,7 @@ async function handleEmailSignUp() {
       options: {
         data: {
           name: name || email.split('@')[0]
-        },
-        emailRedirectTo: window.location.origin
+        }
       }
     });
 
@@ -326,14 +325,19 @@ async function handlePhoneSignIn() {
 
 async function handleOAuth(provider) {
   try {
+    console.log(`[Auth] ✅ ${provider} OAuth started`);
+    console.log('[Auth] Using Supabase Site URL for redirect');
+
     const { data, error } = await supabase.auth.signInWithOAuth({
-      provider,
-      options: {
-        redirectTo: window.location.origin
-      }
+      provider
     });
 
-    if (error) throw error;
+    if (error) {
+      console.error(`[Auth] ❌ ${provider} OAuth error:`, error);
+      throw error;
+    }
+
+    console.log(`[Auth] ✅ Redirected to ${provider}`);
   } catch (error) {
     console.error(`[Auth] ${provider} OAuth error:`, error);
     showToast(`${provider} sign in failed. Please try again.`);
