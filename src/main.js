@@ -95,13 +95,10 @@ function initDefaultLobbies() {
 }
 
 // ===== CONFIG =====
-const SUPABASE_URL  = import.meta.env?.VITE_SUPABASE_URL || window.VITE_SUPABASE_URL;
-const SUPABASE_ANON = import.meta.env?.VITE_SUPABASE_ANON_KEY || window.VITE_SUPABASE_ANON_KEY;
 const BACKEND_BASE  = window.location.origin;
 
-// ===== Supabase client =====
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
+// ===== Supabase client (singleton) =====
+import { supabase as sb } from '/src/supabase-client.js';
 
 // ===== UI helpers =====
 const toast = document.getElementById('toast');

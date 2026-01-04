@@ -1281,8 +1281,8 @@
   <!-- Dev Mode Toggle - Disabled for production -->
   <script>
     window.__DEV_MODE__ = false;
-    window.VITE_SUPABASE_URL = 'https://uimxwujknpuespwvipbi.supabase.co';
-    window.VITE_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVpbXh3dWprbnB1ZXNwd3ZpcGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIwMjc2NDcsImV4cCI6MjA3NzYwMzY0N30.ZKXbrtYr47DqESnoOXgxjvS0pjEHpzuQ0BHAM8QpzWw';
+    window.VITE_SUPABASE_URL = 'https://dguhvsjrqnpeonfhotty.supabase.co';
+    window.VITE_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRndWh2c2pycW5wZW9uZmhvdHR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM2NDkxOTAsImV4cCI6MjA3OTIyNTE5MH0.VQ1LAy545BkKan70yHdnOup1y33BH4wm3w-bKq_qxAs';
   </script>
   <script type="module" src="/src/dev/dev-mode.js"></script>
   <script type="module" src="/src/math-generator.js"></script>
@@ -1495,27 +1495,21 @@
 
   <!-- TEMPORARY: Google OAuth Test Script -->
   <script type="module">
-    import { createClient } from '@supabase/supabase-js';
-
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+    import { supabase } from '/src/supabase-client.js';
 
     console.log('[OAuth Test] Initializing Google OAuth test...');
-    console.log('[OAuth Test] Supabase URL:', supabaseUrl);
     console.log('[OAuth Test] Wallet blocker active:', {
       ethereum: window.ethereum,
       solana: window.solana,
       bybitWallet: window.bybitWallet
     });
 
-    const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
     document.getElementById('testGoogleLogin')?.addEventListener('click', async () => {
       try {
         console.log('[OAuth Test] ========================================');
         console.log('[OAuth Test] Starting Google OAuth flow...');
         console.log('[OAuth Test] Client ID: 184979617710-i9rcsvn3etaklq35ng3srofoiatj6v03.apps.googleusercontent.com');
-        console.log('[OAuth Test] Expected callback:', `${supabaseUrl}/auth/v1/callback`);
+        console.log('[OAuth Test] Expected callback:', 'https://dguhvsjrqnpeonfhotty.supabase.co/auth/v1/callback');
         console.log('[OAuth Test] ========================================');
 
         const { data, error } = await supabase.auth.signInWithOAuth({

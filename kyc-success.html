@@ -35,11 +35,9 @@
   </div>
 
   <script type="module">
-    const SUPABASE_URL = 'https://uimxwujknpuespwvipbi.supabase.co';
-    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVpbXh3dWprbnB1ZXNwd3ZpcGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIwMjc2NDcsImV4cCI6MjA3NzYwMzY0N30.ZKXbrtYr47DqESnoOXgxjvS0pjEHpzuQ0BHAM8QpzWw';
+    const SUPABASE_URL = 'https://dguhvsjrqnpeonfhotty.supabase.co';
 
-    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON);
+    import { supabase } from '/src/supabase-client.js';
 
     async function completeVerification() {
       try {

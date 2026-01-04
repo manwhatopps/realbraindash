@@ -5,6 +5,8 @@
  * Priority: Database -> Offline Fallback
  */
 
+import { supabase } from './supabase-client.js';
+
 /**
  * Get questions for a session from unified database-backed API.
  * @param {string} categoryKey - Category like "sports", "movies", etc.
@@ -28,26 +30,15 @@ export async function fetchQuestionsUnified(categoryKey, count, opts = {}) {
     // Get user ID if logged in
     let userId = null;
     try {
-      const supabaseUrl = window.VITE_SUPABASE_URL;
-      const supabaseKey = window.VITE_SUPABASE_ANON_KEY;
-      if (supabaseUrl && supabaseKey) {
-        const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
-        const supabase = createClient(supabaseUrl, supabaseKey);
-        const { data: { user } } = await supabase.auth.getUser();
-        userId = user?.id || null;
-      }
+      const { data: { user } } = await supabase.auth.getUser();
+      userId = user?.id || null;
     } catch (authError) {
       console.log("[FETCH] Not authenticated, using session tracking only");
     }
 
     // Call unified get-questions edge function
-    const supabaseUrl = window.VITE_SUPABASE_URL;
-    const supabaseKey = window.VITE_SUPABASE_ANON_KEY;
-
-    if (!supabaseUrl || !supabaseKey) {
-      console.warn("[FETCH] Supabase not configured, falling back to offline");
-      return await getOfflineFallback(categoryKey, count);
-    }
+    const supabaseUrl = 'https://dguhvsjrqnpeonfhotty.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRndWh2c2pycW5wZW9uZmhvdHR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM2NDkxOTAsImV4cCI6MjA3OTIyNTE5MH0.VQ1LAy545BkKan70yHdnOup1y33BH4wm3w-bKq_qxAs';
 
     const endpoint = `${supabaseUrl}/functions/v1/get-questions`;
     console.log("[FETCH] Calling unified API:", endpoint);

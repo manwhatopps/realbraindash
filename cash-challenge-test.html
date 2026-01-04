@@ -285,12 +285,7 @@
   </div>
 
   <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-
-    const supabase = createClient(
-      'https://uimxwujknpuespwvipbi.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVpbXh3dWprbnB1ZXNwd3ZpcGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIwMjc2NDcsImV4cCI6MjA3NzYwMzY0N30.ZKXbrtYr47DqESnoOXgxjvS0pjEHpzuQ0BHAM8QpzWw'
-    );
+    import { supabase } from '/src/supabase-client.js';
 
     let currentUser = null;
     let selectedFee = 5;

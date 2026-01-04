@@ -2,6 +2,7 @@ import { cashMatchesSDK } from '/src/cash-matches-sdk.js';
 import { DEV_MODE, getDevUser, DEV_FAKE_BALANCE } from '/src/dev/dev-mode.js';
 import { renderLeaderboardOverlay } from '/src/ui/leaderboard-overlay.js';
 import { renderFinalResultsModal } from '/src/ui/final-results-modal.js';
+import { supabase } from '/src/supabase-client.js';
 
 let currentMatch = null;
 let currentQuestions = [];
@@ -112,11 +113,6 @@ async function loadMatches() {
   const listEl = document.getElementById('matchList');
 
   try {
-    const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
-    const SUPABASE_URL = window.VITE_SUPABASE_URL;
-    const SUPABASE_ANON = window.VITE_SUPABASE_ANON_KEY;
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON);
-
     const { data: matches, error } = await supabase
       .from('cash_matches')
       .select('*')
@@ -223,11 +219,6 @@ async function showLobby(match) {
   } else {
     subtitleEl.textContent = `${match.mode} • ${match.question_count} questions`;
   }
-
-  const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
-  const SUPABASE_URL = window.VITE_SUPABASE_URL;
-  const SUPABASE_ANON = window.VITE_SUPABASE_ANON_KEY;
-  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON);
 
   const { data: { user } } = await supabase.auth.getUser();
   const isCreator = user && user.id === match.creator_id;
@@ -389,10 +380,8 @@ async function fetchQuestionsFromDatabase(matchId) {
   console.log('[QUESTIONS] 🗄️ Fetching from unified database API...');
 
   try {
-    const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
-    const SUPABASE_URL = window.VITE_SUPABASE_URL;
-    const SUPABASE_ANON = window.VITE_SUPABASE_ANON_KEY;
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON);
+    const SUPABASE_URL = 'https://dguhvsjrqnpeonfhotty.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRndWh2c2pycW5wZW9uZmhvdHR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM2NDkxOTAsImV4cCI6MjA3OTIyNTE5MH0.VQ1LAy545BkKan70yHdnOup1y33BH4wm3w-bKq_qxAs';
 
     const { data: { session } } = await supabase.auth.getSession();
     const token = session?.access_token;
@@ -524,11 +513,6 @@ async function showLeaderboardBetweenQuestions(timePerQuestionMs) {
 
   try {
     // Fetch current player scores from database
-    const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
-    const SUPABASE_URL = window.VITE_SUPABASE_URL;
-    const SUPABASE_ANON = window.VITE_SUPABASE_ANON_KEY;
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON);
-
     const { data: { user } } = await supabase.auth.getUser();
 
     // Get latest scores from database
@@ -649,10 +633,6 @@ async function submitAnswers() {
 async function showResults(matchId) {
   const results = await cashMatchesSDK.getMatchResults(matchId);
 
-  const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
-  const SUPABASE_URL = window.VITE_SUPABASE_URL;
-  const SUPABASE_ANON = window.VITE_SUPABASE_ANON_KEY;
-  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON);
   const { data: { user } } = await supabase.auth.getUser();
 
   const currentPlayer = results.players.find(p => user && p.user_id === user.id);

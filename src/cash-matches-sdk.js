@@ -1,10 +1,7 @@
-const SUPABASE_URL = import.meta.env?.VITE_SUPABASE_URL || window.VITE_SUPABASE_URL;
-const SUPABASE_ANON = import.meta.env?.VITE_SUPABASE_ANON_KEY || window.VITE_SUPABASE_ANON_KEY;
-
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { supabase } from './supabase-client.js';
 import { DEV_MODE, getDevUser } from './dev/dev-mode.js';
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON);
+const SUPABASE_URL = 'https://dguhvsjrqnpeonfhotty.supabase.co';
 
 export class CashMatchesSDK {
   constructor() {

@@ -159,11 +159,9 @@
   </div>
 
   <script type="module">
-    const SUPABASE_URL = import.meta.env?.VITE_SUPABASE_URL || window.VITE_SUPABASE_URL;
-    const SUPABASE_ANON = import.meta.env?.VITE_SUPABASE_ANON_KEY || window.VITE_SUPABASE_ANON_KEY;
+    const SUPABASE_URL = 'https://dguhvsjrqnpeonfhotty.supabase.co';
 
-    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON);
+    import { supabase } from '/src/supabase-client.js';
 
     import { initHeader } from '/src/header/header.js';
     initHeader();
@@ -324,8 +322,8 @@
 
   <script>
     window.__DEV_MODE__ = true;
-    window.VITE_SUPABASE_URL = 'https://uimxwujknpuespwvipbi.supabase.co';
-    window.VITE_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVpbXh3dWprbnB1ZXNwd3ZpcGJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIwMjc2NDcsImV4cCI6MjA3NzYwMzY0N30.ZKXbrtYr47DqESnoOXgxjvS0pjEHpzuQ0BHAM8QpzWw';
+    window.VITE_SUPABASE_URL = 'https://dguhvsjrqnpeonfhotty.supabase.co';
+    window.VITE_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRndWh2c2pycW5wZW9uZmhvdHR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM2NDkxOTAsImV4cCI6MjA3OTIyNTE5MH0.VQ1LAy545BkKan70yHdnOup1y33BH4wm3w-bKq_qxAs';
   </script>
 </body>
 </html>
