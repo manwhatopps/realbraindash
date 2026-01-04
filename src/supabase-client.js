@@ -29,6 +29,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     autoRefreshToken: true,
     detectSessionInUrl: true,
     persistSession: true,
+    storage: window.localStorage,
     storageKey: 'braindash-auth',
   },
   global: {
