@@ -269,16 +269,6 @@
       <h1 class="h1">🧠 BrainDash Royale</h1>
       <p class="tagline">Answer questions faster than your opponents. Compete for prizes.</p>
 
-      <!-- TEMPORARY: Google OAuth Test Button -->
-      <div style="margin-top:20px;text-align:center">
-        <button id="testGoogleLogin" class="btn" style="max-width:280px;margin:0 auto;background:rgba(234,67,53,.8);padding:14px 24px;font-size:0.95rem">
-          🧪 Test Google Login
-        </button>
-        <p style="color:var(--dim);font-size:0.75rem;margin-top:8px">
-          Temporary test button - check browser console for OAuth flow results
-        </p>
-      </div>
-
       <div id="oldWalletStrip" style="margin-top:16px;display:none;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap">
         <button id="openDeposit" class="btn secondary" style="font-size:0.875rem;padding:8px 16px">💵 Deposit</button>
         <button id="openWithdraw" class="btn secondary" style="font-size:0.875rem;padding:8px 16px">💰 Withdraw</button>
@@ -1502,113 +1492,6 @@
   <script type="module">
     import { initCashDuelUI } from '/src/cash-duel-ui.js';
     initCashDuelUI();
-  </script>
-
-  <!-- Google OAuth Test Script - Production-Ready -->
-  <script type="module">
-    import { supabase } from '/src/supabase-client.js';
-
-    console.log('[OAuth Test] Initializing Google OAuth test (production-safe)...');
-    console.log('[OAuth Test] Current origin:', window.location.origin);
-    console.log('[OAuth Test] Wallet blocker status:', {
-      ethereum: typeof window.ethereum,
-      solana: typeof window.solana,
-      bybitWallet: typeof window.bybitWallet
-    });
-
-    document.getElementById('testGoogleLogin')?.addEventListener('click', async () => {
-      try {
-        console.log('[OAuth Test] ========================================');
-        console.log('[OAuth Test] ✅ Google OAuth started');
-        console.log('[OAuth Test] Using Supabase Site URL (auto redirect)');
-        console.log('[OAuth Test] Flow type: PKCE (most secure)');
-        console.log('[OAuth Test] ========================================');
-
-        // Let Supabase handle redirects automatically via Site URL config
-        const { data, error } = await supabase.auth.signInWithOAuth({
-          provider: 'google'
-        });
-
-        if (error) {
-          console.error('[OAuth Test] ❌ Error initiating OAuth:', error);
-          console.error('[OAuth Test] Error details:', {
-            message: error.message,
-            status: error.status,
-            name: error.name
-          });
-          alert('OAuth Error: ' + error.message + '\n\nCheck console for details.');
-        } else {
-          console.log('[OAuth Test] ✅ Redirected to Google');
-          console.log('[OAuth Test] Will return to Supabase Site URL after login');
-        }
-      } catch (err) {
-        console.error('[OAuth Test] ❌ Exception during OAuth:', err);
-        console.error('[OAuth Test] Stack trace:', err.stack);
-        alert('OAuth Exception: ' + err.message + '\n\nCheck console for details.');
-      }
-    });
-
-    // Check if we just returned from OAuth (URL has code/state params)
-    const urlParams = new URLSearchParams(window.location.search);
-    const hasOAuthParams = urlParams.has('code') && urlParams.has('state');
-
-    supabase.auth.onAuthStateChange((event, session) => {
-      console.log('[OAuth Test] ========================================');
-      console.log('[OAuth Test] Auth state changed:', event);
-      console.log('[OAuth Test] ========================================');
-
-      if (event === 'SIGNED_IN' && session) {
-        console.log('[OAuth Test] ✅ Successfully signed in!');
-        console.log('[OAuth Test] User:', session.user);
-        console.log('[OAuth Test] Access Token (first 50 chars):', session.access_token.substring(0, 50) + '...');
-        console.log('[OAuth Test] Refresh Token (first 50 chars):', session.refresh_token?.substring(0, 50) + '...');
-        console.log('[OAuth Test] Provider:', session.user.app_metadata?.provider);
-        console.log('[OAuth Test] Email:', session.user.email);
-        console.log('[OAuth Test] Full session object:', session);
-        console.log('[OAuth Test] ========================================');
-
-        // Only show success popup if:
-        // 1. We just returned from OAuth (URL has OAuth params)
-        // 2. Haven't shown it yet this session (sessionStorage guard)
-        const oauthSuccessShown = sessionStorage.getItem('bd_oauth_success_shown');
-
-        if (hasOAuthParams && !oauthSuccessShown) {
-          sessionStorage.setItem('bd_oauth_success_shown', 'true');
-
-          alert('✅ Google OAuth Success!\n\n' +
-            'User: ' + session.user.email + '\n' +
-            'Provider: ' + session.user.app_metadata?.provider + '\n\n' +
-            'Check console for full token details.');
-
-          // Clean up URL to remove OAuth params
-          const cleanUrl = window.location.pathname + window.location.hash;
-          window.history.replaceState({}, document.title, cleanUrl);
-          console.log('[OAuth Test] URL cleaned, popup shown once');
-        } else if (oauthSuccessShown) {
-          console.log('[OAuth Test] Popup already shown this OAuth session, skipping');
-        } else {
-          console.log('[OAuth Test] No OAuth params detected, skipping popup (normal sign-in or session restore)');
-        }
-      }
-
-      if (event === 'SIGNED_OUT') {
-        console.log('[OAuth Test] ℹ️ User signed out');
-        // Clear the flag when user signs out
-        sessionStorage.removeItem('bd_oauth_success_shown');
-      }
-
-      if (event === 'TOKEN_REFRESHED') {
-        console.log('[OAuth Test] ℹ️ Token refreshed');
-        console.log('[OAuth Test] New session:', session);
-      }
-
-      if (event === 'USER_UPDATED') {
-        console.log('[OAuth Test] ℹ️ User updated');
-        console.log('[OAuth Test] Updated user:', session?.user);
-      }
-    });
-
-    console.log('[OAuth Test] Test button ready. Click "Test Google Login" to start.');
   </script>
 </body>
 </html>
