@@ -128,6 +128,8 @@ function setupHeaderEventListeners() {
 
   signOutBtn?.addEventListener('click', async () => {
     await supabase.auth.signOut();
+    // Clear OAuth success flag so it can show again on next sign-in
+    sessionStorage.removeItem('bd_oauth_success_shown');
     closeUserMenu();
     window.location.href = '/';
   });
@@ -135,6 +137,8 @@ function setupHeaderEventListeners() {
   mobileSignOut?.addEventListener('click', async () => {
     closeMobileMenu();
     await supabase.auth.signOut();
+    // Clear OAuth success flag so it can show again on next sign-in
+    sessionStorage.removeItem('bd_oauth_success_shown');
     window.location.href = '/';
   });
 

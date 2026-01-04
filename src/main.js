@@ -1717,6 +1717,9 @@ function waitForAuthChange(){
   const params = new URLSearchParams(window.location.search);
   const hasOAuthParams = params.has('code') || params.has('access_token') || params.has('error');
 
+  // Check if we've already shown the OAuth success message
+  const oauthSuccessShown = sessionStorage.getItem('bd_oauth_success_shown');
+
   if (hasOAuthParams) {
     console.log('[Auth Guard] ========================================');
     console.log('[Auth Guard] OAuth redirect detected');
@@ -1735,7 +1738,10 @@ function waitForAuthChange(){
       const description = params.get('error_description');
       console.error('[Auth Guard] ❌ OAuth error:', error, description);
       showToast('⚠️ Sign in failed: ' + (description || error));
-      window.history.replaceState({}, document.title, window.location.pathname);
+
+      // Clean up URL (remove query params and hash)
+      const cleanUrl = window.location.pathname;
+      window.history.replaceState({}, document.title, cleanUrl);
       return;
     }
 
@@ -1751,19 +1757,37 @@ function waitForAuthChange(){
 
       if (error) {
         console.error('[Auth Guard] ❌ Error getting session:', error);
-        showToast('⚠️ Authentication error. Please try again.');
+
+        // Only show error toast if we haven't shown success yet
+        if (!oauthSuccessShown) {
+          showToast('⚠️ Authentication error. Please try again.');
+        }
       } else if (session) {
         console.log('[Auth Guard] ✅ Supabase session created');
         console.log('[Auth Guard] User:', session.user.email);
         console.log('[Auth Guard] Provider:', session.user.app_metadata?.provider);
-        showToast('✓ Signed in as ' + session.user.email);
+
+        // Only show success toast once per OAuth flow
+        if (!oauthSuccessShown) {
+          showToast('✓ Signed in as ' + session.user.email);
+          sessionStorage.setItem('bd_oauth_success_shown', 'true');
+          console.log('[Auth Guard] Success toast shown and guard set');
+        } else {
+          console.log('[Auth Guard] Success toast already shown this session, skipping');
+        }
       } else {
         console.warn('[Auth Guard] ⚠️ No session found after OAuth redirect');
-        showToast('⚠️ Sign in incomplete. Please try again.');
+
+        // Only show error toast if we haven't shown success yet
+        if (!oauthSuccessShown) {
+          showToast('⚠️ Sign in incomplete. Please try again.');
+        }
       }
 
-      // Clean up URL
-      window.history.replaceState({}, document.title, window.location.pathname);
+      // Clean up URL (remove query params and hash)
+      const cleanUrl = window.location.pathname;
+      window.history.replaceState({}, document.title, cleanUrl);
+      console.log('[Auth Guard] URL cleaned');
 
       // Handle context-based redirects
       if (session && authContext === 'free') {
@@ -1774,8 +1798,15 @@ function waitForAuthChange(){
 
     } catch (err) {
       console.error('[Auth Guard] ❌ Exception during session handling:', err);
-      showToast('⚠️ Authentication error. Please try again.');
-      window.history.replaceState({}, document.title, window.location.pathname);
+
+      // Only show error toast if we haven't shown success yet
+      if (!oauthSuccessShown) {
+        showToast('⚠️ Authentication error. Please try again.');
+      }
+
+      // Clean up URL (remove query params and hash)
+      const cleanUrl = window.location.pathname;
+      window.history.replaceState({}, document.title, cleanUrl);
     }
   } else {
     // Normal page load - check for existing session
@@ -1790,6 +1821,7 @@ function waitForAuthChange(){
         console.log('[Auth Guard] ✅ Existing session found');
         console.log('[Auth Guard] User:', session.user.email);
         console.log('[Auth Guard] Session valid until:', new Date(session.expires_at * 1000).toLocaleString());
+        console.log('[Auth Guard] No OAuth params - skipping success toast (normal page load)');
       } else {
         console.log('[Auth Guard] No existing session (user not logged in)');
       }
