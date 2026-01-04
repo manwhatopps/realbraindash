@@ -7,6 +7,50 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
   <meta http-equiv="X-Frame-Options" content="DENY"/>
   <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin"/>
+
+  <!-- Block Web3 wallet injections that interfere with OAuth -->
+  <script>
+    (function() {
+      if (typeof window !== 'undefined') {
+        // Store original OAuth methods before Web3 extensions can override them
+        window.__ORIGINAL_OPEN__ = window.open;
+        window.__ORIGINAL_LOCATION__ = window.location;
+
+        // Block Web3 wallet extensions (but keep configurable for future deposit features)
+        Object.defineProperty(window, 'ethereum', {
+          get: function() { return undefined; },
+          set: function() { },
+          configurable: true  // Can be restored later for deposits
+        });
+
+        Object.defineProperty(window, 'solana', {
+          get: function() { return undefined; },
+          set: function() { },
+          configurable: true  // Can be restored later for deposits
+        });
+
+        Object.defineProperty(window, 'bybitWallet', {
+          get: function() { return undefined; },
+          set: function() { },
+          configurable: true  // Can be restored later for deposits
+        });
+
+        // Helper function to restore wallet support (for future deposit features)
+        window.__RESTORE_WALLET__ = function(walletName) {
+          try {
+            delete window[walletName];
+            console.log(`[BrainDash] Wallet restored: ${walletName}`);
+          } catch (e) {
+            console.warn(`[BrainDash] Could not restore ${walletName}:`, e);
+          }
+        };
+
+        console.log('[BrainDash] Web3 wallet injections blocked to prevent OAuth conflicts');
+        console.log('[BrainDash] To restore wallets later, call: window.__RESTORE_WALLET__("ethereum")');
+      }
+    })();
+  </script>
+
   <style>
     :root{--bg:#0a0b0f;--card:#111425;--txt:#e7eaf6;--muted:#9aa3b2;--dim:#6b7280;--line:#1f2937;--accent:#39ff88;--accent2:#00eaff;--brand:#2563eb}
     *{box-sizing:border-box;margin:0;padding:0}
@@ -87,7 +131,7 @@
     .auth-tab.active-tab{color:var(--accent2);border-bottom-color:var(--accent2)}
     @media(max-width:768px){body{padding-top:61px}.wrap{min-height:calc(100vh - 61px)}}
   </style>
-  <script type="module" crossorigin src="/assets/index-lWpia9jR.js"></script>
+  <script type="module" crossorigin src="/assets/index-BFZX9tGX.js"></script>
   <link rel="stylesheet" crossorigin href="/assets/index-B0EyST_U.css">
 </head>
 <body>
@@ -215,6 +259,17 @@
     <div class="header">
       <h1 class="h1">🧠 BrainDash Royale</h1>
       <p class="tagline">Answer questions faster than your opponents. Compete for prizes.</p>
+
+      <!-- TEMPORARY: Google OAuth Test Button -->
+      <div style="margin-top:20px;text-align:center">
+        <button id="testGoogleLogin" class="btn" style="max-width:280px;margin:0 auto;background:rgba(234,67,53,.8);padding:14px 24px;font-size:0.95rem">
+          🧪 Test Google Login
+        </button>
+        <p style="color:var(--dim);font-size:0.75rem;margin-top:8px">
+          Temporary test button - check browser console for OAuth flow results
+        </p>
+      </div>
+
       <div id="oldWalletStrip" style="margin-top:16px;display:none;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap">
         <button id="openDeposit" class="btn secondary" style="font-size:0.875rem;padding:8px 16px">💵 Deposit</button>
         <button id="openWithdraw" class="btn secondary" style="font-size:0.875rem;padding:8px 16px">💰 Withdraw</button>
@@ -1420,5 +1475,7 @@
 
 
 
+
+  <!-- TEMPORARY: Google OAuth Test Script -->
 </body>
 </html>
