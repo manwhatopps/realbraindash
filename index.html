@@ -8,45 +8,55 @@
   <meta http-equiv="X-Frame-Options" content="DENY"/>
   <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin"/>
 
-  <!-- Block Web3 wallet injections that interfere with OAuth -->
+  <!-- Block Web3 wallet injections - Safe version that doesn't break analytics -->
   <script>
     (function() {
-      if (typeof window !== 'undefined') {
-        // Store original OAuth methods before Web3 extensions can override them
-        window.__ORIGINAL_OPEN__ = window.open;
-        window.__ORIGINAL_LOCATION__ = window.location;
+      'use strict';
+      if (typeof window === 'undefined') return;
 
-        // Block Web3 wallet extensions (but keep configurable for future deposit features)
+      // Minimal, safe wallet blocker - ONLY blocks wallet properties
+      // Does NOT use getters, does NOT modify location/history/Object.prototype
+
+      try {
+        // Block ethereum wallet
         Object.defineProperty(window, 'ethereum', {
-          get: function() { return undefined; },
-          set: function() { },
-          configurable: true  // Can be restored later for deposits
+          value: undefined,
+          configurable: true,
+          enumerable: false,
+          writable: false
         });
 
+        // Block solana wallet
         Object.defineProperty(window, 'solana', {
-          get: function() { return undefined; },
-          set: function() { },
-          configurable: true  // Can be restored later for deposits
+          value: undefined,
+          configurable: true,
+          enumerable: false,
+          writable: false
         });
 
+        // Block bybit wallet
         Object.defineProperty(window, 'bybitWallet', {
-          get: function() { return undefined; },
-          set: function() { },
-          configurable: true  // Can be restored later for deposits
+          value: undefined,
+          configurable: true,
+          enumerable: false,
+          writable: false
         });
 
-        // Helper function to restore wallet support (for future deposit features)
+        // Restore function for future deposit features
         window.__RESTORE_WALLET__ = function(walletName) {
           try {
             delete window[walletName];
-            console.log(`[BrainDash] Wallet restored: ${walletName}`);
+            console.log('[BrainDash] Wallet restored:', walletName);
+            return true;
           } catch (e) {
-            console.warn(`[BrainDash] Could not restore ${walletName}:`, e);
+            console.warn('[BrainDash] Could not restore wallet:', e);
+            return false;
           }
         };
 
-        console.log('[BrainDash] Web3 wallet injections blocked to prevent OAuth conflicts');
-        console.log('[BrainDash] To restore wallets later, call: window.__RESTORE_WALLET__("ethereum")');
+        console.log('[BrainDash] Web3 wallets blocked (safe mode)');
+      } catch (e) {
+        console.warn('[BrainDash] Wallet blocker error:', e);
       }
     })();
   </script>
