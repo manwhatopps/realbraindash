@@ -1,7 +1,25 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-const supabaseUrl = 'https://dguhvsjrqnpeonfhotty.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRndWh2c2pycW5wZW9uZmhvdHR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM2NDkxOTAsImV4cCI6MjA3OTIyNTE5MH0.VQ1LAy545BkKan70yHdnOup1y33BH4wm3w-bKq_qxAs';
+// CORRECT PROJECT: uhhpldqfwkrulhlgkfhn
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://uhhpldqfwkrulhlgkfhn.supabase.co';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+
+// SAFETY CHECK: Prevent using wrong project
+if (supabaseUrl.includes('dguhvsjrqnpeonfhotty')) {
+  console.error('❌ [Supabase] CRITICAL ERROR: Using wrong project (dguhvsjrqnpeonfhotty)!');
+  console.error('❌ [Supabase] Must use project: uhhpldqfwkrulhlgkfhn');
+  throw new Error('Wrong Supabase project configured! Expected uhhpldqfwkrulhlgkfhn, got dguhvsjrqnpeonfhotty');
+}
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error('❌ [Supabase] Missing environment variables!');
+  console.error('❌ [Supabase] Required: VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY');
+  throw new Error('Supabase configuration missing! Check .env file');
+}
+
+if (!supabaseUrl.includes('uhhpldqfwkrulhlgkfhn')) {
+  console.warn('⚠️ [Supabase] URL does not contain expected project ref: uhhpldqfwkrulhlgkfhn');
+}
 
 // SINGLETON Supabase client - production-safe configuration
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
@@ -21,8 +39,9 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 });
 
 // Log client initialization (once only)
-console.log('[Supabase] Client initialized (singleton)');
-console.log('[Supabase] URL:', supabaseUrl);
+console.log('[Supabase] ✅ Client initialized (singleton)');
+console.log('[Supabase] ✅ URL:', supabaseUrl);
+console.log('[Supabase] ✅ Project ref:', supabaseUrl.match(/https:\/\/(.+?)\.supabase\.co/)?.[1]);
 console.log('[Supabase] Flow type: PKCE (redirect-only)');
 
 // Warn if multiple clients are created

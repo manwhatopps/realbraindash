@@ -37,8 +37,8 @@ export async function fetchQuestionsUnified(categoryKey, count, opts = {}) {
     }
 
     // Call unified get-questions edge function
-    const supabaseUrl = 'https://dguhvsjrqnpeonfhotty.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRndWh2c2pycW5wZW9uZmhvdHR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM2NDkxOTAsImV4cCI6MjA3OTIyNTE5MH0.VQ1LAy545BkKan70yHdnOup1y33BH4wm3w-bKq_qxAs';
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://uhhpldqfwkrulhlgkfhn.supabase.co';
+    const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
     const endpoint = `${supabaseUrl}/functions/v1/get-questions`;
     console.log("[FETCH] Calling unified API:", endpoint);

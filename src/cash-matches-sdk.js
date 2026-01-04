@@ -1,7 +1,7 @@
 import { supabase } from './supabase-client.js';
 import { DEV_MODE, getDevUser } from './dev/dev-mode.js';
 
-const SUPABASE_URL = 'https://dguhvsjrqnpeonfhotty.supabase.co';
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://uhhpldqfwkrulhlgkfhn.supabase.co';
 
 export class CashMatchesSDK {
   constructor() {

@@ -380,8 +380,8 @@ async function fetchQuestionsFromDatabase(matchId) {
   console.log('[QUESTIONS] 🗄️ Fetching from unified database API...');
 
   try {
-    const SUPABASE_URL = 'https://dguhvsjrqnpeonfhotty.supabase.co';
-    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRndWh2c2pycW5wZW9uZmhvdHR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM2NDkxOTAsImV4cCI6MjA3OTIyNTE5MH0.VQ1LAy545BkKan70yHdnOup1y33BH4wm3w-bKq_qxAs';
+    const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://uhhpldqfwkrulhlgkfhn.supabase.co';
+    const SUPABASE_ANON = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
     const { data: { session } } = await supabase.auth.getSession();
     const token = session?.access_token;
