@@ -16,8 +16,7 @@ const TRIVIA_CATEGORY_MAP = {
   "History": "history",
   "Geography": "geography",
   "Science": "science",
-  "Pop Culture": "pop_culture",
-  "Math": "math"
+  "Pop Culture": "pop_culture"
 };
 
 // === KAHOOT-STYLE SCORING ===

@@ -7,7 +7,6 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Client-Info, Apikey, X-Service-Key',
 };
 
-// Strict JSON schema for OpenAI Structured Outputs
 const questionSchema = {
   type: 'object',
   properties: {
@@ -56,7 +55,6 @@ const questionSchema = {
   additionalProperties: false,
 };
 
-// Content safety keywords (basic filtering)
 const UNSAFE_KEYWORDS = [
   'kill',
   'murder',
@@ -79,7 +77,6 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    // Service key check (internal only)
     const serviceKey = req.headers.get('X-Service-Key');
     const expectedKey = Deno.env.get('SERVICE_KEY');
     if (!expectedKey || serviceKey !== expectedKey) {
@@ -117,7 +114,6 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    // Get recent fingerprints to avoid duplicates
     const { data: recentFingerprints } = await supabase.rpc('get_recent_fingerprints', {
       p_category: category,
       p_limit: 100,
@@ -127,12 +123,10 @@ Deno.serve(async (req: Request) => {
       ? recentFingerprints.map((f: any) => f.question_text).slice(0, 20)
       : [];
 
-    // Build prompt
     const prompt = buildPrompt(category, difficulty, count, recentQuestions);
 
     console.log(`Generating ${count} ${difficulty} questions for category: ${category}`);
 
-    // Call OpenAI with Structured Outputs
     const openaiApiKey = Deno.env.get('OPENAI_API_KEY');
     if (!openaiApiKey) {
       console.error('OPENAI_API_KEY not configured');
@@ -190,7 +184,6 @@ Deno.serve(async (req: Request) => {
 
     console.log(`OpenAI response received in ${elapsed}ms. Tokens: ${usage?.total_tokens}`);
 
-    // Parse response
     const content = completion.choices[0]?.message?.content;
     if (!content) {
       throw new Error('No content in OpenAI response');
@@ -209,7 +202,6 @@ Deno.serve(async (req: Request) => {
       throw new Error('Invalid questions array in response');
     }
 
-    // Process questions: dedupe + safety filter + insert
     const results = {
       generated: questions.length,
       inserted: 0,
@@ -219,7 +211,6 @@ Deno.serve(async (req: Request) => {
     };
 
     for (const q of questions) {
-      // Content safety check
       const unsafe = isUnsafe(q.question_text) || q.choices.some((c: string) => isUnsafe(c));
       if (unsafe) {
         console.warn(`Unsafe content detected, skipping question: ${q.question_text}`);
@@ -227,7 +218,6 @@ Deno.serve(async (req: Request) => {
         continue;
       }
 
-      // Difficulty validation
       const difficultyValid = validateDifficulty(q.question_text, q.difficulty);
       if (!difficultyValid.valid) {
         console.warn(`Difficulty mismatch for ${q.difficulty}: ${difficultyValid.reason}`);
@@ -235,7 +225,6 @@ Deno.serve(async (req: Request) => {
         continue;
       }
 
-      // Insert with enhanced validation and deduplication
       const { data: insertResult, error: insertError } = await supabase.rpc(
         'insert_generated_question_enhanced',
         {
@@ -269,7 +258,6 @@ Deno.serve(async (req: Request) => {
       }
     }
 
-    // Log generation attempt
     const costEstimate = Math.ceil(
       ((usage?.prompt_tokens || 0) * 0.25 + (usage?.completion_tokens || 0) * 1.0) / 100
     );
@@ -307,7 +295,6 @@ Deno.serve(async (req: Request) => {
   } catch (error) {
     console.error('Error in generate-questions:', error);
 
-    // Log failed generation
     try {
       const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
       const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -334,7 +321,6 @@ Deno.serve(async (req: Request) => {
   }
 });
 
-// Build category-specific prompt
 function buildPrompt(
   category: string,
   difficulty: string,
@@ -342,14 +328,15 @@ function buildPrompt(
   recentQuestions: string[]
 ): string {
   const categoryGuidance: Record<string, string> = {
-    'General Knowledge': 'covering history, geography, science, and current events',
+    'Politics': 'covering political events, leaders, systems, and policies',
+    'Business': 'covering economics, companies, finance, and business leaders',
     'Science': 'covering physics, chemistry, biology, and astronomy',
     'History': 'covering world history, significant events, and historical figures',
     'Geography': 'covering countries, capitals, landmarks, and physical geography',
     'Sports': 'covering various sports, athletes, records, and major events',
-    'Entertainment': 'covering movies, music, TV shows, and celebrities',
-    'Literature': 'covering books, authors, literary works, and poetry',
-    'Math': 'covering arithmetic, algebra, geometry, and mathematical concepts',
+    'Music': 'covering music history, artists, genres, and musical works',
+    'Movies': 'covering films, directors, actors, and cinema history',
+    'Pop Culture': 'covering contemporary culture, celebrities, trends, and media',
   };
 
   const guidance = categoryGuidance[category] || `about ${category}`;
@@ -383,28 +370,22 @@ function buildPrompt(
   return prompt;
 }
 
-// Basic content safety filter
 function isUnsafe(text: string): boolean {
   const lower = text.toLowerCase();
   return UNSAFE_KEYWORDS.some((keyword) => lower.includes(keyword));
 }
 
-// Difficulty validation heuristics
 function validateDifficulty(questionText: string, difficulty: string): { valid: boolean; reason?: string } {
   const text = questionText.toLowerCase();
 
-  // Check for dates (4-digit years)
   const hasDate = /\b(19|20)\d{2}\b/.test(questionText);
 
-  // Check for proper nouns (capitalized words that aren't first word)
   const words = questionText.split(/\s+/);
   const properNouns = words.slice(1).filter(w => /^[A-Z][a-z]+/.test(w)).length;
 
-  // Check for multi-step indicators
   const multiStep = /[+\-×÷()]\s*[+\-×÷()]/.test(questionText) ||
                     /(first|then|next|finally|after)/i.test(text);
 
-  // Check question length and complexity
   const wordCount = words.length;
 
   if (difficulty === 'easy') {
