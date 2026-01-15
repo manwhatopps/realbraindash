@@ -1,375 +1,536 @@
-# Match Questions System
+# Match Questions System - Complete Documentation
 
 ## Overview
 
-The Match Questions System ensures that all players in a multiplayer lobby receive the **exact same set of 10 questions** in the same order. This is critical for fair competition.
+The Match Questions System is a hybrid static bank architecture that ensures all players in a multiplayer lobby receive the **exact same set of 10 questions** in the same order. Questions are selected from a static database (no AI during gameplay), with smart freshness tracking to minimize repeats.
+
+## Key Principles
+
+1. **Shared Questions**: All players in a match get identical questions
+2. **Static Bank**: Questions come from pre-generated database (no OpenAI during gameplay)
+3. **Frozen Snapshots**: Questions are snapshot into `match_questions` at match creation
+4. **Smart Freshness**: Tracks recently-seen questions per user to minimize repeats
+5. **Difficulty Schedule**: Fixed progression (Q1-5: easy, Q6-8: medium, Q9-10: hard)
 
 ## Architecture
 
-### Components
+### Database Tables
 
-1. **Edge Function**: `create-match-questions`
-   - Server-side question selection
-   - Handles deduplication and freshness logic
-   - Idempotent (safe to call multiple times)
+#### 1. `questions` (Static Bank)
+Stores all playable trivia questions.
 
-2. **Database Tables**:
-   - `questions` - Question bank
-   - `match_questions` - Links matches to their question set
-   - `user_seen_questions` - Tracks which users have seen which questions
-
-3. **Client Helper**: `src/match-questions-client.js`
-   - Simple API wrapper for frontend integration
-
-## Question Selection Algorithm
-
-### Difficulty Schedule
-
-Every match has exactly 10 questions with a fixed difficulty progression:
-
-- **Questions 1-5**: Easy (difficulty = 'easy')
-- **Questions 6-8**: Medium (difficulty = 'medium')
-- **Questions 9-10**: Hard (difficulty = 'hard')
-
-### Freshness System
-
-To avoid repeat questions, the system tracks which players have seen which questions recently:
-
-- **Competitive mode**: 30-day freshness window
-- **Free mode**: 14-day freshness window
-
-### Tier Selection
-
-For each question slot, candidates are ranked into tiers:
-
-- **Tier A**: seen by 0 players (ideal)
-- **Tier B**: seen by 1 player
-- **Tier C**: seen by 2 players
-- **Tier D**: seen by 3+ players (fallback)
-
-The system always picks from the best available tier.
-
-Within a tier, questions are sorted by:
-1. Seen count (lowest first)
-2. Creation date (oldest first, for variety)
-3. Random tiebreaker
-
-## API Reference
-
-### Edge Function Endpoint
-
-```
-POST /functions/v1/create-match-questions
+```sql
+id                  uuid PRIMARY KEY
+category            text NOT NULL
+difficulty          text NOT NULL  -- 'easy', 'medium', 'hard'
+difficulty_num      smallint NOT NULL CHECK (1,2,3)
+q_type              text NOT NULL DEFAULT 'mcq'
+prompt              text NOT NULL
+choices             jsonb NOT NULL  -- [{"id":"A","text":"..."},...]
+correct_index       integer NOT NULL
+origin              text NOT NULL  -- 'bank' or 'ai'
+status              text NOT NULL  -- 'active', 'review', 'blocked'
+quality_score       numeric(4,3) DEFAULT 0.750
+explanation         text
+created_at          timestamptz
+updated_at          timestamptz
 ```
 
-### Request Format
+**Key Points**:
+- `difficulty_num` (1/2/3) is used for efficient queries
+- `status='active'` means question is playable
+- `quality_score` helps select better questions
+- Categories: Politics, Business, Sports, Music, Movies, History, Geography, Science, Pop Culture
 
+#### 2. `match_questions` (Frozen Sets)
+Stores the 10 questions for each match.
+
+```sql
+id              uuid PRIMARY KEY
+match_id        uuid NOT NULL
+round_no        int NOT NULL CHECK (1-10)
+question_id     uuid NOT NULL REFERENCES questions(id)
+payload         jsonb NOT NULL  -- Frozen question snapshot
+created_at      timestamptz
+UNIQUE(match_id, round_no)
+```
+
+**Payload Format**:
 ```json
+{
+  "id": "uuid",
+  "category": "Sports",
+  "difficulty": 2,
+  "prompt": "Which country won the FIFA World Cup in 2018?",
+  "choices": [
+    {"id": "A", "text": "Brazil"},
+    {"id": "B", "text": "France"},
+    {"id": "C", "text": "Germany"},
+    {"id": "D", "text": "Argentina"}
+  ],
+  "correct": {"choice_id": "B"},
+  "explanation": "France won the 2018 FIFA World Cup..."
+}
+```
+
+#### 3. `question_usage` (Freshness Tracking)
+Tracks which users have seen which questions.
+
+```sql
+id              bigserial PRIMARY KEY
+user_id         uuid NOT NULL REFERENCES auth.users(id)
+question_id     uuid NOT NULL REFERENCES questions(id)
+match_id        uuid
+seen_at         timestamptz NOT NULL
+is_correct      boolean
+response_ms     integer
+UNIQUE(user_id, question_id, match_id)
+```
+
+#### 4. `match_answers` (Scoring & Audit)
+Records each answer submission.
+
+```sql
+id              bigserial PRIMARY KEY
+match_id        uuid NOT NULL
+round_no        int NOT NULL CHECK (1-10)
+user_id         uuid NOT NULL REFERENCES auth.users(id)
+question_id     uuid NOT NULL REFERENCES questions(id)
+answer          jsonb NOT NULL  -- {"choice_id": "B"}
+is_correct      boolean NOT NULL
+points          int NOT NULL
+response_ms     int
+created_at      timestamptz
+UNIQUE(match_id, round_no, user_id)
+```
+
+## Edge Functions
+
+### 1. `create-match-questions`
+
+Creates the shared 10-question set for a match.
+
+**When to Call**: Once when lobby locks and is ready to start.
+
+**Request**:
+```json
+POST /functions/v1/create-match-questions
 {
   "matchId": "uuid",
   "category": "Sports",
   "playerIds": ["uuid1", "uuid2", "uuid3"],
-  "mode": "competitive"
+  "mode": "competitive"  // or "free"
 }
 ```
 
-**Parameters:**
-
-- `matchId` (string, required): UUID of the match
-- `category` (string, required): Question category. Valid options:
-  - Politics
-  - Business
-  - Sports
-  - Music
-  - Movies
-  - History
-  - Geography
-  - Science
-  - Pop Culture
-  - Stakes
-- `playerIds` (string[], required): Array of player UUIDs (minimum 1)
-- `mode` (string, required): Either "competitive" or "free"
-
-### Response Format
-
+**Response**:
 ```json
 {
   "success": true,
-  "matchId": "123e4567-e89b-12d3-a456-426614174000",
+  "matchId": "uuid",
   "category": "Sports",
+  "mode": "competitive",
   "cached": false,
   "questions": [
     {
       "roundNo": 1,
       "question": {
-        "id": "q-uuid-1",
+        "id": "q-uuid",
         "category": "Sports",
-        "difficulty": "easy",
-        "prompt": "Which country won the FIFA World Cup in 2018?",
-        "choices": ["Brazil", "France", "Germany", "Argentina"],
-        "correct": 1,
-        "explanation": "France won the 2018 FIFA World Cup held in Russia, defeating Croatia 4-2 in the final."
+        "difficulty": 1,
+        "prompt": "...",
+        "choices": [...],
+        "correct": {"choice_id": "B"},
+        "explanation": "..."
       }
     },
-    {
-      "roundNo": 2,
-      "question": {
-        "id": "q-uuid-2",
-        "category": "Sports",
-        "difficulty": "easy",
-        "prompt": "How many players are on a basketball team on the court?",
-        "choices": ["4", "5", "6", "7"],
-        "correct": 1,
-        "explanation": "A basketball team has 5 players on the court at any given time."
-      }
-    }
-    // ... 8 more questions
+    // ... 9 more questions
   ]
 }
 ```
 
-**Response Fields:**
+**Behavior**:
+- **Idempotent**: Calling multiple times returns the same questions
+- **Freshness**: Uses 30-day window for competitive, 14-day for free
+- **Tier Selection**: Prioritizes questions unseen by most players
+- **Difficulty Schedule**: Q1-5=easy(1), Q6-8=medium(2), Q9-10=hard(3)
 
-- `success` (boolean): Always true on success
-- `matchId` (string): The match UUID
-- `category` (string): The category used
-- `cached` (boolean): True if questions already existed (idempotency)
-- `questions` (array): Array of 10 question objects
+### 2. `get-match-question`
 
-### Error Responses
+Fetches a specific question for a round.
 
-**400 Bad Request** - Invalid input:
+**When to Call**: At the start of each round (optional, can use cached questions from create call).
+
+**Request**:
 ```json
+POST /functions/v1/get-match-question
 {
-  "error": "Invalid category. Must be one of: Politics, Business, Sports..."
+  "matchId": "uuid",
+  "roundNo": 5
 }
 ```
 
-**404 Not Found** - Insufficient questions:
+**Response**:
 ```json
 {
-  "error": "No questions available for category 'Sports' with difficulty 'hard'",
-  "category": "Sports",
-  "difficulty": "hard",
-  "roundNo": 9
-}
-```
-
-**500 Internal Server Error** - Database or system error:
-```json
-{
-  "error": "Internal server error",
-  "details": "Connection timeout"
-}
-```
-
-## Client Integration
-
-### Basic Usage
-
-```javascript
-import { createMatchQuestions } from './match-questions-client.js';
-
-// When lobby locks and is ready to start
-async function startMatch(lobby) {
-  try {
-    const result = await createMatchQuestions(
-      lobby.match_id,
-      lobby.category,
-      lobby.players.map(p => p.user_id),
-      lobby.is_cash_match ? 'competitive' : 'free'
-    );
-
-    // All players will receive these questions
-    console.log('Match starting with', result.questions.length, 'questions');
-
-    // Proceed to start the match
-    await startGameWithQuestions(result.questions);
-
-  } catch (error) {
-    console.error('Failed to create match questions:', error);
-    // Handle error - cancel match or retry
-    await cancelMatch(lobby.match_id, error.message);
+  "success": true,
+  "matchId": "uuid",
+  "roundNo": 5,
+  "question": {
+    "id": "q-uuid",
+    "category": "Sports",
+    "difficulty": 1,
+    "prompt": "...",
+    "choices": [...],
+    "correct": {"choice_id": "C"},
+    "explanation": "..."
   }
 }
+```
+
+### 3. `submit-answer`
+
+Submits an answer, checks correctness, and computes points.
+
+**When to Call**: When user submits answer for a round.
+
+**Request**:
+```json
+POST /functions/v1/submit-answer
+{
+  "matchId": "uuid",
+  "roundNo": 5,
+  "userId": "user-uuid",
+  "answer": {"choice_id": "B"},
+  "responseMs": 4523
+}
+```
+
+**Response**:
+```json
+{
+  "success": true,
+  "isCorrect": true,
+  "points": 87,
+  "correctAnswer": "B"
+}
+```
+
+**Scoring Algorithm**:
+```javascript
+// Base points by difficulty
+basePoints = difficulty === 1 ? 100 : difficulty === 2 ? 150 : 200
+
+// Time bonus (faster = more points)
+timeMultiplier = clamp(0.5, 1.0, (12000 - responseMs) / 12000 + 0.5)
+
+points = isCorrect ? round(basePoints * timeMultiplier) : 0
+```
+
+## Frontend Integration
+
+### TypeScript API
+
+```typescript
+import {
+  createMatchQuestions,
+  getMatchQuestion,
+  submitAnswer
+} from './lib/matchQuestions';
+
+// 1. When lobby locks
+const result = await createMatchQuestions(
+  lobby.match_id,
+  lobby.category,
+  lobby.players.map(p => p.user_id),
+  lobby.is_cash_match ? 'competitive' : 'free'
+);
+
+// Store questions for gameplay
+const questions = result.questions;
+
+// 2. During gameplay (for each round)
+const question = questions[roundNo - 1].question;
+
+// Display question to user...
+
+// 3. When user answers
+const result = await submitAnswer(
+  matchId,
+  roundNo,
+  userId,
+  selectedChoiceId,
+  responseTimeMs
+);
+
+console.log(`Correct: ${result.isCorrect}, Points: ${result.points}`);
 ```
 
 ### Integration Points
 
-The function should be called:
+**Lobby Lock**:
+```typescript
+async function onLobbyLock(lobby) {
+  try {
+    // Create shared questions
+    const result = await createMatchQuestions(
+      lobby.match_id,
+      lobby.category,
+      lobby.players.map(p => p.user_id),
+      lobby.mode
+    );
 
-1. **After lobby lock**: When all players are ready
-2. **Before match start**: Questions must exist before gameplay begins
-3. **Once per match**: The function is idempotent (safe to retry)
+    // Store in match state
+    lobby.questions = result.questions;
 
-**DO NOT** call this function:
-- For each individual player
-- During gameplay
-- Multiple times for the same match (unless retrying on error)
-
-### Error Handling
-
-```javascript
-try {
-  const result = await createMatchQuestions(matchId, category, playerIds, mode);
-  return result;
-} catch (error) {
-  if (error.message.includes('No questions available')) {
-    // Insufficient question bank - try different category or notify admin
-    console.error('Question bank depleted for:', category);
-    // Fallback strategy here
-  } else if (error.message.includes('not authenticated')) {
-    // Auth issue - redirect to login
-    window.location.href = '/login';
-  } else {
-    // Generic error - retry or cancel match
-    console.error('Unexpected error:', error);
+    // Start match with questions ready
+    await startMatch(lobby);
+  } catch (error) {
+    console.error('Failed to create questions:', error);
+    await cancelMatch(lobby.match_id, 'Question generation failed');
   }
 }
 ```
 
-## Database Schema
+**Game Round**:
+```typescript
+async function playRound(matchId, roundNo, questions) {
+  const question = questions[roundNo - 1].question;
 
-### match_questions Table
+  // Display question
+  displayQuestion(question);
 
-Stores the mapping between matches and their questions:
+  // Wait for user answer
+  const { choiceId, responseMs } = await waitForUserAnswer();
 
-```sql
-CREATE TABLE match_questions (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  match_id uuid NOT NULL,
-  lobby_id uuid,
-  question_id uuid NOT NULL REFERENCES questions(id),
-  question_number integer NOT NULL,
-  created_at timestamptz DEFAULT now()
-);
+  // Submit answer
+  const result = await submitAnswer(
+    matchId,
+    roundNo,
+    currentUserId,
+    choiceId,
+    responseMs
+  );
+
+  // Show result
+  showResult(result);
+  updateScore(result.points);
+}
 ```
 
-**Key points:**
-- Each match has 10 rows (question_number 1-10)
-- All players query the same match_id to get their questions
-- Created once when lobby locks
+## Question Selection Algorithm
 
-## Performance Considerations
+### Freshness Windows
+- **Competitive mode**: 30 days
+- **Free mode**: 14 days
 
-### Caching (Idempotency)
+### Tier System
 
-If questions already exist for a match, they're returned immediately from the database. This makes the function safe to call multiple times.
+For each round, candidates are ranked:
 
-### Query Optimization
+**Tier A**: Seen by 0 players (ideal)
+**Tier B**: Seen by 1 player
+**Tier C**: Seen by 2 players
+**Tier D**: Seen by 3+ players (fallback)
 
-For large player bases:
-- The system queries `user_seen_questions` efficiently
-- Tier selection happens in memory after batch queries
-- Questions are selected sequentially (not parallel) to avoid duplicates
+Within each tier, questions are sorted by:
+1. Seen count (lowest first)
+2. Quality score (highest first)
+3. Random tiebreaker
 
-### Scaling
+### Difficulty Schedule
 
-**Current capacity:**
-- 10 questions per match
-- ~1-2 seconds for cold selection
-- <100ms for cached retrieval
+```
+Round 1-5:  Difficulty 1 (easy)
+Round 6-8:  Difficulty 2 (medium)
+Round 9-10: Difficulty 3 (hard)
+```
 
-**Bottlenecks:**
-- Question bank size per category/difficulty
-- Database query performance for seen_count
+This schedule is **non-negotiable** and hardcoded.
 
-**Recommendations:**
-- Maintain 500+ questions per category/difficulty combination
-- Index `user_seen_questions(user_id, question_id, seen_at)`
-- Monitor question reuse rates
+## Database Performance
+
+### Indexes
+
+```sql
+-- Question selection
+CREATE INDEX idx_questions_selection
+ON questions(category, difficulty_num, status, quality_score, created_at)
+WHERE status = 'active';
+
+-- Freshness queries
+CREATE INDEX idx_question_usage_user_seen
+ON question_usage(user_id, seen_at DESC);
+
+CREATE INDEX idx_question_usage_question_seen
+ON question_usage(question_id, seen_at DESC);
+
+-- Match lookups
+CREATE INDEX idx_match_questions_lookup
+ON match_questions(match_id, round_no);
+
+-- Answer queries
+CREATE INDEX idx_match_answers_match_user
+ON match_answers(match_id, user_id);
+```
+
+### Query Patterns
+
+**Efficient** (uses service role):
+```typescript
+// Batch seen counts for all candidates
+SELECT question_id, COUNT(DISTINCT user_id) as seen_count
+FROM question_usage
+WHERE question_id = ANY($1)
+  AND user_id = ANY($2)
+  AND seen_at >= $3
+GROUP BY question_id
+```
+
+**Avoid**:
+- N+1 queries (query each question separately)
+- Full table scans on questions
+- Missing WHERE clauses on large tables
 
 ## Testing
 
-### Manual Test
+### Manual Test Flow
 
 ```bash
-curl -X POST https://YOUR_PROJECT.supabase.co/functions/v1/create-match-questions \
+# 1. Create questions
+curl -X POST $URL/functions/v1/create-match-questions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_ANON_KEY" \
   -d '{
     "matchId": "123e4567-e89b-12d3-a456-426614174000",
     "category": "Sports",
-    "playerIds": ["user-uuid-1", "user-uuid-2"],
+    "playerIds": ["user1", "user2"],
     "mode": "free"
+  }'
+
+# 2. Get specific question
+curl -X POST $URL/functions/v1/get-match-question \
+  -H "Content-Type: application/json" \
+  -d '{
+    "matchId": "123e4567-e89b-12d3-a456-426614174000",
+    "roundNo": 1
+  }'
+
+# 3. Submit answer
+curl -X POST $URL/functions/v1/submit-answer \
+  -H "Content-Type: application/json" \
+  -d '{
+    "matchId": "123e4567-e89b-12d3-a456-426614174000",
+    "roundNo": 1,
+    "userId": "user1",
+    "answer": {"choice_id": "B"},
+    "responseMs": 5000
   }'
 ```
 
-### Expected Behavior
+### Automated Tests
 
-1. **First call**: Creates and returns 10 questions (cached: false)
-2. **Second call** (same matchId): Returns existing questions (cached: true)
-3. **Different matchId**: Creates new set of 10 questions
-
-### Verification
-
-Check that:
-- All 10 questions are returned
-- Difficulty follows schedule (5 easy, 3 medium, 2 hard)
-- No duplicate question IDs in the same match
-- Questions match the requested category
-- `match_questions` table has 10 rows for the match
+See `tests/test-match-questions.js` for comprehensive test suite.
 
 ## Monitoring
 
-### Logs
-
-The function logs detailed information:
-
-```
-[CREATE-MATCH-QUESTIONS] Processing match abc-123, category: Sports, players: 4, mode: competitive
-[CREATE-MATCH-QUESTIONS] Using freshness window: 30 days
-[CREATE-MATCH-QUESTIONS] Selecting question 1/10, difficulty: easy
-[CREATE-MATCH-QUESTIONS] Found 247 candidate questions
-[CREATE-MATCH-QUESTIONS] Tier distribution - A: 189, B: 42, C: 14, D: 2
-[CREATE-MATCH-QUESTIONS] Selected question q-xyz-789, seenCount: 0
-...
-[CREATE-MATCH-QUESTIONS] Successfully created 10 questions for match abc-123
-```
-
 ### Key Metrics
 
-Monitor these in production:
-- Question bank size per category/difficulty
-- Average tier distribution (should be mostly Tier A)
-- Question reuse frequency
-- Failed requests due to insufficient questions
+1. **Question Bank Health**:
+   - Questions per category/difficulty
+   - Active vs blocked ratio
+   - Average quality score
+
+2. **Selection Performance**:
+   - Tier distribution (should be mostly Tier A)
+   - Question reuse frequency
+   - Time to create question set
+
+3. **Gameplay Metrics**:
+   - Answer submission latency
+   - Correct answer percentage
+   - Average points per question
+
+### Database Queries
+
+```sql
+-- Check question bank size
+SELECT category, difficulty_num, COUNT(*) as count
+FROM questions
+WHERE status = 'active'
+GROUP BY category, difficulty_num
+ORDER BY category, difficulty_num;
+
+-- Check freshness tracking
+SELECT
+  COUNT(DISTINCT user_id) as active_users,
+  COUNT(*) as total_usage_records,
+  MAX(seen_at) as last_seen
+FROM question_usage
+WHERE seen_at >= NOW() - INTERVAL '30 days';
+
+-- Check answer submission rate
+SELECT
+  DATE(created_at) as date,
+  COUNT(*) as answers,
+  AVG(points) as avg_points,
+  AVG(CASE WHEN is_correct THEN 1.0 ELSE 0.0 END) as correct_rate
+FROM match_answers
+WHERE created_at >= NOW() - INTERVAL '7 days'
+GROUP BY DATE(created_at)
+ORDER BY date DESC;
+```
 
 ## Troubleshooting
 
-### "No questions available"
+### Error: "No questions available"
 
-**Cause**: Insufficient questions in the database for the requested category/difficulty
+**Cause**: Insufficient questions in database for category/difficulty.
 
 **Solution**:
-1. Check question bank: `SELECT category, difficulty, COUNT(*) FROM questions WHERE is_active = true GROUP BY category, difficulty`
+1. Check question counts: `SELECT category, difficulty_num, COUNT(*) FROM questions WHERE status='active' GROUP BY 1,2`
 2. Generate more questions for that category/difficulty
-3. Consider relaxing freshness constraints
+3. Consider relaxing freshness window temporarily
 
-### Questions repeating too often
+### Questions Repeating Too Often
 
-**Cause**: Small question bank or many active players
+**Cause**: Small question bank or many active players.
 
 **Solution**:
-1. Increase question bank size (target: 500+ per category/difficulty)
+1. Increase question bank (target: 500+ per category/difficulty)
 2. Adjust freshness window (decrease for more repeats, increase for fewer)
-3. Add more categories to distribute load
+3. Monitor tier distribution in logs
 
-### Slow performance
+### Slow Performance
 
-**Cause**: Large player base or missing indexes
+**Cause**: Missing indexes or large player base.
 
 **Solution**:
-1. Check indexes on `user_seen_questions`
-2. Monitor database query performance
-3. Consider caching tier calculations
+1. Verify indexes exist: `SELECT * FROM pg_indexes WHERE tablename IN ('questions', 'question_usage', 'match_questions')`
+2. Check query performance with EXPLAIN ANALYZE
+3. Consider caching question sets for common scenarios
+
+### Duplicate Answer Error
+
+**Cause**: User trying to submit answer twice for same round.
+
+**Response**: HTTP 409 Conflict - this is expected behavior. Frontend should prevent double-submission.
+
+## Security Considerations
+
+1. **Service Role**: Edge functions use SERVICE_ROLE_KEY (bypass RLS)
+2. **Input Validation**: All inputs validated (UUIDs, categories, round numbers)
+3. **No AI Calls**: OpenAI never called during gameplay (only for admin refill)
+4. **Audit Trail**: All answers recorded in match_answers table
+5. **Idempotency**: Safe to retry operations
 
 ## Future Enhancements
 
-Potential improvements:
+1. **Dynamic Difficulty**: Adjust based on player skill
+2. **Category Mixing**: Allow multi-category matches
+3. **Question Rotation**: Ensure even distribution across bank
+4. **Real-time Stock Alerts**: Notify when question bank low
+5. **Performance Caching**: Pre-compute question sets for common scenarios
 
-1. **Batch optimization**: Pre-compute question sets for common scenarios
-2. **Dynamic difficulty**: Adjust based on player skill levels
-3. **Category mixing**: Allow multi-category matches
-4. **Question rotation**: Ensure even distribution across entire bank
-5. **Real-time stock monitoring**: Alert when question bank is low
+## Summary
+
+The Match Questions System provides a robust, scalable architecture for multiplayer trivia matches with guaranteed fairness (all players get same questions), smart repeat avoidance, and no AI calls during gameplay. The hybrid static bank approach keeps costs low while maintaining high quality gameplay.

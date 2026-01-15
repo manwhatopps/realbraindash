@@ -9,14 +9,14 @@ const corsHeaders = {
 
 const VALID_CATEGORIES = [
   'Politics', 'Business', 'Sports', 'Music', 'Movies', 
-  'History', 'Geography', 'Science', 'Pop Culture', 'Stakes'
+  'History', 'Geography', 'Science', 'Pop Culture'
 ];
 
-// Difficulty schedule for 10 questions
+// Difficulty schedule for 10 questions (using numeric difficulty)
 const DIFFICULTY_SCHEDULE = [
-  'easy', 'easy', 'easy', 'easy', 'easy',      // Q1-Q5: easy
-  'medium', 'medium', 'medium',                // Q6-Q8: medium
-  'hard', 'hard'                               // Q9-Q10: hard
+  1, 1, 1, 1, 1,      // Q1-Q5: easy (1)
+  2, 2, 2,            // Q6-Q8: medium (2)
+  3, 3                // Q9-Q10: hard (3)
 ];
 
 interface CreateMatchQuestionsRequest {
@@ -24,16 +24,6 @@ interface CreateMatchQuestionsRequest {
   category: string;
   playerIds: string[];
   mode: 'competitive' | 'free';
-}
-
-interface QuestionPayload {
-  id: string;
-  category: string;
-  difficulty: string;
-  prompt: string;
-  choices: any;
-  correct: any;
-  explanation: string;
 }
 
 Deno.serve(async (req: Request) => {
@@ -95,9 +85,9 @@ Deno.serve(async (req: Request) => {
     // Check if questions already exist (idempotency)
     const { data: existingQuestions, error: checkError } = await supabase
       .from('match_questions')
-      .select('id, question_number, question_id, questions(id, category, difficulty, question_text, choices, correct_index, explanation)')
+      .select('id, round_no, question_id, payload')
       .eq('match_id', matchId)
-      .order('question_number', { ascending: true });
+      .order('round_no', { ascending: true });
 
     if (checkError) {
       console.error('[CREATE-MATCH-QUESTIONS] Error checking existing questions:', checkError);
@@ -112,16 +102,8 @@ Deno.serve(async (req: Request) => {
       console.log(`[CREATE-MATCH-QUESTIONS] Questions already exist for match ${matchId}, returning existing set`);
       
       const formattedQuestions = existingQuestions.map((mq: any) => ({
-        roundNo: mq.question_number,
-        question: {
-          id: mq.questions.id,
-          category: mq.questions.category,
-          difficulty: mq.questions.difficulty,
-          prompt: mq.questions.question_text,
-          choices: mq.questions.choices,
-          correct: mq.questions.correct_index,
-          explanation: mq.questions.explanation
-        }
+        roundNo: mq.round_no,
+        question: mq.payload
       }));
 
       return new Response(
@@ -129,6 +111,7 @@ Deno.serve(async (req: Request) => {
           success: true,
           matchId: matchId,
           category: category,
+          mode: mode,
           questions: formattedQuestions,
           cached: true
         }),
@@ -148,18 +131,19 @@ Deno.serve(async (req: Request) => {
     const usedQuestionIds = new Set<string>();
 
     for (let roundNo = 1; roundNo <= 10; roundNo++) {
-      const difficulty = DIFFICULTY_SCHEDULE[roundNo - 1];
+      const difficultyNum = DIFFICULTY_SCHEDULE[roundNo - 1];
       
-      console.log(`[CREATE-MATCH-QUESTIONS] Selecting question ${roundNo}/10, difficulty: ${difficulty}`);
+      console.log(`[CREATE-MATCH-QUESTIONS] Selecting question ${roundNo}/10, difficulty: ${difficultyNum}`);
 
       // Get all active questions for this category and difficulty
       const { data: candidates, error: candidatesError } = await supabase
         .from('questions')
-        .select('id, category, difficulty, question_text, choices, correct_index, explanation, created_at')
+        .select('id, category, difficulty_num, prompt, choices, correct_index, explanation, quality_score, created_at')
         .eq('category', category)
-        .eq('difficulty', difficulty)
-        .eq('is_active', true)
-        .not('id', 'in', `(${Array.from(usedQuestionIds).join(',') || 'null'})`);
+        .eq('difficulty_num', difficultyNum)
+        .eq('status', 'active')
+        .not('id', 'in', `(${Array.from(usedQuestionIds).join(',') || '00000000-0000-0000-0000-000000000000'})`)
+        .limit(200);
 
       if (candidatesError) {
         console.error(`[CREATE-MATCH-QUESTIONS] Error fetching candidates:`, candidatesError);
@@ -170,12 +154,12 @@ Deno.serve(async (req: Request) => {
       }
 
       if (!candidates || candidates.length === 0) {
-        console.error(`[CREATE-MATCH-QUESTIONS] No questions available for category: ${category}, difficulty: ${difficulty}`);
+        console.error(`[CREATE-MATCH-QUESTIONS] No questions available for category: ${category}, difficulty: ${difficultyNum}`);
         return new Response(
           JSON.stringify({ 
-            error: `No questions available for category '${category}' with difficulty '${difficulty}'`,
+            error: `No questions available for category '${category}' with difficulty ${difficultyNum}`,
             category,
-            difficulty,
+            difficulty: difficultyNum,
             roundNo
           }),
           { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -184,24 +168,34 @@ Deno.serve(async (req: Request) => {
 
       console.log(`[CREATE-MATCH-QUESTIONS] Found ${candidates.length} candidate questions`);
 
-      // For each candidate, count how many players have seen it recently
-      const candidatesWithScores = await Promise.all(
-        candidates.map(async (question) => {
-          const { count, error: seenError } = await supabase
-            .from('user_seen_questions')
-            .select('user_id', { count: 'exact', head: true })
-            .eq('question_id', question.id)
-            .in('user_id', playerIds)
-            .gte('seen_at', cutoffDate.toISOString());
+      // Count seen for all candidates in one query
+      const candidateIds = candidates.map(c => c.id);
+      const { data: seenData, error: seenError } = await supabase
+        .from('question_usage')
+        .select('question_id, user_id')
+        .in('question_id', candidateIds)
+        .in('user_id', playerIds)
+        .gte('seen_at', cutoffDate.toISOString());
 
-          if (seenError) {
-            console.warn(`[CREATE-MATCH-QUESTIONS] Error checking seen count:`, seenError);
-            return { ...question, seenCount: 999 }; // Penalize on error
+      if (seenError) {
+        console.warn(`[CREATE-MATCH-QUESTIONS] Error checking seen counts:`, seenError);
+      }
+
+      // Count seen per question
+      const seenCounts = new Map<string, Set<string>>();
+      if (seenData) {
+        for (const record of seenData) {
+          if (!seenCounts.has(record.question_id)) {
+            seenCounts.set(record.question_id, new Set());
           }
+          seenCounts.get(record.question_id)!.add(record.user_id);
+        }
+      }
 
-          return { ...question, seenCount: count || 0 };
-        })
-      );
+      const candidatesWithScores = candidates.map(question => ({
+        ...question,
+        seenCount: seenCounts.get(question.id)?.size || 0
+      }));
 
       // Categorize into tiers
       const tierA = candidatesWithScores.filter(q => q.seenCount === 0);
@@ -224,29 +218,53 @@ Deno.serve(async (req: Request) => {
         );
       }
 
-      // Sort by seenCount (asc), then created_at (asc), then random
+      // Sort by seenCount (asc), quality_score (desc), then random
       selectedTier.sort((a, b) => {
         if (a.seenCount !== b.seenCount) return a.seenCount - b.seenCount;
-        if (a.created_at !== b.created_at) return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+        if (a.quality_score !== b.quality_score) return b.quality_score - a.quality_score;
         return Math.random() - 0.5;
       });
 
       // Pick the best question
       const selectedQuestion = selectedTier[0];
+      
+      // Format choices to match expected format with choice_id
+      const formattedChoices = Array.isArray(selectedQuestion.choices) 
+        ? selectedQuestion.choices.map((choice: any, idx: number) => ({
+            id: String.fromCharCode(65 + idx), // A, B, C, D
+            text: typeof choice === 'string' ? choice : choice.text || choice
+          }))
+        : selectedQuestion.choices;
+
+      // Determine correct choice_id
+      const correctChoiceId = String.fromCharCode(65 + selectedQuestion.correct_index); // 0->A, 1->B, etc.
+
+      const payload = {
+        id: selectedQuestion.id,
+        category: selectedQuestion.category,
+        difficulty: selectedQuestion.difficulty_num,
+        prompt: selectedQuestion.prompt,
+        choices: formattedChoices,
+        correct: { choice_id: correctChoiceId },
+        explanation: selectedQuestion.explanation
+      };
+
       selectedQuestions.push({
         roundNo,
-        question: selectedQuestion
+        question: selectedQuestion,
+        payload
       });
       usedQuestionIds.add(selectedQuestion.id);
 
       console.log(`[CREATE-MATCH-QUESTIONS] Selected question ${selectedQuestion.id}, seenCount: ${selectedQuestion.seenCount}`);
     }
 
-    // Insert into match_questions table
+    // Insert into match_questions table with payload
     const matchQuestionRows = selectedQuestions.map(sq => ({
       match_id: matchId,
       question_id: sq.question.id,
-      question_number: sq.roundNo
+      round_no: sq.roundNo,
+      payload: sq.payload
     }));
 
     const { error: insertError } = await supabase
@@ -266,15 +284,7 @@ Deno.serve(async (req: Request) => {
     // Format response
     const formattedQuestions = selectedQuestions.map(sq => ({
       roundNo: sq.roundNo,
-      question: {
-        id: sq.question.id,
-        category: sq.question.category,
-        difficulty: sq.question.difficulty,
-        prompt: sq.question.question_text,
-        choices: sq.question.choices,
-        correct: sq.question.correct_index,
-        explanation: sq.question.explanation
-      }
+      question: sq.payload
     }));
 
     return new Response(
@@ -282,6 +292,7 @@ Deno.serve(async (req: Request) => {
         success: true,
         matchId: matchId,
         category: category,
+        mode: mode,
         questions: formattedQuestions,
         cached: false
       }),
