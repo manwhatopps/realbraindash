@@ -1,5 +1,7 @@
 // ===== TEST MODE CONFIG =====
-const TEST_CASH_MODE = true;
+// Check APP_CONFIG for review mode status
+const REVIEW_MODE = window.APP_CONFIG?.REVIEW_MODE || false;
+const TEST_CASH_MODE = window.APP_CONFIG?.CASH_MODE_CONFIG?.testModeVisible !== false;
 
 // === CATEGORY MAPPING (SHARED BY FREE PLAY & TEST CASH) ===
 // Maps UI display labels to internal category keys used by question loader
@@ -1211,7 +1213,7 @@ document.querySelectorAll('.close').forEach(btn => {
 let authContext = null; // 'free' or 'cash'
 
 // ===== TEST CASH MODE SETUP =====
-if (TEST_CASH_MODE) {
+if (TEST_CASH_MODE && !REVIEW_MODE) {
   const testCashBtn = document.getElementById('testCashBtn');
   const testCashCard = document.getElementById('testCashCard');
   const testCashBackBtn = document.getElementById('testCashBackBtn');
@@ -1500,6 +1502,13 @@ if (TEST_CASH_MODE) {
       }
     });
   }
+} else if (REVIEW_MODE) {
+  // Hide Test Cash mode elements in review mode
+  console.log('[Review Mode] Hiding Test Cash mode');
+  const testCashCard = document.getElementById('testCashCard');
+  const testCashBtn = document.getElementById('testCashBtn');
+  if (testCashCard) testCashCard.style.display = 'none';
+  if (testCashBtn) testCashBtn.style.display = 'none';
 }
 
 // ===== FREE PLAY BUTTONS =====
@@ -1532,13 +1541,20 @@ document.getElementById('freeSignInBtn').addEventListener('click', async () => {
 const cashBtn = document.getElementById('cashBtn');
 const cashCard = document.getElementById('cashCard');
 
-cashBtn.addEventListener('click', startCashGate);
+// Hide Cash mode in review mode
+if (REVIEW_MODE || !window.APP_CONFIG?.CASH_MODE_CONFIG?.enabled) {
+  console.log('[Review Mode] Hiding Cash Play mode');
+  if (cashCard) cashCard.style.display = 'none';
+  if (cashBtn) cashBtn.style.display = 'none';
+} else {
+  cashBtn.addEventListener('click', startCashGate);
 
-cashCard.addEventListener('click', (e) => {
-  if (e.target !== cashBtn && !cashBtn.contains(e.target)) {
-    cashBtn.click();
-  }
-});
+  cashCard.addEventListener('click', (e) => {
+    if (e.target !== cashBtn && !cashBtn.contains(e.target)) {
+      cashBtn.click();
+    }
+  });
+}
 
 async function startCashGate(){
   console.log('[Cash Gate] Starting...');

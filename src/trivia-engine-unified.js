@@ -1172,6 +1172,14 @@ function finishTriviaSession() {
   if (typeof onComplete === 'function') {
     onComplete(score, details);
   }
+
+  // Show ad after Free Play session (if enabled)
+  if (mode === 'free' && window.AdManager) {
+    console.log('[Trivia] Triggering ad after Free Play session');
+    setTimeout(() => {
+      window.AdManager.onFreePlayComplete();
+    }, 1000);
+  }
 }
 
 // ============================================================================
