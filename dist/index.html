@@ -141,7 +141,7 @@
     .auth-tab.active-tab{color:var(--accent2);border-bottom-color:var(--accent2)}
     @media(max-width:768px){body{padding-top:61px}.wrap{min-height:calc(100vh - 61px)}}
   </style>
-  <script type="module" crossorigin src="/assets/index-bfBcdDoJ.js"></script>
+  <script type="module" crossorigin src="/assets/index-iFKJ8ZQS.js"></script>
   <link rel="stylesheet" crossorigin href="/assets/index-B0EyST_U.css">
 </head>
 <body>
@@ -1294,11 +1294,19 @@
     window.VITE_SUPABASE_URL = 'https://uhhpldqfwkrulhlgkfhn.supabase.co';
     window.VITE_SUPABASE_ANON_KEY = 'sb_publishable_k_XxPBDJ06zGjT_VmG0pWg_8U8seMvb';
   </script>
+
+  <!-- App Configuration (MUST load first) -->
+  <script src="/src/app-config.js"></script>
+  <script src="/src/ad-manager.js"></script>
+
   <script src="/src/questions.js"></script>
   <script src="/src/ui/banner.js"></script>
   <script src="/src/ui/countdown.js"></script>
   <script src="/src/ui/question-timer.js"></script>
   <script src="/src/ui/elimination-banner.js"></script>
+
+  <!-- Free Play Stability Layer -->
+  <script src="/src/freeplay-stability.js"></script>
 
 
   <!-- Cash Challenge Wizard -->
