@@ -1,3 +1,11 @@
+// ===== SUPABASE CONNECTION VERIFICATION =====
+console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+console.log('🔌 SUPABASE CONNECTION CHECK');
+console.log('URL:', import.meta.env.VITE_SUPABASE_URL);
+console.log('Project:', import.meta.env.VITE_SUPABASE_URL?.match(/https:\/\/(.+?)\.supabase\.co/)?.[1]);
+console.log('Expected:', 'uhhpldqfwkrulhlgkfhn');
+console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+
 // ===== TEST MODE CONFIG =====
 // Check APP_CONFIG for review mode status
 const REVIEW_MODE = window.APP_CONFIG?.REVIEW_MODE || false;
@@ -1846,4 +1854,34 @@ function waitForAuthChange(){
   }
 
   console.log('[Auth Guard] Initialization complete');
+})();
+
+// ===== DATABASE CONNECTION VERIFICATION =====
+(async function verifyDatabaseConnection() {
+  try {
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.log('🔍 VERIFYING DATABASE CONNECTION...');
+
+    const { supabase } = await import('./supabase-client.js');
+
+    // Query questions table to verify connection to real data
+    const { data, error, count } = await supabase
+      .from('questions')
+      .select('id', { count: 'exact', head: true });
+
+    if (error) {
+      console.error('❌ Database verification FAILED:', error.message);
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+      return;
+    }
+
+    console.log('✅ DATABASE CONNECTION VERIFIED');
+    console.log('📊 Questions in database:', count);
+    console.log('✅ Expected: ~2800+ questions');
+    console.log('✅ Status:', count > 2000 ? 'CONNECTED TO REAL DATA ✓' : 'WARNING: Low question count');
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  } catch (err) {
+    console.error('❌ Database verification exception:', err);
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  }
 })();
