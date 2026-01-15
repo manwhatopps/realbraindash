@@ -1,24 +1,12 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-// CORRECT PROJECT: uhhpldqfwkrulhlgkfhn
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://uhhpldqfwkrulhlgkfhn.supabase.co';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
-
-// SAFETY CHECK: Prevent using wrong project
-if (supabaseUrl.includes('dguhvsjrqnpeonfhotty')) {
-  console.error('❌ [Supabase] CRITICAL ERROR: Using wrong project (dguhvsjrqnpeonfhotty)!');
-  console.error('❌ [Supabase] Must use project: uhhpldqfwkrulhlgkfhn');
-  throw new Error('Wrong Supabase project configured! Expected uhhpldqfwkrulhlgkfhn, got dguhvsjrqnpeonfhotty');
-}
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
   console.error('❌ [Supabase] Missing environment variables!');
   console.error('❌ [Supabase] Required: VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY');
   throw new Error('Supabase configuration missing! Check .env file');
-}
-
-if (!supabaseUrl.includes('uhhpldqfwkrulhlgkfhn')) {
-  console.warn('⚠️ [Supabase] URL does not contain expected project ref: uhhpldqfwkrulhlgkfhn');
 }
 
 // SINGLETON Supabase client - production-safe configuration
