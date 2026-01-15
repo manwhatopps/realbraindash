@@ -37,8 +37,12 @@ export async function fetchQuestionsUnified(categoryKey, count, opts = {}) {
     }
 
     // Call unified get-questions edge function
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://uhhpldqfwkrulhlgkfhn.supabase.co';
-    const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+      throw new Error('Supabase environment variables not configured - check .env file');
+    }
 
     const endpoint = `${supabaseUrl}/functions/v1/get-questions`;
     console.log("[FETCH] Calling unified API:", endpoint);

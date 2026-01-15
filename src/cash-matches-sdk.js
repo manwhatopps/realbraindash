@@ -1,7 +1,11 @@
 import { supabase } from './supabase-client.js';
 import { DEV_MODE, getDevUser } from './dev/dev-mode.js';
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://uhhpldqfwkrulhlgkfhn.supabase.co';
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+
+if (!SUPABASE_URL) {
+  throw new Error('VITE_SUPABASE_URL not configured - check .env file');
+}
 
 export class CashMatchesSDK {
   constructor() {

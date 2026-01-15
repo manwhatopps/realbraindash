@@ -35,8 +35,12 @@
   </div>
 
   <script type="module">
-    // CORRECT PROJECT: uhhpldqfwkrulhlgkfhn (now using singleton from supabase-client.js)
-    const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://uhhpldqfwkrulhlgkfhn.supabase.co';
+    // Using singleton from supabase-client.js - no fallback URL
+    const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+
+    if (!SUPABASE_URL) {
+      throw new Error('VITE_SUPABASE_URL not configured - check .env file');
+    }
 
     import { supabase } from '/src/supabase-client.js';
 

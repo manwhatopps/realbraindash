@@ -380,8 +380,12 @@ async function fetchQuestionsFromDatabase(matchId) {
   console.log('[QUESTIONS] 🗄️ Fetching from unified database API...');
 
   try {
-    const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://uhhpldqfwkrulhlgkfhn.supabase.co';
-    const SUPABASE_ANON = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+    const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+    const SUPABASE_ANON = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+    if (!SUPABASE_URL || !SUPABASE_ANON) {
+      throw new Error('Supabase environment variables not configured - check .env file');
+    }
 
     const { data: { session } } = await supabase.auth.getSession();
     const token = session?.access_token;

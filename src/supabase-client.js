@@ -27,11 +27,16 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   }
 });
 
-// Log client initialization (once only)
+// Log client initialization (once only) with prominent project verification
+const projectRef = supabaseUrl.match(/https:\/\/(.+?)\.supabase\.co/)?.[1];
+console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 console.log('[Supabase] ✅ Client initialized (singleton)');
 console.log('[Supabase] ✅ URL:', supabaseUrl);
-console.log('[Supabase] ✅ Project ref:', supabaseUrl.match(/https:\/\/(.+?)\.supabase\.co/)?.[1]);
+console.log('[Supabase] ✅ Project:', projectRef);
+console.log('[Supabase] ✅ Expected: uhhpldqfwkrulhlgkfhn');
+console.log('[Supabase] ✅ Match:', projectRef === 'uhhpldqfwkrulhlgkfhn' ? 'YES (correct project)' : 'NO (WRONG PROJECT!)');
 console.log('[Supabase] Flow type: PKCE (redirect-only)');
+console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 
 // Warn if multiple clients are created
 if (window.__SUPABASE_CLIENT_INITIALIZED__) {
