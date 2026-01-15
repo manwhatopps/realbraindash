@@ -1856,30 +1856,61 @@ function waitForAuthChange(){
   console.log('[Auth Guard] Initialization complete');
 })();
 
-// ===== DATABASE CONNECTION VERIFICATION =====
+// ===== DATABASE CONNECTION VERIFICATION (DEV ONLY) =====
 (async function verifyDatabaseConnection() {
+  if (!import.meta.env.DEV) return;
+
   try {
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    console.log('🔍 VERIFYING DATABASE CONNECTION...');
+    console.log('🔍 DATABASE CONNECTION DIAGNOSTIC');
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+
+    console.log('📡 STEP 1: Environment Variables');
+    console.log('URL:', import.meta.env.VITE_SUPABASE_URL);
+    console.log('Expected:', 'https://uhhpldqfwkrulhlgkfhn.supabase.co');
+    console.log('Match:', import.meta.env.VITE_SUPABASE_URL === 'https://uhhpldqfwkrulhlgkfhn.supabase.co' ? '✅ CORRECT' : '❌ MISMATCH');
+    console.log('');
 
     const { supabase } = await import('./supabase-client.js');
 
-    // Query questions table to verify connection to real data
+    console.log('📊 STEP 2: Query questions count');
     const { data, error, count } = await supabase
       .from('questions')
       .select('id', { count: 'exact', head: true });
 
+    console.log('data:', data);
+    console.log('error:', error);
+    console.log('count:', count);
+    console.log('');
+
     if (error) {
-      console.error('❌ Database verification FAILED:', error.message);
+      console.error('❌ RLS / Permission Error:', error.message);
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
       return;
     }
 
-    console.log('✅ DATABASE CONNECTION VERIFIED');
-    console.log('📊 Questions in database:', count);
-    console.log('✅ Expected: ~2800+ questions');
-    console.log('✅ Status:', count > 2000 ? 'CONNECTED TO REAL DATA ✓' : 'WARNING: Low question count');
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    if (count === 0) {
+      console.log('⚠️ COUNT IS ZERO - Running diagnostic query...');
+      console.log('');
+      console.log('📊 STEP 3: Query questions breakdown');
+
+      const { data: breakdown, error: breakdownError } = await supabase
+        .from('questions')
+        .select('category, difficulty')
+        .limit(10);
+
+      console.log('breakdown data:', breakdown);
+      console.log('breakdown error:', breakdownError);
+      console.log('');
+
+      console.log('❌ DATABASE IS EMPTY');
+      console.log('The app is connected to an empty project.');
+      console.log('Questions count: 0');
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    } else {
+      console.log('✅ CONNECTED TO REAL DATA:', count);
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    }
   } catch (err) {
     console.error('❌ Database verification exception:', err);
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
