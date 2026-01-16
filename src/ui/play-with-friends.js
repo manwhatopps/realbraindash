@@ -1,6 +1,6 @@
 import { supabase } from '../supabase-client.js';
 
-export async function createPlayWithFriends(container, onLobbyCreated, onLobbyJoined) {
+export async function createPlayWithFriends(container, onLobbyCreated, onLobbyJoined, isFreePlay = false) {
   container.innerHTML = `
     <div style="max-width: 900px; margin: 40px auto; padding: 20px;">
       <h1 style="text-align: center; font-size: 32px; font-weight: bold; margin-bottom: 40px; color: #fff;">
@@ -57,6 +57,7 @@ export async function createPlayWithFriends(container, onLobbyCreated, onLobbyJo
               />
             </div>
 
+            ${!isFreePlay ? `
             <!-- Entry Fee -->
             <div style="margin-bottom: 20px;">
               <label style="display: block; margin-bottom: 8px; color: #aaa; font-size: 14px;">
@@ -141,6 +142,7 @@ export async function createPlayWithFriends(container, onLobbyCreated, onLobbyJo
                 Selected: $1.00
               </div>
             </div>
+            ` : ''}
 
             <!-- Game Settings Toggles -->
             <div style="margin-bottom: 15px;">

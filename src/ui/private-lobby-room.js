@@ -1,6 +1,6 @@
 import { supabase } from '../supabase-client.js';
 
-export async function createPrivateLobbyRoom(container, lobbyId, onMatchStarted) {
+export async function createPrivateLobbyRoom(container, lobbyId, onMatchStarted, isFreePlay = false) {
   let lobbyData = null;
   let members = [];
   let currentUserId = null;

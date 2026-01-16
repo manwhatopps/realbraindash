@@ -31,7 +31,7 @@ export async function showCashPlayDisclosureModal(onAccept, onCancel) {
           color: #fff;
           line-height: 1.3;
         ">
-          Before You Play for Cash (Test Mode)
+          Before You Continue
         </h2>
 
         <div style="
@@ -45,14 +45,9 @@ export async function showCashPlayDisclosureModal(onAccept, onCancel) {
           border-radius: 12px;
           border: 1px solid rgba(255, 255, 255, 0.1);
         ">
-          <p style="margin-bottom: 16px;">
-            BrainDash offers skill-based cash games.
-          </p>
-          <p style="margin-bottom: 16px;">
-            <strong style="color: #fff;">You can play without verification</strong>, but identity verification is required before your first withdrawal.
-          </p>
           <p style="margin-bottom: 0;">
-            This helps prevent fraud and is required to process payouts in the United States.
+            I understand that identity verification may be required before I can withdraw winnings.
+            I can play without verification, but verification will be required before my first withdrawal.
           </p>
         </div>
 
@@ -69,7 +64,7 @@ export async function showCashPlayDisclosureModal(onAccept, onCancel) {
             cursor: pointer;
             transition: transform 0.2s, opacity 0.2s;
           ">
-            I Understand
+            I Agree
           </button>
 
           <button id="disclosure-cancel-btn" style="
@@ -84,7 +79,7 @@ export async function showCashPlayDisclosureModal(onAccept, onCancel) {
             cursor: pointer;
             transition: all 0.2s;
           ">
-            Cancel
+            Back
           </button>
         </div>
       </div>

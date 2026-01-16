@@ -1533,8 +1533,15 @@ const freeBtn = document.getElementById('freeBtn');
 const freeCard = document.getElementById('freeCard');
 
 freeBtn.addEventListener('click', () => {
-  console.log('[Free Play] Opening choice sheet');
-  openSheet(freeSheet);
+  console.log('[Free Play] Opening choice screen');
+  if (typeof showFreePlayChoice === 'function') {
+    showFreePlayChoice(() => {
+      showScreen('home');
+    });
+  } else {
+    console.error('[Free Play] showFreePlayChoice not available, falling back to old sheet');
+    openSheet(freeSheet);
+  }
 });
 
 freeCard.addEventListener('click', (e) => {
@@ -1672,6 +1679,7 @@ import '/src/offline-wizard.js';
 
 // Import and initialize Friend Lobbies (Play with Friends) - TEST MODE ONLY
 import { initFriendLobbiesHandlers, setupJoinRoute, showTestCashChoice } from '/src/friend-lobbies-handler.js';
+import { initFreePlayLobbiesHandlers, showFreePlayChoice } from '/src/freeplay-lobbies-handler.js';
 
 // ===== WIRE EXIT BUTTON FOR TRIVIA =====
 document.addEventListener('DOMContentLoaded', () => {
@@ -1687,10 +1695,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize Friend Lobbies handlers (TEST MODE)
   initFriendLobbiesHandlers();
+  initFreePlayLobbiesHandlers();
   setupJoinRoute();
 
   // Make showTestCashChoice available globally for Test Cash Mode
   window.showTestCashChoice = showTestCashChoice;
+  window.showFreePlayChoice = showFreePlayChoice;
 
 
   // ===== RENDER FREE PLAY CATEGORIES DYNAMICALLY =====
