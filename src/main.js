@@ -1230,10 +1230,20 @@ if (TEST_CASH_MODE && !REVIEW_MODE) {
   testCashBtn?.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('[Test Mode] Opening Test Cash Challenge');
+    console.log('[Test Mode] Opening Test Cash Challenge - showing choice screen');
     console.log('[Test Mode] Current TEST_CASH_MODE:', TEST_CASH_MODE);
-    showScreen('cash-test-screen');
-    console.log('[Test Mode] Screen shown');
+
+    // Show the choice screen (Join Lobby vs Play with Friends)
+    if (typeof showTestCashChoice === 'function') {
+      showTestCashChoice(() => {
+        // On back, return to home
+        showScreen('home');
+      });
+    } else {
+      console.error('[Test Mode] showTestCashChoice not available');
+      showScreen('cash-test-screen');
+    }
+    console.log('[Test Mode] Choice screen requested');
   });
 
   testCashCard?.addEventListener('click', (e) => {
@@ -1660,8 +1670,8 @@ import '/src/freeplay-flow.js';
 // Import and initialize Offline Wizard
 import '/src/offline-wizard.js';
 
-// Import and initialize Friend Lobbies (Play with Friends)
-import { initFriendLobbiesHandlers, setupJoinRoute } from '/src/friend-lobbies-handler.js';
+// Import and initialize Friend Lobbies (Play with Friends) - TEST MODE ONLY
+import { initFriendLobbiesHandlers, setupJoinRoute, showTestCashChoice } from '/src/friend-lobbies-handler.js';
 
 // ===== WIRE EXIT BUTTON FOR TRIVIA =====
 document.addEventListener('DOMContentLoaded', () => {
@@ -1675,9 +1685,12 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('[Trivia] Exit button wired to exitTriviaSession');
   }
 
-  // Initialize Friend Lobbies handlers
+  // Initialize Friend Lobbies handlers (TEST MODE)
   initFriendLobbiesHandlers();
   setupJoinRoute();
+
+  // Make showTestCashChoice available globally for Test Cash Mode
+  window.showTestCashChoice = showTestCashChoice;
 
 
   // ===== RENDER FREE PLAY CATEGORIES DYNAMICALLY =====
