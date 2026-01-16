@@ -1660,6 +1660,9 @@ import '/src/freeplay-flow.js';
 // Import and initialize Offline Wizard
 import '/src/offline-wizard.js';
 
+// Import and initialize Friend Lobbies (Play with Friends)
+import { initFriendLobbiesHandlers, setupJoinRoute } from '/src/friend-lobbies-handler.js';
+
 // ===== WIRE EXIT BUTTON FOR TRIVIA =====
 document.addEventListener('DOMContentLoaded', () => {
   const exitBtn = document.getElementById('ogBackToMenu');
@@ -1671,6 +1674,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     console.log('[Trivia] Exit button wired to exitTriviaSession');
   }
+
+  // Initialize Friend Lobbies handlers
+  initFriendLobbiesHandlers();
+  setupJoinRoute();
 
 
   // ===== RENDER FREE PLAY CATEGORIES DYNAMICALLY =====
