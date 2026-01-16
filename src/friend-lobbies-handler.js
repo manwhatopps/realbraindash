@@ -2,6 +2,7 @@ import { supabase } from './supabase-client.js';
 import { createCashPlayLanding } from './ui/cash-play-landing.js';
 import { createPlayWithFriends } from './ui/play-with-friends.js';
 import { createPrivateLobbyRoom } from './ui/private-lobby-room.js';
+import { showCashPlayDisclosureModal, checkCashPlayDisclosureAccepted } from './ui/cash-play-disclosure-modal.js';
 
 let currentPrivateLobbyCleanup = null;
 let activeScreenContainer = null;
@@ -18,7 +19,31 @@ export function initFriendLobbiesHandlers() {
   }
 }
 
-export function showTestCashChoice(onBack) {
+export async function showTestCashChoice(onBack) {
+  console.log('[Friend Lobbies TEST MODE] Checking disclosure acceptance');
+
+  const hasAccepted = await checkCashPlayDisclosureAccepted();
+
+  if (!hasAccepted) {
+    console.log('[Friend Lobbies TEST MODE] Disclosure not yet accepted, showing modal');
+    showCashPlayDisclosureModal(
+      () => {
+        console.log('[Friend Lobbies TEST MODE] Disclosure accepted, continuing');
+        showTestCashChoiceInternal(onBack);
+      },
+      () => {
+        console.log('[Friend Lobbies TEST MODE] Disclosure cancelled, going back');
+        if (onBack) onBack();
+      }
+    );
+    return;
+  }
+
+  console.log('[Friend Lobbies TEST MODE] Disclosure already accepted, showing choice screen');
+  showTestCashChoiceInternal(onBack);
+}
+
+function showTestCashChoiceInternal(onBack) {
   console.log('[Friend Lobbies TEST MODE] Showing Test Cash choice screen');
 
   cleanupActiveScreen();
