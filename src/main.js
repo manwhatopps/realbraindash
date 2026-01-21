@@ -1637,9 +1637,9 @@ async function startCashGate(){
     console.log('[Cash Gate] KYC record:', kycRecord);
 
     if (kycRecord?.kyc_status === 'verified') {
-      console.log('[Cash Gate] KYC verified - entering');
+      console.log('[Cash Gate] KYC verified - entering REAL cash play');
       showToast('✓ Verified! Entering Cash Play...');
-      setTimeout(() => { window.location.href = '/online.html'; }, 800);
+      setTimeout(() => { window.location.href = '/cash.html'; }, 800);
       return;
     }
 
