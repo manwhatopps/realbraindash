@@ -165,14 +165,15 @@ async function fetchQuestionsForCategory(categoryKey, count) {
     const shuffled = [...pool].sort(() => Math.random() - 0.5);
     const selected = shuffled.slice(0, count);
 
-    // Add unique IDs based on question content hash for consistency
-    return selected.map((q, i) => {
-      // Use question text as stable ID if no ID exists
+    return selected.map((q) => {
       const stableId = q.id || `${categoryKey}-${q.question.substring(0, 50).replace(/\s+/g, '-')}`;
+      const choices = Array.isArray(q.choices) && q.choices.length > 0 && typeof q.choices[0] === 'object' && 'text' in q.choices[0]
+        ? q.choices.map(c => c.text)
+        : q.choices;
       return {
         id: stableId,
         question: q.question,
-        choices: q.choices,
+        choices,
         correctIndex: q.correctIndex
       };
     });
@@ -199,12 +200,21 @@ function normalizeQuestion(raw) {
     return null;
   }
 
+  // Helper: flatten choices to plain strings if they are v2 objects [{id,text}]
+  function flattenChoices(choices) {
+    if (!Array.isArray(choices)) return choices;
+    if (choices.length > 0 && typeof choices[0] === 'object' && choices[0] !== null && 'text' in choices[0]) {
+      return choices.map(c => c.text);
+    }
+    return choices;
+  }
+
   // 1) Already normalized (Free Play shape)
   if (raw.question && Array.isArray(raw.choices) && typeof raw.correctIndex === 'number') {
     return {
       id: raw.id,
       question: raw.question,
-      choices: raw.choices,
+      choices: flattenChoices(raw.choices),
       correctIndex: raw.correctIndex
     };
   }
@@ -228,11 +238,13 @@ function normalizeQuestion(raw) {
     raw.questionText ||
     null;
 
-  const choices =
+  const rawChoices =
     raw.choices ||
     raw.answers ||
     raw.options ||
     null;
+
+  const choices = flattenChoices(rawChoices);
 
   let correctIndex =
     typeof raw.correctIndex === 'number' ? raw.correctIndex :

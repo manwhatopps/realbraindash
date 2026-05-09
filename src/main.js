@@ -1665,6 +1665,9 @@ import { initAuth } from '/src/auth/auth-ui.js';
 // Initialize auth forms
 initAuth();
 
+// Import v2 question bank (450 questions, normalizes to window.QUESTION_BANK_V2)
+import '/src/QUESTION_BANK_v2.js';
+
 // Import NEW category-based question bank (SINGLE SOURCE OF TRUTH)
 import '/src/questions-new.js';
 

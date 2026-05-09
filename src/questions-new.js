@@ -695,6 +695,16 @@ window.nextQuestion = async function({ categories = [], difficulty = null } = {}
   return { question, done: false };
 };
 
+// Merge v2 questions into the bank if available (v2 has 50 questions per category)
+if (window.QUESTION_BANK_V2) {
+  for (const [cat, questions] of Object.entries(window.QUESTION_BANK_V2)) {
+    if (Array.isArray(questions) && questions.length > 0) {
+      QUESTION_BANK[cat] = questions;
+    }
+  }
+  console.log('[Questions] Merged QUESTION_BANK_V2 into question bank');
+}
+
 // Export to window for global access
 window.QUESTION_BANK = QUESTION_BANK;
 window.TRIVIA_CATEGORIES = TRIVIA_CATEGORIES;

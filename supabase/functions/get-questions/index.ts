@@ -179,25 +179,23 @@ async function formatAndReturnQuestions(
       // Fallback to original if shuffle fails
       formattedQuestions.push({
         id: q.id,
-        question: q.question_text,
+        question: q.prompt,
         choices: q.choices,
         correctIndex: q.correct_index,
         difficulty: q.difficulty,
         category: q.category,
-        explanation: q.explanation,
-        source_confidence: q.source_confidence
+        explanation: q.explanation
       });
     } else {
       const s = shuffled[0];
       formattedQuestions.push({
         id: s.id,
-        question: s.question_text,
+        question: s.prompt,
         choices: s.choices,
         correctIndex: s.correct_index,
         difficulty: q.difficulty,
         category: q.category,
         explanation: q.explanation,
-        source_confidence: q.source_confidence,
         shuffled: true
       });
     }
